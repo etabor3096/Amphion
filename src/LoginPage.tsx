@@ -83,7 +83,7 @@ export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageP
           <h1 id="login-title">{view === "signin" ? "Welcome back" : view === "forgot" ? "Reset your password" : "Check your inbox"}</h1>
           <p>
             {view === "signin"
-              ? "Sign in to keep learning songs by ear, one chord at a time."
+              ? "Sign in to keep learning songs by ear, one note at a time."
               : view === "forgot"
                 ? "Enter the email you use for Amphion."
                 : "Check your inbox for a reset link."}
