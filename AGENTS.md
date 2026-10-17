@@ -14,7 +14,7 @@ Run `npm install`, then `npm run dev` (Vite on http://localhost:5173). `npm run 
 - `src/MainApp.tsx` - Library, Add Song, Settings screens and their dialogs
 - `src/SongScreen.tsx` - Song screen header, details, and photo/rename/delete; the tab itself is `src/tab/SyncedTab.tsx`
 - `src/playback/` - `PlaybackClock` (the single clock for song time, RC-18/DD-14), `SynthClock` (Web Audio synth; song time from `AudioContext.currentTime`), `SimulatedClock` (silent fallback), and the one animation-frame hook
-- `src/tab/` - Tab rows, interactions, practice bar, note editor, chord popover, and pure edit functions
+- `src/tab/` - Tab rows, `ChordView` (the Chords view), interactions, practice bar, note editor, chord popover, and pure edit functions
 - `src/mock/` - Data types (mirror RC-20), songs, generated tab data, in-memory store with undo
 - `src/music/` - Tuning and chord-shape helpers
 - `src/index.css` - All styling (Tailwind v4 import, design tokens, component CSS). Safe areas use `--safe-top/--safe-bottom`, which the phone frame sets

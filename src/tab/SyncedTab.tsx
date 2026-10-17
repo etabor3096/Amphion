@@ -3,12 +3,15 @@ import { editTranscription, undoLastEdit, useUndoCount } from "../mock/store";
 import type { Instrument, Transcription } from "../mock/types";
 import type { PlaybackClock } from "../playback/clock";
 import { usePlaybackFrame, usePlaybackState } from "../playback/usePlayback";
+import ChordView from "./ChordView";
 import { addNote, confirmNote, deleteNote, isUnsure, moveNoteToString, renameChord, setNoteFret } from "./edits";
 import { barIndexAt, describePosition, getBars, getRows, rowIndexAt, slotLengthAt } from "./layout";
 import NoteEditorSheet from "./NoteEditorSheet";
 import PracticeBar from "./PracticeBar";
 import TabView from "./TabView";
 import { useAutoFollow } from "./useAutoFollow";
+
+type SongView = "tab" | "chords";
 
 interface SyncedTabProps {
   songId: number;
@@ -38,6 +41,7 @@ function BassIcon() {
  */
 export default function SyncedTab({ songId, transcription, clock, audioAvailable, defaultInstrument }: SyncedTabProps) {
   const [instrument, setInstrument] = useState<Instrument>(defaultInstrument);
+  const [view, setView] = useState<SongView>("tab");
   const [time, setTime] = useState(() => clock.currentTime());
   const [pendingLoopStart, setPendingLoopStart] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
@@ -52,7 +56,10 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
   const notes = tab?.notes ?? [];
   const tabNotes = tab?.notes;
   const editingNote = editingNoteId ? notes.find((note) => note.id === editingNoteId) : undefined;
-  const unsureCount = notes.filter(isUnsure).length + transcription.chords.filter(isUnsure).length;
+  const unsureChordCount = transcription.chords.filter(isUnsure).length;
+  const unsureCount = notes.filter(isUnsure).length + unsureChordCount;
+  const chordsView = view === "chords";
+  const showHint = !hintDismissed && (chordsView ? unsureChordCount > 0 : Boolean(tab) && unsureCount > 0);
 
   // The single per-frame update: song time from the clock → state for drawing → auto-scroll.
   usePlaybackFrame(clock, (songTime) => {
@@ -130,18 +137,28 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
     setInstrument(next);
   };
 
+  const switchView = (next: SongView) => {
+    setEditingNoteId(null);
+    setView(next);
+  };
+
   return (
     <>
       <section className="tab-section" aria-labelledby="tab-title">
         <div className="song-section-heading">
           <div>
             <span>{instrument === "guitar" ? "Guitar" : "Bass"} · {bars.length} bars</span>
-            <h2 id="tab-title">{instrument === "guitar" ? "Guitar tab" : "Bass tab"}</h2>
+            <h2 id="tab-title">{chordsView ? "Chords" : instrument === "guitar" ? "Guitar tab" : "Bass tab"}</h2>
           </div>
           <button className="tab-undo-button" type="button" disabled={undoCount === 0} onClick={() => undoLastEdit(songId)} aria-label="Undo last tab edit">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>
             Undo
           </button>
+        </div>
+
+        <div className="segmented-control song-view-switch" role="group" aria-label="Song view">
+          <button type="button" className={!chordsView ? "selected" : ""} aria-pressed={!chordsView} onClick={() => switchView("tab")}>Tab</button>
+          <button type="button" className={chordsView ? "selected" : ""} aria-pressed={chordsView} onClick={() => switchView("chords")}>Chords</button>
         </div>
 
         <div className="song-instrument-switch" role="group" aria-label="Tab instrument">
@@ -154,17 +171,17 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
           </button>
         </div>
 
-        {tab && (
+        {!chordsView && tab && (
           <p className="tab-explainer">
             Each line is a string. Each number is the fret to press (0 = open string).{" "}
             {audioAvailable ? "Tap a note to jump there; press and hold it to edit." : "Press and hold a note to edit it."}
           </p>
         )}
 
-        {tab && unsureCount > 0 && !hintDismissed && (
+        {showHint && (
           <div className="tab-confidence-hint" role="note">
             <span className="tab-flag" aria-hidden="true">?</span>
-            <p><strong>? = Amphion isn't sure about this note.</strong> Check it by ear.</p>
+            <p><strong>? = Amphion isn't sure about this {chordsView ? "chord" : "note"}.</strong> Check it by ear.</p>
             <button
               type="button"
               aria-label="Dismiss hint"
@@ -178,7 +195,20 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
           </div>
         )}
 
-        {tab ? (
+        {chordsView ? (
+          <ChordView
+            transcription={transcription}
+            instrument={instrument}
+            bars={bars}
+            rows={rows}
+            time={time}
+            canSeek={audioAvailable}
+            loop={loop}
+            rowRef={follow.rowRef}
+            onSeek={seek}
+            onRenameChord={(chordId, name) => edit((current) => renameChord(current, chordId, name))}
+          />
+        ) : tab ? (
           <TabView
             transcription={transcription}
             instrument={instrument}
@@ -233,7 +263,7 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
         </section>
       )}
 
-      {editingNote && (
+      {editingNote && !chordsView && (
         <NoteEditorSheet
           instrument={instrument}
           note={editingNote}

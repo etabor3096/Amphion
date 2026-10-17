@@ -40,7 +40,8 @@ Then open http://localhost:5173. Needs Node 20.19+ (22 or newer recommended).
 On a song: press play, change speed, tap **A-B** once at the start bar and again at the end bar,
 tap a note or bar number to jump, scroll away during playback to get **Back to playhead**,
 press and hold (or right-click) a note to edit it, tap an empty spot on a string for **+ Add note**,
-and tap a chord name for its diagram. **Undo** reverts tab edits.
+and tap a chord name for its diagram. Pick **Chords** instead of **Tab** to see the song as its chord
+progression: a strip of chord diagrams, then the bars with the playing chord highlighted. **Undo** reverts tab edits.
 
 ## Real vs. mocked
 
@@ -60,6 +61,6 @@ and tap a chord name for its diagram. **Undo** reverts tab edits.
   and the shown tab's notes are synthesized with Web Audio. To use real audio, implement the interface around an
   audio player instead; the UI does not change.
 - `src/playback/usePlayback.ts`: the single `requestAnimationFrame` loop that drives everything synced.
-- `src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), practice bar, note editor, chord popover, edits.
+- `src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), chords view (`ChordView`), practice bar, note editor, chord popover, edits.
 - `src/mock/`: data types (match the SDD's stored tab format, RC-20), songs, tab data, in-memory store.
 - `src/device/`: the desktop phone frame and simulated status bar.

@@ -5834,3 +5834,143 @@ svg {
   font-size: 0.8125rem;
   line-height: 1.4;
 }
+
+/* Chords view: the progression in the tab's own two-bar rows. */
+.song-view-switch {
+  margin-bottom: 10px;
+}
+
+.chord-view-strip {
+  margin: 0 0 14px;
+  padding: 2px 2px 8px;
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+
+.chord-view-strip-item {
+  flex: 0 0 auto;
+  padding: 8px 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  scroll-snap-align: start;
+}
+
+.chord-view-strip-item strong {
+  font-family: var(--font-notation);
+  font-size: 0.875rem;
+}
+
+/* The playing chord: thicker primary outline plus a filled name, not color alone. */
+.chord-view-strip-item.current {
+  border: 2px solid var(--color-primary);
+  padding: 7px 5px 7px;
+  background: color-mix(in srgb, var(--color-primary) 8%, var(--color-surface));
+}
+
+.chord-view-strip-item.current strong {
+  color: var(--color-primary);
+}
+
+.chord-view-score {
+  --tab-label-width: 0px;
+  padding: 16px 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--color-text) 6%, transparent);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.chord-view-row {
+  position: relative;
+  min-width: 0;
+}
+
+.chord-view-lane {
+  position: relative;
+  height: 64px;
+}
+
+.chord-view-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid color-mix(in srgb, var(--color-primary) 72%, var(--color-border));
+}
+
+.chord-view-bar.in-loop {
+  background: color-mix(in srgb, var(--color-secondary) 17%, transparent);
+}
+
+.chord-view-bar-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--color-primary) 72%, var(--color-border));
+}
+
+.chord-view-playhead {
+  top: 0;
+  bottom: 0;
+}
+
+.chord-view-chord {
+  position: absolute;
+  z-index: 3;
+  bottom: 8px;
+  min-height: 32px;
+  padding: 4px 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-family: var(--font-notation);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  transform: translateX(-7px);
+  cursor: pointer;
+}
+
+.chord-view-chord:hover,
+.chord-view-chord.open {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+}
+
+.chord-view-chord.unsure {
+  border: 1px dashed var(--color-warning);
+}
+
+.chord-view-chord.current {
+  color: #fff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.chord-view-chord:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.chord-view-row .tab-chord-popover {
+  top: 66px;
+}
