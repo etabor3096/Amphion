@@ -193,7 +193,7 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
           <div className="bass-empty-state" role="status">
             <span><BassIcon /></span>
             <strong>No bass part found</strong>
-            <p>Amphion couldn't hear a bass in this recording. Switch to Guitar to see the tab.</p>
+            <p>Amphion couldn't hear a bass in this recording.</p>
           </div>
         )}
       </section>
