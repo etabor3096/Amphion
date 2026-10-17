@@ -1,0 +1,57 @@
+import { useState } from "react";
+import LoginPage from "./LoginPage";
+import type { Theme } from "./LoginPage";
+import MainApp from "./MainApp";
+import SplashScreen from "./SplashScreen";
+import StyleGuide from "./StyleGuide";
+import DeviceChrome from "./device/DeviceChrome";
+import { isInsideDeviceFrame } from "./device/deviceMode";
+import { systemTheme } from "./theme";
+
+export default function App() {
+  const location = new URL(window.location.href);
+  const showStyleGuide =
+    location.pathname.endsWith("/style-guide") ||
+    location.searchParams.get("page") === "style-guide" ||
+    location.hash === "#style-guide";
+  const alreadySignedIn = location.hash === "#library";
+  const [theme, setTheme] = useState<Theme>(systemTheme);
+  const [signedIn, setSignedIn] = useState(alreadySignedIn);
+  const [showSplash, setShowSplash] = useState(!alreadySignedIn);
+
+  if (showStyleGuide) return <StyleGuide />;
+
+  let screen;
+  if (showSplash) {
+    screen = <SplashScreen theme={theme} onAdvance={() => setShowSplash(false)} />;
+  } else if (signedIn) {
+    screen = (
+      <MainApp
+        theme={theme}
+        onThemeChange={setTheme}
+        onSignOut={() => {
+          window.history.replaceState(null, "", window.location.pathname + window.location.search);
+          setSignedIn(false);
+        }}
+      />
+    );
+  } else {
+    screen = (
+      <LoginPage
+        theme={theme}
+        onThemeChange={setTheme}
+        onSignIn={() => {
+          window.history.replaceState(null, "", "#library");
+          setSignedIn(true);
+        }}
+      />
+    );
+  }
+
+  return (
+    <>
+      {screen}
+      {isInsideDeviceFrame() && <DeviceChrome theme={theme} />}
+    </>
+  );
+}
