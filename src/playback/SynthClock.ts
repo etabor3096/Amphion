@@ -12,6 +12,8 @@ const MASTER_GAIN = 0.25;
 interface Voice {
   osc: OscillatorNode;
   gain: GainNode;
+  /** Context time the note starts sounding. */
+  when: number;
 }
 
 /**
@@ -154,6 +156,7 @@ export class SynthClock implements PlaybackClock {
     if (this.playing) this.anchorSongTime = this.currentTime();
     this.playing = false;
     this.halt();
+    this.voices.clear();
     const ctx = this.ctx;
     this.ctx = null;
     this.master = null;
@@ -268,7 +271,7 @@ export class SynthClock implements PlaybackClock {
     osc.start(when);
     osc.stop(when + length + 0.05);
 
-    const voice = { osc, gain };
+    const voice = { osc, gain, when };
     this.voices.add(voice);
     osc.onended = () => {
       this.voices.delete(voice);
@@ -280,9 +283,14 @@ export class SynthClock implements PlaybackClock {
 
   private stopVoices() {
     const ctx = this.ctx;
-    for (const { osc, gain } of this.voices) {
-      if (!ctx) continue;
-      const now = ctx.currentTime;
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    for (const { osc, gain, when } of this.voices) {
+      if (when >= now) {
+        // Not sounding yet: cancel outright, no fade needed.
+        osc.stop(now);
+        continue;
+      }
       const level = gain.gain.value;
       gain.gain.cancelScheduledValues(now);
       gain.gain.setValueAtTime(level, now);
