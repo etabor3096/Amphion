@@ -115,16 +115,17 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
           <span>{length} <i aria-hidden="true">·</i> Added {added}{folder && <><i aria-hidden="true">·</i> {folder}</>}</span>
         </div>
         <div className="song-hero-actions">
-          <button
-            className="hero-play-button"
-            type="button"
-            disabled={!audioOnThisDevice}
-            onClick={() => (playing ? clock.pause() : clock.play())}
-            aria-label={!audioOnThisDevice ? "Playback unavailable on this iPhone" : playing ? "Pause song" : "Play song"}
-          >
-            <SongIcon name={playing ? "pause" : "play"} />
-            {playing ? "Pause" : "Play"}
-          </button>
+          {audioOnThisDevice && (
+            <button
+              className="hero-play-button"
+              type="button"
+              onClick={() => (playing ? clock.pause() : clock.play())}
+              aria-label={playing ? "Pause song" : "Play song"}
+            >
+              <SongIcon name={playing ? "pause" : "play"} />
+              {playing ? "Pause" : "Play"}
+            </button>
+          )}
           <button className="change-photo-button" type="button" onClick={() => setPhotoActionsOpen(true)}>
             <SongIcon name="camera" />
             Change Photo
