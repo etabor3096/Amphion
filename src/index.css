@@ -5974,3 +5974,7 @@ svg {
 .chord-view-row .tab-chord-popover {
   top: 66px;
 }
+
+.chord-view-chord.current .tab-flag {
+  box-shadow: 0 0 0 1.5px #fff;
+}
