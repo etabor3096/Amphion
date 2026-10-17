@@ -231,7 +231,7 @@ const SPECS: SongSpec[] = [
     bass: "pulse",
     seed: 11,
     unsureGuitar: { "3:6:2": 0.46, "6:3:3": 0.52, "7:5:3": 0.41 },
-    unsureBass: { "4:4": 0.5 },
+    unsureBass: { "2:2": 0.43, "4:4": 0.5, "6:0": 0.55, "7:6": 0.39 },
     unsureChords: { 3: 0.48 },
   },
   {
