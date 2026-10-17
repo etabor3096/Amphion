@@ -1,0 +1,8 @@
+# Everything is stored directly in git (no Git LFS), so the SDD PDF, images and
+# fonts are readable on GitHub and by agents that browse the repo.
+* text=auto eol=lf
+*.pdf binary
+*.png binary
+*.jpg binary
+*.woff binary
+*.woff2 binary
