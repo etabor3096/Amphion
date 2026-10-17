@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Instrument, LibrarySong, Transcription } from "./mock/types";
-import { SimulatedClock } from "./playback/clock";
+import { SimulatedClock, type PlaybackClock } from "./playback/clock";
+import { SynthClock } from "./playback/SynthClock";
 import { usePlaybackState } from "./playback/usePlayback";
 import SyncedTab from "./tab/SyncedTab";
 
@@ -46,8 +47,10 @@ function describeTuning(cents: number | null) {
 
 export default function SongScreen({ song, transcription, defaultInstrument, onBack, onRename, onPhotoChange, onDelete }: SongScreenProps) {
   const { title, artist, length, added, folder, art, photo, audioOnThisDevice } = song;
-  // One playback clock per open song. Swap SimulatedClock for a real audio-backed clock later.
-  const [clock] = useState(() => new SimulatedClock(transcription.duration));
+  // One playback clock per open song. The synth clock makes sound; a song whose audio is on another device stays silent.
+  const [clock] = useState<PlaybackClock & { dispose?(): void }>(() =>
+    audioOnThisDevice && window.AudioContext ? new SynthClock(transcription.duration) : new SimulatedClock(transcription.duration),
+  );
   const { playing } = usePlaybackState(clock);
   const [detailInfo, setDetailInfo] = useState<"key" | "tempo" | "tuning" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,7 +64,13 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => () => clock.pause(), [clock]);
+  useEffect(
+    () => () => {
+      clock.pause();
+      clock.dispose?.();
+    },
+    [clock],
+  );
 
   useEffect(() => {
     const handleScroll = () => setHeaderCollapsed(window.scrollY > 300);

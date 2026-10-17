@@ -50,6 +50,7 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
   const rows = useMemo(() => getRows(bars), [bars]);
   const tab = transcription[instrument];
   const notes = tab?.notes ?? [];
+  const tabNotes = tab?.notes;
   const editingNote = editingNoteId ? notes.find((note) => note.id === editingNoteId) : undefined;
   const unsureCount = notes.filter(isUnsure).length + transcription.chords.filter(isUnsure).length;
 
@@ -58,6 +59,11 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
     setTime(songTime);
     if (audioAvailable) follow.step(rowIndexAt(rows, songTime));
   });
+
+  // The synth clock plays whichever part is shown; no part means silence.
+  useEffect(() => {
+    clock.setAudibleNotes?.(tabNotes ?? []);
+  }, [clock, tabNotes]);
 
   // Keep the screen awake while a song plays (US-12), where the browser supports it.
   useEffect(() => {

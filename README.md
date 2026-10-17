@@ -48,15 +48,17 @@ and tap a chord name for its diagram. **Undo** reverts tab edits.
 | --- | --- |
 | All screens, navigation, light/dark/system appearance | Sign-in: every option is a fake "Continue" |
 | Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits live in memory and reset on reload |
-| Tab layout, confidence markers, note editor, chord picker, undo | Audio: a simulated clock stands in for the audio player (no sound) |
+| Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
 | Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that stays "Processing" |
 | Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |
 
 ## Where things live
 
 - `src/playback/clock.ts`: the `PlaybackClock` interface (the one clock for song time, RC-18/DD-14) and
-  `SimulatedClock`. To use real audio, implement the interface around an audio player and pass it to
-  `SongScreen` instead; the UI does not change.
+  `SimulatedClock`, the silent clock used when the song's audio is on another device.
+- `src/playback/SynthClock.ts`: the clock `SongScreen` uses otherwise. Song time comes from `AudioContext.currentTime`,
+  and the shown tab's notes are synthesized with Web Audio. To use real audio, implement the interface around an
+  audio player instead; the UI does not change.
 - `src/playback/usePlayback.ts`: the single `requestAnimationFrame` loop that drives everything synced.
 - `src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), practice bar, note editor, chord popover, edits.
 - `src/mock/`: data types (match the SDD's stored tab format, RC-20), songs, tab data, in-memory store.

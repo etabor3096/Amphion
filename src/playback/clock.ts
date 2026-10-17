@@ -1,3 +1,5 @@
+import type { TabNote } from "../mock/types";
+
 export interface LoopRange {
   start: number;
   end: number;
@@ -34,6 +36,8 @@ export interface PlaybackClock {
   setRate(rate: number): void;
   /** While set, reaching `end` jumps song time back to `start`. */
   setLoop(loop: LoopRange | null): void;
+  /** For clocks that synthesize the part: the notes to play. Others ignore it. */
+  setAudibleNotes?(notes: TabNote[]): void;
   /** Notifies on discrete changes (play, pause, seek, speed, loop, reaching the end), not every frame. */
   subscribe(listener: () => void): () => void;
 }
