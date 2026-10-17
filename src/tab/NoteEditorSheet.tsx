@@ -66,7 +66,7 @@ export default function NoteEditorSheet({ instrument, note, notes, position, onF
         <div className="note-editor-summary">
           <span className="note-editor-fret-badge" aria-hidden="true">{note.fret}</span>
           <div>
-            <strong>{string.spoken[0].toUpperCase() + string.spoken.slice(1)} · fret {note.fret}</strong>
+            <strong>String: {string.label}{"   "}Fret: {note.fret}</strong>
             <span>{position} · note {pitchName(note.pitch)}</span>
           </div>
         </div>
