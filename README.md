@@ -31,7 +31,7 @@ Then open http://localhost:5173. Needs Node 20.19+ (22 or newer recommended).
 
 | Song | Shows |
 | --- | --- |
-| Back Porch Chorus | Guitar and bass tabs, a few "?" notes and an unsure chord |
+| Back Porch Chorus | Guitar and bass tabs, a few "?" notes on guitar and bass, and an unsure chord |
 | Old Mill Road | Everything confident: no "?" markers at all |
 | First Full Song | "No bass part found", tuning reported as an offset |
 | Lantern Light | Audio is on another iPhone: tab only, no synced playback; tuning "Unknown" |
