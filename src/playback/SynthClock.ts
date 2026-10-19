@@ -1,4 +1,4 @@
-import type { TabNote } from "../mock/types";
+import type { Instrument, TabNote } from "../mock/types";
 import type { LoopRange, PlaybackClock } from "./clock";
 
 /** How often the audio scheduler wakes up, and how far ahead of the audio clock it schedules notes. */
@@ -8,8 +8,50 @@ const LOOKAHEAD = 0.1;
 const FADE_TIME_CONSTANT = 0.003;
 const FADE_STOP_AFTER = 0.015;
 const MASTER_GAIN = 0.25;
+/** Ramp time for a volume-only change, so playing notes aren't cut or clicked. */
+const VOLUME_RAMP_TIME = 0.03;
+
+/** One part of the mix: a note list with its own volume. */
+export interface AudiblePart {
+  instrument: Instrument;
+  notes: TabNote[];
+  /** 0 = silent, 1 = full. */
+  volume: number;
+}
+
+/** How an instrument sounds. Bass is darker and rings a little longer. */
+interface VoiceStyle {
+  /** Lowpass cutoff as a multiple of the note frequency, and the same for notes below MIDI 48. */
+  brightness: number;
+  lowBrightness: number;
+  minCutoff: number;
+  /** The cutoff closes to this floor (or a quarter of the start, whichever is higher) as the string rings out. */
+  endFloor: number;
+  /** Multiplies the note length. */
+  decay: number;
+}
+
+const VOICE_STYLES: Record<Instrument, VoiceStyle> = {
+  guitar: { brightness: 8, lowBrightness: 4, minCutoff: 300, endFloor: 200, decay: 1 },
+  bass: { brightness: 3, lowBrightness: 3, minCutoff: 120, endFloor: 100, decay: 1.25 },
+};
+
+interface Part {
+  instrument: Instrument;
+  /** The array last passed in, kept to tell a notes change from a volume-only change. */
+  source: TabNote[];
+  /** Sorted by start time. */
+  notes: TabNote[];
+  volume: number;
+  /** Sits between this part's voices and the master gain. Made lazily, recreated with the context. */
+  gain: GainNode | null;
+  // Scheduler cursor (see SynthClock): per part, so one part can be rescheduled alone.
+  cursorSong: number;
+  cursorContext: number;
+}
 
 interface Voice {
+  part: Part;
   osc: OscillatorNode;
   gain: GainNode;
   /** Context time the note starts sounding. */
@@ -35,13 +77,11 @@ export class SynthClock implements PlaybackClock {
   private playing = false;
   private playbackRate = 1;
   private loopRange: LoopRange | null = null;
-  private notes: TabNote[] = [];
+  private readonly parts = new Map<Instrument, Part>();
   private readonly listeners = new Set<() => void>();
 
-  // Scheduler cursor: song time up to which notes are already scheduled, and the context time it maps to.
-  // It runs ahead of the anchor and is not re-anchored when playback wraps at the end of a loop.
-  private cursorSong = 0;
-  private cursorContext = 0;
+  // Each part has a scheduler cursor: song time up to which its notes are already scheduled, and the
+  // context time it maps to. It runs ahead of the anchor and is not re-anchored when playback wraps.
   private timer: ReturnType<typeof setInterval> | null = null;
   private readonly voices = new Set<Voice>();
 
@@ -132,16 +172,64 @@ export class SynthClock implements PlaybackClock {
     this.emit();
   }
 
-  /** Which notes make sound. While playing, pending sounds are cancelled and rescheduled from the current position. */
+  /** Shorthand for one guitar part at full volume. */
   setNotes(notes: TabNote[]) {
-    this.notes = [...notes].sort((a, b) => a.startTime - b.startTime);
-    if (!this.playing) return;
-    this.reanchor(this.currentTime());
-    this.restartScheduling();
+    this.setAudibleParts([{ instrument: "guitar", notes, volume: 1 }]);
   }
 
   setAudibleNotes(notes: TabNote[]) {
     this.setNotes(notes);
+  }
+
+  /**
+   * Which parts make sound, each at its own volume. A volume-only change ramps that part's gain.
+   * A notes change, or adding, removing, silencing or un-silencing a part, cancels and reschedules
+   * only that part from the current position. Parts at volume 0 schedule nothing.
+   */
+  setAudibleParts(parts: ReadonlyArray<AudiblePart>) {
+    const incoming = new Map<Instrument, AudiblePart>();
+    for (const part of parts) incoming.set(part.instrument, part);
+
+    for (const [instrument, part] of this.parts) {
+      if (incoming.has(instrument)) continue;
+      this.parts.delete(instrument);
+      this.stopVoices(part);
+      this.releaseGain(part);
+    }
+
+    let positioned = false;
+    for (const [instrument, next] of incoming) {
+      const volume = Number.isFinite(next.volume) ? Math.min(1, Math.max(0, next.volume)) : 0;
+      let part = this.parts.get(instrument);
+      let reschedule = false;
+      if (!part) {
+        part = { instrument, source: next.notes, notes: sortNotes(next.notes), volume: 0, gain: null, cursorSong: 0, cursorContext: 0 };
+        this.parts.set(instrument, part);
+        reschedule = volume > 0;
+      } else {
+        if (part.source !== next.notes) {
+          part.source = next.notes;
+          part.notes = sortNotes(next.notes);
+          reschedule = volume > 0;
+        }
+        if ((part.volume > 0) !== (volume > 0)) reschedule = true;
+      }
+      const wasSilent = part.volume <= 0;
+      const changed = part.volume !== volume;
+      part.volume = volume;
+      if (changed) this.setPartGain(part, wasSilent);
+      if (!reschedule || !this.playing) continue;
+
+      this.stopVoices(part);
+      if (volume <= 0) continue;
+      if (!positioned) {
+        this.reanchor(this.currentTime());
+        positioned = true;
+        if (!this.playing) return; // reached the end, which already stopped everything
+      }
+      this.startPart(part);
+    }
+    if (positioned) this.schedule();
   }
 
   subscribe(listener: () => void) {
@@ -157,6 +245,7 @@ export class SynthClock implements PlaybackClock {
     this.playing = false;
     this.halt();
     this.voices.clear();
+    for (const part of this.parts.values()) part.gain = null;
     const ctx = this.ctx;
     this.ctx = null;
     this.master = null;
@@ -195,10 +284,15 @@ export class SynthClock implements PlaybackClock {
   }
 
   private startScheduling() {
-    this.cursorSong = this.anchorSongTime;
-    this.cursorContext = this.anchorContextTime;
+    for (const part of this.parts.values()) this.startPart(part);
     this.schedule();
     if (this.timer === null) this.timer = setInterval(() => this.schedule(), SCHEDULER_INTERVAL_MS);
+  }
+
+  /** Points a part's cursor at the anchor, so it schedules from the current position. */
+  private startPart(part: Part) {
+    part.cursorSong = this.anchorSongTime;
+    part.cursorContext = this.anchorContextTime;
   }
 
   /** Stops the scheduler and fades out everything that is sounding or queued. */
@@ -213,40 +307,75 @@ export class SynthClock implements PlaybackClock {
     const ctx = this.ctx;
     if (!ctx || !this.playing) return;
     const horizon = ctx.currentTime + LOOKAHEAD;
-    while (this.cursorContext < horizon) {
-      const loop = this.activeLoop();
-      const segmentEnd = Math.min(this.duration, loop && this.cursorSong < loop.end ? loop.end : this.duration);
-      if (this.cursorSong >= segmentEnd) return;
-      const windowEnd = Math.min(segmentEnd, this.cursorSong + (horizon - this.cursorContext) * this.playbackRate);
-      this.scheduleWindow(ctx, this.cursorSong, windowEnd);
-      this.cursorContext += (windowEnd - this.cursorSong) / this.playbackRate;
-      this.cursorSong = windowEnd;
-      if (loop && windowEnd >= loop.end && segmentEnd === loop.end) this.cursorSong = loop.start;
+    for (const part of this.parts.values()) {
+      if (part.volume <= 0) continue;
+      while (part.cursorContext < horizon) {
+        const loop = this.activeLoop();
+        const segmentEnd = Math.min(this.duration, loop && part.cursorSong < loop.end ? loop.end : this.duration);
+        if (part.cursorSong >= segmentEnd) break;
+        const windowEnd = Math.min(segmentEnd, part.cursorSong + (horizon - part.cursorContext) * this.playbackRate);
+        this.scheduleWindow(ctx, part, part.cursorSong, windowEnd);
+        part.cursorContext += (windowEnd - part.cursorSong) / this.playbackRate;
+        part.cursorSong = windowEnd;
+        if (loop && windowEnd >= loop.end && segmentEnd === loop.end) part.cursorSong = loop.start;
+      }
     }
   }
 
-  private scheduleWindow(ctx: AudioContext, from: number, to: number) {
+  private scheduleWindow(ctx: AudioContext, part: Part, from: number, to: number) {
+    const notes = part.notes;
     // First note with startTime >= from (notes are sorted).
     let low = 0;
-    let high = this.notes.length;
+    let high = notes.length;
     while (low < high) {
       const mid = (low + high) >> 1;
-      if (this.notes[mid].startTime < from) low = mid + 1;
+      if (notes[mid].startTime < from) low = mid + 1;
       else high = mid;
     }
-    for (let i = low; i < this.notes.length && this.notes[i].startTime < to; i++) {
-      const note = this.notes[i];
-      const when = this.cursorContext + (note.startTime - from) / this.playbackRate;
+    for (let i = low; i < notes.length && notes[i].startTime < to; i++) {
+      const note = notes[i];
+      const when = part.cursorContext + (note.startTime - from) / this.playbackRate;
       if (when < ctx.currentTime - 0.03) continue; // already in the past (for example, after a throttled timer)
-      this.playNote(ctx, note, when);
+      this.playNote(ctx, part, note, when);
     }
+  }
+
+  /** The part's gain node, made on first use after the context is created. */
+  private partGain(ctx: AudioContext, part: Part) {
+    if (part.gain) return part.gain;
+    const gain = ctx.createGain();
+    gain.gain.value = part.volume;
+    if (this.master) gain.connect(this.master);
+    part.gain = gain;
+    return gain;
+  }
+
+  /** Moves a part's gain to its volume: a short ramp, or at once when it was silent (nothing is sounding). */
+  private setPartGain(part: Part, immediate: boolean) {
+    const ctx = this.ctx;
+    if (!ctx || !part.gain) return;
+    const param = part.gain.gain;
+    const now = ctx.currentTime;
+    const level = param.value;
+    param.cancelScheduledValues(now);
+    param.setValueAtTime(level, now);
+    if (immediate) param.setValueAtTime(part.volume, now);
+    else param.linearRampToValueAtTime(part.volume, now + VOLUME_RAMP_TIME);
+  }
+
+  /** Disconnects a removed part's gain once its voices have faded out. */
+  private releaseGain(part: Part) {
+    const gain = part.gain;
+    part.gain = null;
+    if (gain) setTimeout(() => gain.disconnect(), 100);
   }
 
   /** A plucked string: oscillator → lowpass → exponential decay. Speed changes length, never pitch. */
-  private playNote(ctx: AudioContext, note: TabNote, when: number) {
+  private playNote(ctx: AudioContext, part: Part, note: TabNote, when: number) {
     if (!this.master) return;
+    const style = VOICE_STYLES[part.instrument];
     const frequency = 440 * 2 ** ((note.pitch - 69) / 12);
-    const length = Math.max(0.12, note.duration / this.playbackRate);
+    const length = Math.max(0.12, (note.duration * style.decay) / this.playbackRate);
 
     const osc = ctx.createOscillator();
     osc.type = "sawtooth";
@@ -254,11 +383,11 @@ export class SynthClock implements PlaybackClock {
 
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    // Bass is a little darker. The cutoff closes as the string rings out.
-    const brightness = note.pitch < 48 ? 4 : 8;
-    const cutoff = Math.min(8000, Math.max(300, frequency * brightness));
+    // Low notes are a little darker, and bass darker still. The cutoff closes as the string rings out.
+    const brightness = note.pitch < 48 ? style.lowBrightness : style.brightness;
+    const cutoff = Math.min(8000, Math.max(style.minCutoff, frequency * brightness));
     filter.frequency.setValueAtTime(cutoff, when);
-    filter.frequency.exponentialRampToValueAtTime(Math.max(200, cutoff / 4), when + length);
+    filter.frequency.exponentialRampToValueAtTime(Math.min(cutoff, Math.max(style.endFloor, cutoff / 4)), when + length);
 
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(0.0001, when);
@@ -267,11 +396,11 @@ export class SynthClock implements PlaybackClock {
 
     osc.connect(filter);
     filter.connect(gain);
-    gain.connect(this.master);
+    gain.connect(this.partGain(ctx, part));
     osc.start(when);
     osc.stop(when + length + 0.05);
 
-    const voice = { osc, gain, when };
+    const voice = { part, osc, gain, when };
     this.voices.add(voice);
     osc.onended = () => {
       this.voices.delete(voice);
@@ -281,11 +410,13 @@ export class SynthClock implements PlaybackClock {
     };
   }
 
-  private stopVoices() {
+  /** Fades out every voice, or only those of one part. */
+  private stopVoices(only?: Part) {
     const ctx = this.ctx;
     if (!ctx) return;
     const now = ctx.currentTime;
-    for (const { osc, gain, when } of this.voices) {
+    for (const { part, osc, gain, when } of this.voices) {
+      if (only && part !== only) continue;
       if (when >= now) {
         // Not sounding yet: cancel outright, no fade needed.
         osc.stop(now);
@@ -302,4 +433,8 @@ export class SynthClock implements PlaybackClock {
   private emit() {
     for (const listener of this.listeners) listener();
   }
+}
+
+function sortNotes(notes: TabNote[]) {
+  return [...notes].sort((a, b) => a.startTime - b.startTime);
 }
