@@ -4631,8 +4631,13 @@ svg {
   border-color: var(--color-primary);
 }
 
+/* After the pressed rules, so a disabled control never looks active. */
 .mix-mute:disabled,
 .mix-mute-mine:disabled {
+  color: var(--color-muted);
+  background: transparent;
+  border-color: var(--color-border);
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
