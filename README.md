@@ -48,7 +48,7 @@ progression: a strip of chord diagrams, then the bars with the playing chord hig
 | Real (works as in the app) | Mocked |
 | --- | --- |
 | All screens, navigation, light/dark/system appearance | Sign-in: every option is a fake "Continue" |
-| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits live in memory and reset on reload |
+| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits and library changes are saved in this browser; Settings has "Reset demo data" |
 | Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
 | Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that stays "Processing" |
 | Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |

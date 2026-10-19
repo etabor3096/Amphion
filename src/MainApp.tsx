@@ -1,3 +1,4 @@
+import { resetDemoData, usePersistentState } from "./usePersistentState";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
@@ -21,6 +22,29 @@ interface LibraryFilters {
   customStart: string;
   customEnd: string;
 }
+
+const isObject = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null && !Array.isArray(value);
+const isStringArray = (value: unknown) => Array.isArray(value) && value.every((item) => typeof item === "string");
+const isOneOf = (...options: string[]) => (value: unknown) => typeof value === "string" && options.includes(value);
+const isBoolean = (value: unknown) => typeof value === "boolean";
+const isString = (value: unknown) => typeof value === "string";
+const isSongList = (value: unknown) =>
+  Array.isArray(value) &&
+  value.every(
+    (item) =>
+      isObject(item) &&
+      typeof item.id === "number" &&
+      typeof item.title === "string" &&
+      typeof item.added === "string" &&
+      typeof item.addedAt === "number" &&
+      typeof item.length === "string" &&
+      isOneOf("processing", "ready", "failed")(item.status) &&
+      typeof item.art === "number" &&
+      typeof item.audioOnThisDevice === "boolean" &&
+      (item.artist === undefined || typeof item.artist === "string") &&
+      (item.folder === undefined || typeof item.folder === "string") &&
+      (item.photo === undefined || typeof item.photo === "string"),
+  );
 
 interface MainAppProps {
   theme: Theme;
@@ -317,14 +341,14 @@ function FolderChip({
 
 export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProps) {
   const [tab, setTab] = useState<Tab>("library");
-  const [songs, setSongs] = useState(INITIAL_SONGS);
+  const [songs, setSongs] = usePersistentState<Song[]>("songs", INITIAL_SONGS, isSongList);
   const [query, setQuery] = useState("");
   const [revealedSong, setRevealedSong] = useState<number | null>(null);
   const [menuSong, setMenuSong] = useState<Song | null>(null);
   const [dialog, setDialog] = useState<"rename" | "delete" | null>(null);
   const [renameValue, setRenameValue] = useState("");
-  const [instrument, setInstrument] = useState<"guitar" | "bass">("guitar");
-  const [appearance, setAppearance] = useState<"system" | Theme>("system");
+  const [instrument, setInstrument] = usePersistentState<"guitar" | "bass">("instrument", "guitar", isOneOf("guitar", "bass"));
+  const [appearance, setAppearance] = usePersistentState<"system" | Theme>("appearance", "system", isOneOf("system", "light", "dark"));
   const [addStep, setAddStep] = useState<"choose" | "mic-permission" | "record" | "review">("choose");
   const [recording, setRecording] = useState(false);
   const [microphonePermission, setMicrophonePermission] = useState<"unknown" | "allowed" | "denied">("unknown");
@@ -332,10 +356,11 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
   const [songName, setSongName] = useState("");
   const [artistName, setArtistName] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
   const [settingsView, setSettingsView] = useState<"main" | "account" | "password" | "email">("main");
-  const [accountMethod, setAccountMethod] = useState<AccountMethod>("apple");
-  const [displayName, setDisplayName] = useState("Elijah");
+  const [accountMethod, setAccountMethod] = usePersistentState<AccountMethod>("accountMethod", "apple", isOneOf("apple", "google", "email"));
+  const [displayName, setDisplayName] = usePersistentState("displayName", "Elijah", isString);
   const [passwords, setPasswords] = useState({ current: "", next: "", confirm: "" });
   const [visiblePasswords, setVisiblePasswords] = useState({ current: false, next: false, confirm: false });
   const [newEmail, setNewEmail] = useState("");
@@ -346,17 +371,23 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
   const [providerConfirmed, setProviderConfirmed] = useState(false);
   const [uploadError, setUploadError] = useState<"type" | "length" | null>(null);
   const [notificationsPrompt, setNotificationsPrompt] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [hasAskedForNotifications, setHasAskedForNotifications] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = usePersistentState("notificationsEnabled", false, isBoolean);
+  const [hasAskedForNotifications, setHasAskedForNotifications] = usePersistentState("hasAskedForNotifications", false, isBoolean);
   const [activeSongId, setActiveSongId] = useState<number | null>(null);
   const [discardRecordingOpen, setDiscardRecordingOpen] = useState(false);
-  const [folders, setFolders] = useState<string[]>(["Worship Set", "Practice This Week"]);
+  const [folders, setFolders] = usePersistentState<string[]>("folders", ["Worship Set", "Practice This Week"], isStringArray);
   const [selectedFolder, setSelectedFolder] = useState("");
   const [folderDialogOpen, setFolderDialogOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [activeFolder, setActiveFolder] = useState("all");
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
-  const [filters, setFilters] = useState<LibraryFilters>({ sort: "newest", date: "any", artists: [], customStart: "", customEnd: "" });
+  const [sort, setSort] = usePersistentState<SortOption>("sort", "newest", isOneOf("newest", "oldest", "song", "artist"));
+  const [otherFilters, setOtherFilters] = useState({ date: "any" as DateOption, artists: [] as string[], customStart: "", customEnd: "" });
+  const filters: LibraryFilters = { ...otherFilters, sort };
+  const setFilters = ({ sort: nextSort, ...rest }: LibraryFilters) => {
+    setSort(nextSort);
+    setOtherFilters(rest);
+  };
   const [draftFilters, setDraftFilters] = useState<LibraryFilters>(filters);
   const [moveFolderOpen, setMoveFolderOpen] = useState(false);
   const [folderActionFolder, setFolderActionFolder] = useState<string | null>(null);
@@ -425,6 +456,12 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
     setAppearance(value);
     onThemeChange(value === "system" ? systemTheme() : value);
   };
+
+  // Apply the saved appearance once on mount (App starts from the device setting).
+  useEffect(() => {
+    if (appearance !== "system") onThemeChange(appearance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // "System" follows the device's light/dark setting, including changes while the app is open.
   useEffect(() => {
@@ -918,6 +955,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
                   <div><span>App version</span><span>1.0.0</span></div>
                 </div>
               </section>
+              <button className="settings-card reset-demo-row" type="button" onClick={() => setResetOpen(true)}>Reset demo data</button>
             </div>
           </section>
         )}
@@ -1268,6 +1306,19 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {resetOpen && (
+        <div className="modal-backdrop" role="presentation">
+          <div className="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="reset-demo-title">
+            <h2 id="reset-demo-title">Reset demo data?</h2>
+            <p>This puts the songs, tabs, and settings back the way the demo started. Your edits will be lost.</p>
+            <div>
+              <button className="dialog-cancel" type="button" onClick={() => setResetOpen(false)}>Cancel</button>
+              <button className="dialog-delete" type="button" onClick={resetDemoData}>Reset</button>
+            </div>
           </div>
         </div>
       )}

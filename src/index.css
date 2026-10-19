@@ -2171,6 +2171,17 @@ svg {
   line-height: 1.4;
 }
 
+.settings-card.reset-demo-row {
+  width: 100%;
+  color: var(--color-error);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  border-color: color-mix(in srgb, var(--color-error) 30%, var(--color-border));
+  cursor: pointer;
+}
+
 .notification-setting {
   display: flex;
   align-items: center;
