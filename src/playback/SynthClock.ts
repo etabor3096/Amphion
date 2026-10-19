@@ -218,6 +218,7 @@ export class SynthClock implements PlaybackClock {
       const segmentEnd = Math.min(this.duration, loop && this.cursorSong < loop.end ? loop.end : this.duration);
       if (this.cursorSong >= segmentEnd) return;
       const windowEnd = Math.min(segmentEnd, this.cursorSong + (horizon - this.cursorContext) * this.playbackRate);
+      if (windowEnd <= this.cursorSong) break; // a sliver lost to rounding can't advance the cursor; the next tick will
       this.scheduleWindow(ctx, this.cursorSong, windowEnd);
       this.cursorContext += (windowEnd - this.cursorSong) / this.playbackRate;
       this.cursorSong = windowEnd;
