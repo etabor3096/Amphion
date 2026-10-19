@@ -271,3 +271,9 @@ const SPECS: SongSpec[] = [
 ];
 
 export const INITIAL_TRANSCRIPTIONS: Transcription[] = SPECS.map(buildTranscription);
+
+/** A tab for a song added in the demo: one of the ready-song samples with guitar, bass and a few unsure notes, under the new id. */
+export function createDemoTranscription(songId: number): Transcription {
+  const samples = SPECS.filter((spec) => spec.bass && spec.unsureGuitar);
+  return buildTranscription({ ...samples[songId % samples.length], songId });
+}

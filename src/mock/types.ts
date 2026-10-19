@@ -21,6 +21,8 @@ export interface LibrarySong {
   /** Audio length as m:ss. */
   length: string;
   status: SongStatus;
+  /** When a processing song will turn Ready (epoch ms). Songs without it stay as they are. */
+  readyAt?: number;
   /** Which generated default artwork to show (1-4). */
   art: number;
   photo?: string;

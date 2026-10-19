@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
+import ReadyBanner from "./ReadyBanner";
 import SongScreen from "./SongScreen";
 import { INITIAL_SONGS } from "./mock/songs";
-import { removeTranscription, useAllTranscriptions } from "./mock/store";
+import { addTranscription, removeTranscription, useAllTranscriptions } from "./mock/store";
+import { createDemoTranscription } from "./mock/transcriptions";
 import type { LibrarySong, Transcription } from "./mock/types";
 import { toCheckLabel } from "./tab/edits";
 import { systemTheme } from "./theme";
@@ -29,6 +31,8 @@ interface MainAppProps {
 }
 
 const DAY = 24 * 60 * 60 * 1000;
+/** How long the demo takes to turn a new song into a tab. */
+const PROCESSING_MS = 8000;
 
 function Icon({ name }: { name: "library" | "folder" | "filter" | "add" | "settings" | "search" | "mic" | "mic-off" | "upload" | "more" | "alert" | "retry" | "lock" | "music" | "play" | "stop" | "chevron" | "back" | "eye" | "check" | "mail" | "bell" }) {
   const common = { viewBox: "0 0 24 24", "aria-hidden": true };
@@ -362,6 +366,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
   const [folderActionFolder, setFolderActionFolder] = useState<string | null>(null);
   const [folderAction, setFolderAction] = useState<"menu" | "rename" | "delete" | null>(null);
   const [folderRenameValue, setFolderRenameValue] = useState("");
+  const [readyBanner, setReadyBanner] = useState<{ songId: number; title: string } | null>(null);
   const uploadInputRef = useRef<HTMLInputElement>(null);
 
   const artists = useMemo(
@@ -418,6 +423,27 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
     return () => window.clearTimeout(timer);
   }, [toast]);
 
+  // Turns processing songs Ready once their readyAt passes. Scheduled from readyAt so it survives a reload.
+  useEffect(() => {
+    const next = Math.min(...songs.filter((song) => song.status === "processing" && song.readyAt !== undefined).map((song) => song.readyAt as number));
+    if (!Number.isFinite(next)) return;
+    const timer = window.setTimeout(() => {
+      const now = Date.now();
+      const due = songs.filter((song) => song.status === "processing" && song.readyAt !== undefined && song.readyAt <= now);
+      for (const song of due) {
+        if (!transcriptions.has(song.id)) addTranscription(createDemoTranscription(song.id));
+      }
+      const dueIds = new Set(due.map((song) => song.id));
+      // The demo tab is a fixed-length sample, so the card shows its length rather than the recording's.
+      setSongs((current) => current.map((song) => dueIds.has(song.id) ? { ...song, status: "ready", readyAt: undefined, length: formatTime(Math.round(createDemoTranscription(song.id).duration)) } : song));
+      const last = due[due.length - 1];
+      if (!last) return;
+      if (notificationsEnabled) setReadyBanner({ songId: last.id, title: last.title });
+      else setToast(`Your tab for '${last.title}' is ready`);
+    }, Math.max(0, next - Date.now()));
+    return () => window.clearTimeout(timer);
+  }, [songs, transcriptions, notificationsEnabled]);
+
   const formatTime = (seconds: number) =>
     `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 
@@ -458,6 +484,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
         addedAt: Date.now(),
         length: formatTime(Math.max(1, recordSeconds || 132)),
         status: "processing",
+        readyAt: Date.now() + PROCESSING_MS,
         art: ((current.length + 1) % 4) + 1,
         folder: selectedFolder || undefined,
         audioOnThisDevice: true,
@@ -608,6 +635,18 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
             setActiveSongId(null);
           }}
         />
+        {readyBanner && (
+          <ReadyBanner
+            title={readyBanner.title}
+            onOpen={() => {
+              window.scrollTo({ top: 0 });
+              setActiveSongId(readyBanner.songId);
+              setReadyBanner(null);
+            }}
+            onDismiss={() => setReadyBanner(null)}
+          />
+        )}
+        {toast && <div className="success-toast" role="status"><Icon name="check" /> {toast}</div>}
       </main>
     );
   }
@@ -709,7 +748,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
                     revealed={revealedSong === song.id}
                     onReveal={() => setRevealedSong(revealedSong === song.id ? null : song.id)}
                     onAction={(action) => openAction(song, action)}
-                    onRetry={() => setSongs((current) => current.map((item) => item.id === song.id ? { ...item, status: "processing" } : item))}
+                    onRetry={() => setSongs((current) => current.map((item) => item.id === song.id ? { ...item, status: "processing", readyAt: Date.now() + PROCESSING_MS } : item))}
                     onOpen={song.status === "ready" && transcriptions.has(song.id) ? () => {
                       window.scrollTo({ top: 0 });
                       setActiveSongId(song.id);
@@ -1363,6 +1402,17 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
         </div>
       )}
 
+      {readyBanner && (
+        <ReadyBanner
+          title={readyBanner.title}
+          onOpen={() => {
+            window.scrollTo({ top: 0 });
+            setActiveSongId(readyBanner.songId);
+            setReadyBanner(null);
+          }}
+          onDismiss={() => setReadyBanner(null)}
+        />
+      )}
       {toast && <div className="success-toast" role="status"><Icon name="check" /> {toast}</div>}
     </main>
   );

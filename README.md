@@ -35,7 +35,7 @@ Then open http://localhost:5173. Needs Node 20.19+ (22 or newer recommended).
 | Old Mill Road | Everything confident: no "?" markers at all |
 | First Full Song | "No bass part found", tuning reported as an offset |
 | Lantern Light | Audio is on another iPhone: tab only, no synced playback; tuning "Unknown" |
-| Sunday Morning Idea / Phone Recording 04 | Processing and Failed states |
+| Sunday Morning Idea / Phone Recording 04 | Processing and Failed states (tap Retry on Phone Recording 04 and it finishes) |
 
 On a song: press play, change speed, tap **A-B** once at the start bar and again at the end bar,
 tap a note or bar number to jump, scroll away during playback to get **Back to playhead**,
@@ -50,7 +50,7 @@ progression: a strip of chord diagrams, then the bars with the playing chord hig
 | All screens, navigation, light/dark/system appearance | Sign-in: every option is a fake "Continue" |
 | Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits live in memory and reset on reload |
 | Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
-| Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that stays "Processing" |
+| Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that shows "Processing" for about 8 seconds, then turns Ready with a sample tab and a "Your tab is ready" banner or toast (the tab is not made from your audio) |
 | Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |
 
 ## Where things live
