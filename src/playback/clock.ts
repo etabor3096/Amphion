@@ -1,4 +1,4 @@
-import type { TabNote } from "../mock/types";
+import type { Instrument, TabNote } from "../mock/types";
 
 export interface LoopRange {
   start: number;
@@ -38,6 +38,8 @@ export interface PlaybackClock {
   setLoop(loop: LoopRange | null): void;
   /** For clocks that synthesize the part: the notes to play. Others ignore it. */
   setAudibleNotes?(notes: TabNote[]): void;
+  /** For clocks that synthesize the song: which parts to play and how loud (volume 0 to 1). */
+  setAudibleParts?(parts: ReadonlyArray<{ instrument: Instrument; notes: TabNote[]; volume: number }>): void;
   /** Notifies on discrete changes (play, pause, seek, speed, loop, reaching the end), not every frame. */
   subscribe(listener: () => void): () => void;
 }

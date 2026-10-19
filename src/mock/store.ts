@@ -137,3 +137,8 @@ export function useAllTranscriptions(): ReadonlyMap<number, Transcription> {
 export function useUndoCount(songId: number) {
   return useSyncExternalStore(subscribe, () => undoStacks.get(songId)?.length ?? 0);
 }
+
+export function addTranscription(transcription: Transcription) {
+  transcriptions = new Map(transcriptions).set(transcription.songId, transcription);
+  emit();
+}

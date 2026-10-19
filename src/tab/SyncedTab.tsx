@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { editTranscription, undoLastEdit, useUndoCount } from "../mock/store";
-import type { Instrument, Transcription } from "../mock/types";
+import type { Instrument, TabNote, Transcription } from "../mock/types";
 import type { PlaybackClock } from "../playback/clock";
 import { usePlaybackFrame, usePlaybackState } from "../playback/usePlayback";
 import ChordView from "./ChordView";
@@ -12,6 +12,11 @@ import TabView from "./TabView";
 import { useAutoFollow } from "./useAutoFollow";
 
 type SongView = "tab" | "chords";
+
+/** Volume (0 to 1) of each part Amphion plays. */
+export type Mix = Record<Instrument, number>;
+
+const defaultMix = (shown: Instrument): Mix => ({ guitar: shown === "guitar" ? 1 : 0, bass: shown === "bass" ? 1 : 0 });
 
 interface SyncedTabProps {
   songId: number;
@@ -46,6 +51,8 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
   const [pendingLoopStart, setPendingLoopStart] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   const [hintDismissed, setHintDismissed] = useState(hintDismissedThisSession);
+  // null = the default mix (the shown instrument at full volume); set once the user changes it.
+  const [mixOverride, setMixOverride] = useState<Mix | null>(null);
   const { playing, rate, loop } = usePlaybackState(clock);
   const undoCount = useUndoCount(songId);
   const follow = useAutoFollow(playing && audioAvailable);
@@ -54,7 +61,9 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
   const rows = useMemo(() => getRows(bars), [bars]);
   const tab = transcription[instrument];
   const notes = tab?.notes ?? [];
-  const tabNotes = tab?.notes;
+  const guitarNotes = transcription.guitar?.notes;
+  const bassNotes = transcription.bass?.notes;
+  const mix = mixOverride ?? defaultMix(instrument);
   const editingNote = editingNoteId ? notes.find((note) => note.id === editingNoteId) : undefined;
   const unsureChordCount = transcription.chords.filter(isUnsure).length;
   const unsureCount = notes.filter(isUnsure).length + unsureChordCount;
@@ -67,10 +76,18 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
     if (audioAvailable) follow.step(rowIndexAt(rows, songTime));
   });
 
-  // The synth clock plays whichever part is shown; no part means silence.
+  // The synth clock plays the parts in the mix; a clock that can only play one part gets the loudest.
   useEffect(() => {
-    clock.setAudibleNotes?.(tabNotes ?? []);
-  }, [clock, tabNotes]);
+    const parts: { instrument: Instrument; notes: TabNote[]; volume: number }[] = [];
+    if (guitarNotes) parts.push({ instrument: "guitar", notes: guitarNotes, volume: mix.guitar });
+    if (bassNotes) parts.push({ instrument: "bass", notes: bassNotes, volume: mix.bass });
+    if (clock.setAudibleParts) {
+      clock.setAudibleParts(parts);
+      return;
+    }
+    const loudest = parts.reduce<(typeof parts)[number] | null>((best, part) => (part.volume > (best?.volume ?? 0) ? part : best), null);
+    clock.setAudibleNotes?.(loudest?.notes ?? []);
+  }, [clock, guitarNotes, bassNotes, mix.guitar, mix.bass]);
 
   // Keep the screen awake while a song plays (US-12), where the browser supports it.
   useEffect(() => {
@@ -249,6 +266,11 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
             rate={rate}
             loop={loop}
             pendingLoopStart={pendingLoopStart}
+            instrument={instrument}
+            mix={mix}
+            hasBass={Boolean(bassNotes)}
+            onMixChange={setMixOverride}
+            onResetMix={() => setMixOverride(null)}
             onToggleLoop={toggleLoop}
             onScrub={(songTime) => {
               clock.seek(songTime);
