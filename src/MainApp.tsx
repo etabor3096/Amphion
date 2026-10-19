@@ -1,4 +1,3 @@
-import { resetDemoData, usePersistentState } from "./usePersistentState";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
@@ -10,6 +9,7 @@ import { createDemoTranscription } from "./mock/transcriptions";
 import type { LibrarySong, Transcription } from "./mock/types";
 import { toCheckLabel } from "./tab/edits";
 import { systemTheme } from "./theme";
+import { resetDemoData, usePersistentState } from "./usePersistentState";
 
 type Tab = "library" | "add" | "settings";
 type Song = LibrarySong;

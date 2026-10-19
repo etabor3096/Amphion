@@ -1,3 +1,4 @@
+import "../demoStorage";
 import { useSyncExternalStore } from "react";
 import { INITIAL_TRANSCRIPTIONS } from "./transcriptions";
 import type { Transcription } from "./types";

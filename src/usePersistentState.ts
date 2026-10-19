@@ -1,35 +1,11 @@
+import { STORAGE_PREFIX, requestDemoReset } from "./demoStorage";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
-const PREFIX = "amphion-demo:v1:";
-const RESET_PREFIX = "amphion-demo:";
 const WRITE_DELAY_MS = 250;
-
-const RESET_FLAG = "amphion-demo-reset";
 
 let warned = false;
 let resetting = false;
-
-function clearDemoKeys() {
-  const keys: string[] = [];
-  for (let i = 0; i < window.localStorage.length; i++) {
-    const name = window.localStorage.key(i);
-    if (name?.startsWith(RESET_PREFIX)) keys.push(name);
-  }
-  keys.forEach((name) => window.localStorage.removeItem(name));
-}
-
-// A reset reloads the page, and the old page's pending debounced writes (ours or the tab-edit store's)
-// can flush on pagehide after the keys were removed. Reset leaves a sessionStorage flag; the next load
-// clears the keys again here, at module load, before anything reads them. MainApp imports this module first.
-try {
-  if (window.sessionStorage.getItem(RESET_FLAG)) {
-    window.sessionStorage.removeItem(RESET_FLAG);
-    clearDemoKeys();
-  }
-} catch {
-  // Storage unavailable: nothing was saved, so there is nothing to clear.
-}
 
 function warnOnce(error: unknown) {
   if (warned) return;
@@ -39,7 +15,7 @@ function warnOnce(error: unknown) {
 
 function read<T>(key: string, initial: T, validate?: (value: unknown) => boolean): T {
   try {
-    const raw = window.localStorage.getItem(PREFIX + key);
+    const raw = window.localStorage.getItem(STORAGE_PREFIX + key);
     if (raw === null) return initial;
     const value: unknown = JSON.parse(raw);
     if (validate && !validate(value)) return initial;
@@ -52,7 +28,7 @@ function read<T>(key: string, initial: T, validate?: (value: unknown) => boolean
 function write(key: string, value: unknown) {
   if (resetting) return;
   try {
-    window.localStorage.setItem(PREFIX + key, JSON.stringify(value));
+    window.localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value));
   } catch (error) {
     warnOnce(error);
   }
@@ -103,8 +79,7 @@ export function usePersistentState<T>(key: string, initial: T, validate?: (value
 export function resetDemoData() {
   resetting = true;
   try {
-    window.sessionStorage.setItem(RESET_FLAG, "1");
-    clearDemoKeys();
+    requestDemoReset();
   } catch (error) {
     warnOnce(error);
   }
