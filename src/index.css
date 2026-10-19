@@ -4412,7 +4412,7 @@ svg {
 .compact-practice-controls {
   min-height: 84px;
   display: grid;
-  grid-template-columns: 52px minmax(90px, 1fr) auto auto;
+  grid-template-columns: 52px minmax(70px, 1fr) auto auto auto;
   align-items: center;
   gap: 10px;
 }
@@ -4471,6 +4471,101 @@ svg {
 .speed-menu button.selected {
   color: #fff;
   background: var(--color-primary);
+}
+
+.mix-sheet {
+  position: absolute;
+  z-index: 24;
+  right: -62px;
+  bottom: calc(100% + 12px);
+  width: min(300px, calc(100vw - 28px));
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  color: var(--color-text);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+}
+
+.mix-sheet p,
+.mix-sheet small {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.mix-mute-mine {
+  min-height: 48px;
+  padding: 6px 12px;
+  display: grid;
+  gap: 1px;
+  justify-items: start;
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-radius: 11px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mix-mute-mine small {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.mix-mute-mine[aria-pressed="true"] {
+  color: #fff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.mix-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.mix-row input {
+  width: 100%;
+  accent-color: var(--color-primary);
+}
+
+.mix-row small {
+  grid-column: 2 / -1;
+}
+
+.mix-row.disabled {
+  opacity: 0.6;
+}
+
+.mix-mute {
+  min-height: 36px;
+  min-width: 56px;
+  padding: 0 8px;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-family: var(--font-notation);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mix-mute[aria-pressed="true"] {
+  color: #fff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.mix-mute:disabled,
+.mix-mute-mine:disabled {
+  cursor: not-allowed;
 }
 
 .back-to-playhead {
@@ -5485,7 +5580,7 @@ svg {
   }
 
   .compact-practice-controls {
-    grid-template-columns: 48px minmax(78px, 1fr) auto auto;
+    grid-template-columns: 48px minmax(52px, 1fr) auto auto auto;
     gap: 7px;
   }
 

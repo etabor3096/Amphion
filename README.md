@@ -40,7 +40,8 @@ Then open http://localhost:5173. Needs Node 20.19+ (22 or newer recommended).
 On a song: press play, change speed, tap **A-B** once at the start bar and again at the end bar,
 tap a note or bar number to jump, scroll away during playback to get **Back to playhead**,
 press and hold (or right-click) a note to edit it, tap an empty spot on a string for **+ Add note**,
-and tap a chord name for its diagram. Pick **Chords** instead of **Tab** to see the song as its chord
+tap a chord name for its diagram, and open **Mix** to hear the other part: **Mute my part** silences
+the instrument you are playing, or set a volume for each. Pick **Chords** instead of **Tab** to see the song as its chord
 progression: a strip of chord diagrams, then the bars with the playing chord highlighted. **Undo** reverts tab edits.
 
 ## Real vs. mocked
