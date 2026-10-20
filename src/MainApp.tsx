@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
 import SongScreen from "./SongScreen";
-import { INITIAL_SONGS } from "./mock/songs";
+import { INITIAL_SONGS, useAddedLabel } from "./mock/songs";
 import { removeTranscription, useAllTranscriptions } from "./mock/store";
 import type { LibrarySong, Transcription } from "./mock/types";
 import { toCheckLabel } from "./tab/edits";
@@ -160,6 +160,7 @@ function SongCard({
   onRetry: () => void;
   onOpen?: () => void;
 }) {
+  const added = useAddedLabel(song.addedAt);
   const pointerStart = useRef(0);
   const longPressTimer = useRef<number | null>(null);
 
@@ -210,8 +211,8 @@ function SongCard({
             <div>
               <h3>{song.title}</h3>
               {song.artist && <p className="song-artist">{song.artist}</p>}
-              <p aria-label={`Added ${song.added}, length ${song.length}${song.folder ? `, folder ${song.folder}` : ""}`}>
-                {song.added} <span aria-hidden="true">·</span> <span className="sr-only">Length </span>{song.length}
+              <p aria-label={`Added ${added}, length ${song.length}${song.folder ? `, folder ${song.folder}` : ""}`}>
+                {added} <span aria-hidden="true">·</span> <span className="sr-only">Length </span>{song.length}
                 {song.folder && <span className="song-folder-label"><Icon name="folder" /> {song.folder}</span>}
               </p>
             </div>
@@ -454,7 +455,6 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
         id: Date.now(),
         title,
         artist: artistName.trim() || undefined,
-        added: "Today",
         addedAt: Date.now(),
         length: formatTime(Math.max(1, recordSeconds || 132)),
         status: "processing",
