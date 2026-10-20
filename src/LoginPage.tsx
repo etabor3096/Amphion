@@ -6,7 +6,8 @@ export type Theme = "light" | "dark";
 interface LoginPageProps {
   theme: Theme;
   onThemeChange: (theme: Theme) => void;
-  onSignIn: () => void;
+  /** `displayName` is only passed when the user just created an account. */
+  onSignIn: (displayName?: string) => void;
 }
 
 function AppleIcon() {
@@ -38,6 +39,14 @@ function EyeIcon({ hidden }: { hidden: boolean }) {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m5 12 4 4L19 6" />
+    </svg>
+  );
+}
+
 function ThemeIcon({ theme }: { theme: Theme }) {
   return theme === "light" ? (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -53,12 +62,20 @@ function ThemeIcon({ theme }: { theme: Theme }) {
 
 export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [view, setView] = useState<"signin" | "forgot" | "reset-sent">("signin");
+  const [view, setView] = useState<"signin" | "signup" | "forgot" | "reset-sent">("signin");
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   // Demo: there is no backend, so every sign-in option is a fake "Continue" into the Library.
   const submitSignIn = () => onSignIn();
+  // Same rules as Settings > Change password.
+  const passwordHasLength = password.length >= 8;
+  const passwordHasNumber = /\d/.test(password);
+  const switchView = (next: typeof view) => {
+    setShowPassword(false);
+    setView(next);
+  };
 
   return (
     <main className="login-page" data-theme={theme}>
@@ -80,11 +97,15 @@ export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageP
       <section className="login-shell" aria-labelledby="login-title">
         <div className="login-intro">
           <span className="eyebrow">Your music, made playable</span>
-          <h1 id="login-title">{view === "signin" ? "Welcome back" : view === "forgot" ? "Reset your password" : "Check your inbox"}</h1>
+          <h1 id="login-title">
+            {view === "signin" ? "Welcome back" : view === "signup" ? "Create your account" : view === "forgot" ? "Reset your password" : "Check your inbox"}
+          </h1>
           <p>
             {view === "signin"
               ? "Sign in to keep learning songs by ear, one note at a time."
-              : view === "forgot"
+              : view === "signup"
+                ? "Save every song you transcribe to your own library."
+                : view === "forgot"
                 ? "Enter the email you use for Amphion."
                 : "Check your inbox for a reset link."}
           </p>
@@ -100,11 +121,11 @@ export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageP
           >
             <p className="demo-signin-note">Demo mode: no account needed. Any option below continues to your Library.</p>
             <div className="social-buttons social-buttons-first">
-              <button className="button button-secondary" type="button" onClick={onSignIn}>
+              <button className="button button-secondary" type="button" onClick={() => onSignIn()}>
                 <AppleIcon />
                 Continue with Apple
               </button>
-              <button className="button button-secondary" type="button" onClick={onSignIn}>
+              <button className="button button-secondary" type="button" onClick={() => onSignIn()}>
                 <GoogleIcon />
                 Continue with Google
               </button>
@@ -120,7 +141,7 @@ export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageP
             <label className="field">
               <span className="field-label-row">
                 <span>Password</span>
-                <button className="text-button" type="button" onClick={() => setView("forgot")}>Forgot password?</button>
+                <button className="text-button" type="button" onClick={() => switchView("forgot")}>Forgot password?</button>
               </span>
               <span className="password-field">
                 <input type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder="Enter your password" value={password} onChange={(event) => setPassword(event.target.value)} />
@@ -138,7 +159,67 @@ export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageP
             <button className="button button-primary" type="submit">Continue</button>
 
             <p className="signup-copy">
-              New to Amphion? <button className="text-button" type="button" onClick={onSignIn}>Create an account</button>
+              New to Amphion? <button className="text-button" type="button" onClick={() => switchView("signup")}>Create an account</button>
+            </p>
+          </form>
+        ) : view === "signup" ? (
+          <form
+            className="login-card"
+            onSubmit={(event) => {
+              event.preventDefault();
+              onSignIn(displayName.trim());
+            }}
+          >
+            <p className="demo-signin-note">Demo mode: nothing is saved to a server. Any option below continues to your Library.</p>
+            <div className="social-buttons social-buttons-first">
+              <button className="button button-secondary" type="button" onClick={() => onSignIn()}>
+                <AppleIcon />
+                Continue with Apple
+              </button>
+              <button className="button button-secondary" type="button" onClick={() => onSignIn()}>
+                <GoogleIcon />
+                Continue with Google
+              </button>
+            </div>
+
+            <div className="divider"><span>or use email</span></div>
+
+            <label className="field">
+              <span>Display name</span>
+              <input required type="text" autoComplete="nickname" placeholder="What should we call you?" value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
+            </label>
+
+            <label className="field">
+              <span>Email</span>
+              <input required type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(event) => setEmail(event.target.value)} />
+            </label>
+
+            <label className="field">
+              <span>Password</span>
+              <span className="password-field">
+                <input required type={showPassword ? "text" : "password"} autoComplete="new-password" placeholder="Create a password" value={password} onChange={(event) => setPassword(event.target.value)} />
+                <button
+                  className="password-toggle"
+                  type="button"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <EyeIcon hidden={showPassword} />
+                </button>
+              </span>
+            </label>
+
+            <div className="password-rules" aria-live="polite">
+              <span className={passwordHasLength ? "valid" : ""}><CheckIcon /> At least 8 characters</span>
+              <span className={passwordHasNumber ? "valid" : ""}><CheckIcon /> Includes a number</span>
+            </div>
+
+            <button className="button button-primary" type="submit" disabled={!passwordHasLength || !passwordHasNumber}>Create account</button>
+
+            <p className="signup-terms">By creating an account, you agree to Amphion's <strong>Terms of Use</strong>.</p>
+
+            <p className="signup-copy">
+              Already have an account? <button className="text-button" type="button" onClick={() => switchView("signin")}>Sign in</button>
             </p>
           </form>
         ) : view === "forgot" ? (
@@ -154,13 +235,13 @@ export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageP
               <input required type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(event) => setEmail(event.target.value)} />
             </label>
             <button className="button button-primary" type="submit">Send reset link</button>
-            <button className="login-back-button" type="button" onClick={() => setView("signin")}>Back to sign in</button>
+            <button className="login-back-button" type="button" onClick={() => switchView("signin")}>Back to sign in</button>
           </form>
         ) : (
           <div className="login-card reset-card reset-confirmation">
             <span className="reset-mail-icon" aria-hidden="true">✓</span>
             <p>We sent a reset link to <strong>{email}</strong>.</p>
-            <button className="button button-primary" type="button" onClick={() => setView("signin")}>Back to sign in</button>
+            <button className="button button-primary" type="button" onClick={() => switchView("signin")}>Back to sign in</button>
           </div>
         )}
       </section>

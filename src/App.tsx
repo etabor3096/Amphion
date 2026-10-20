@@ -18,6 +18,7 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(systemTheme);
   const [signedIn, setSignedIn] = useState(alreadySignedIn);
   const [showSplash, setShowSplash] = useState(!alreadySignedIn);
+  const [newAccountName, setNewAccountName] = useState<string>();
 
   if (showStyleGuide) return <StyleGuide />;
 
@@ -29,6 +30,7 @@ export default function App() {
       <MainApp
         theme={theme}
         onThemeChange={setTheme}
+        newAccountName={newAccountName}
         onSignOut={() => {
           window.history.replaceState(null, "", window.location.pathname + window.location.search);
           setSignedIn(false);
@@ -40,8 +42,9 @@ export default function App() {
       <LoginPage
         theme={theme}
         onThemeChange={setTheme}
-        onSignIn={() => {
+        onSignIn={(displayName) => {
           window.history.replaceState(null, "", "#library");
+          setNewAccountName(displayName);
           setSignedIn(true);
         }}
       />

@@ -478,6 +478,32 @@ svg {
   line-height: 20px;
 }
 
+.signup-terms {
+  margin: -5px 0 0;
+  color: var(--color-muted);
+  text-align: center;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.signup-terms strong {
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.login-page .password-rules {
+  margin-top: -7px;
+}
+
+.login-page .password-rules svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .login-error {
   padding: 12px 14px;
   display: flex;
