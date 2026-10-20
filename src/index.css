@@ -6058,6 +6058,18 @@ svg {
   line-height: 1.4;
 }
 
+.account-deleted-note {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 /* Chords view: the progression in the tab's own two-bar rows. */
 .song-view-switch {
   margin-bottom: 10px;

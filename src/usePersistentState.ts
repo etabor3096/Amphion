@@ -1,4 +1,4 @@
-import { STORAGE_PREFIX, requestDemoReset } from "./demoStorage";
+import { STORAGE_PREFIX, requestAccountDeletion, requestDemoReset } from "./demoStorage";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
@@ -83,5 +83,20 @@ export function resetDemoData() {
   } catch (error) {
     warnOnce(error);
   }
+  window.location.reload();
+}
+
+/**
+ * Deletes the demo account (US-15/RC-15): removes every saved value like resetDemoData, but the library
+ * then starts empty instead of seeded. Reloads signed out, on the sign-in screen.
+ */
+export function deleteDemoAccount() {
+  resetting = true;
+  try {
+    requestAccountDeletion();
+  } catch (error) {
+    warnOnce(error);
+  }
+  window.history.replaceState(null, "", window.location.pathname + window.location.search);
   window.location.reload();
 }

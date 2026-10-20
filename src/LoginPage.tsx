@@ -8,6 +8,8 @@ interface LoginPageProps {
   onThemeChange: (theme: Theme) => void;
   /** `displayName` is only passed when the user just created an account. */
   onSignIn: (displayName?: string) => void;
+  /** Shows that the account was just deleted (US-15). */
+  accountDeleted?: boolean;
 }
 
 function AppleIcon() {
@@ -60,7 +62,7 @@ function ThemeIcon({ theme }: { theme: Theme }) {
   );
 }
 
-export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageProps) {
+export default function LoginPage({ theme, onThemeChange, onSignIn, accountDeleted = false }: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [view, setView] = useState<"signin" | "signup" | "forgot" | "reset-sent">("signin");
   const [displayName, setDisplayName] = useState("");
@@ -119,6 +121,7 @@ export default function LoginPage({ theme, onThemeChange, onSignIn }: LoginPageP
               submitSignIn();
             }}
           >
+            {accountDeleted && <p className="account-deleted-note" role="status">Your account was deleted.</p>}
             <p className="demo-signin-note">Demo mode: no account needed. Any option below continues to your Library.</p>
             <div className="social-buttons social-buttons-first">
               <button className="button button-secondary" type="button" onClick={() => onSignIn()}>
