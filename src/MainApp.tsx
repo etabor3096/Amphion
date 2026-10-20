@@ -50,6 +50,8 @@ const isSongList = (value: unknown) =>
 interface MainAppProps {
   theme: Theme;
   onThemeChange: (theme: Theme) => void;
+  /** Display name entered when the user just created an account; replaces the saved one. */
+  newAccountName?: string;
   onSignOut: () => void;
 }
 
@@ -343,7 +345,7 @@ function FolderChip({
   );
 }
 
-export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProps) {
+export default function MainApp({ theme, onThemeChange, newAccountName, onSignOut }: MainAppProps) {
   const [tab, setTab] = useState<Tab>("library");
   const [songs, setSongs] = usePersistentState<Song[]>("songs", INITIAL_SONGS, isSongList);
   const [query, setQuery] = useState("");
@@ -365,6 +367,9 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
   const [settingsView, setSettingsView] = useState<"main" | "account" | "password" | "email">("main");
   const [accountMethod, setAccountMethod] = usePersistentState<AccountMethod>("accountMethod", "apple", isOneOf("apple", "google", "email"));
   const [displayName, setDisplayName] = usePersistentState("displayName", "Elijah", isString);
+  useEffect(() => {
+    if (newAccountName) setDisplayName(newAccountName);
+  }, [newAccountName, setDisplayName]);
   const [passwords, setPasswords] = useState({ current: "", next: "", confirm: "" });
   const [visiblePasswords, setVisiblePasswords] = useState({ current: false, next: false, confirm: false });
   const [newEmail, setNewEmail] = useState("");
