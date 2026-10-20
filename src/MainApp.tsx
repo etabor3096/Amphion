@@ -3,7 +3,7 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
 import ReadyBanner from "./ReadyBanner";
 import SongScreen from "./SongScreen";
-import { INITIAL_SONGS } from "./mock/songs";
+import { INITIAL_SONGS, useAddedLabel } from "./mock/songs";
 import { addTranscription, removeTranscription, useAllTranscriptions } from "./mock/store";
 import { createDemoTranscription } from "./mock/transcriptions";
 import type { LibrarySong, Transcription } from "./mock/types";
@@ -37,7 +37,6 @@ const isSongList = (value: unknown) =>
       isObject(item) &&
       typeof item.id === "number" &&
       typeof item.title === "string" &&
-      typeof item.added === "string" &&
       typeof item.addedAt === "number" &&
       typeof item.length === "string" &&
       isOneOf("processing", "ready", "failed")(item.status) &&
@@ -188,6 +187,7 @@ function SongCard({
   onRetry: () => void;
   onOpen?: () => void;
 }) {
+  const added = useAddedLabel(song.addedAt);
   const pointerStart = useRef(0);
   const longPressTimer = useRef<number | null>(null);
 
@@ -238,8 +238,8 @@ function SongCard({
             <div>
               <h3>{song.title}</h3>
               {song.artist && <p className="song-artist">{song.artist}</p>}
-              <p aria-label={`Added ${song.added}, length ${song.length}${song.folder ? `, folder ${song.folder}` : ""}`}>
-                {song.added} <span aria-hidden="true">·</span> <span className="sr-only">Length </span>{song.length}
+              <p aria-label={`Added ${added}, length ${song.length}${song.folder ? `, folder ${song.folder}` : ""}`}>
+                {added} <span aria-hidden="true">·</span> <span className="sr-only">Length </span>{song.length}
                 {song.folder && <span className="song-folder-label"><Icon name="folder" /> {song.folder}</span>}
               </p>
             </div>
@@ -517,7 +517,6 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
         id: Date.now(),
         title,
         artist: artistName.trim() || undefined,
-        added: "Today",
         addedAt: Date.now(),
         length: formatTime(Math.max(1, recordSeconds || 132)),
         status: "processing",
