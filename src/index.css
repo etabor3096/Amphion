@@ -2630,6 +2630,23 @@ svg {
   line-height: 1.5;
 }
 
+.legal-screen .account-detail-card h2 {
+  margin-bottom: 8px;
+}
+
+.legal-screen .account-detail-card p {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.legal-screen > .legal-note {
+  margin: 4px 0 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
 .credential-card {
   display: flex;
   flex-direction: column;

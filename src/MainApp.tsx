@@ -3,6 +3,8 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
 import ReadyBanner from "./ReadyBanner";
 import SongScreen from "./SongScreen";
+import { LEGAL_PAGES } from "./legalText";
+import type { LegalPageId } from "./legalText";
 import { INITIAL_SONGS, useAddedLabel } from "./mock/songs";
 import { addTranscription, removeTranscription, useAllTranscriptions } from "./mock/store";
 import { createDemoTranscription } from "./mock/transcriptions";
@@ -362,7 +364,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
   const [isPlaying, setIsPlaying] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
-  const [settingsView, setSettingsView] = useState<"main" | "account" | "password" | "email">("main");
+  const [settingsView, setSettingsView] = useState<"main" | "account" | "password" | "email" | LegalPageId>("main");
   const [accountMethod, setAccountMethod] = usePersistentState<AccountMethod>("accountMethod", "apple", isOneOf("apple", "google", "email"));
   const [displayName, setDisplayName] = usePersistentState("displayName", "Elijah", isString);
   const [passwords, setPasswords] = useState({ current: "", next: "", confirm: "" });
@@ -988,13 +990,39 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
               <section className="settings-card about-card">
                 <h2>About</h2>
                 <div className="about-links">
-                  <button type="button">Terms of Use <Icon name="chevron" /></button>
-                  <button type="button">Privacy Policy <Icon name="chevron" /></button>
+                  {(["terms", "privacy"] as const).map((page) => (
+                    <button
+                      type="button"
+                      key={page}
+                      onClick={() => {
+                        setSettingsView(page);
+                        window.scrollTo({ top: 0 });
+                      }}
+                    >
+                      {LEGAL_PAGES[page].title} <Icon name="chevron" />
+                    </button>
+                  ))}
                   <div><span>App version</span><span>1.0.0</span></div>
                 </div>
               </section>
               <button className="settings-card reset-demo-row" type="button" onClick={() => setResetOpen(true)}>Reset demo data</button>
             </div>
+          </section>
+        )}
+
+        {tab === "settings" && (settingsView === "terms" || settingsView === "privacy") && (
+          <section className="credential-screen legal-screen" aria-labelledby="legal-title">
+            <button className="screen-back" type="button" onClick={() => setSettingsView("main")}><Icon name="back" /> Settings</button>
+            <span className="screen-eyebrow">About</span>
+            <h1 id="legal-title">{LEGAL_PAGES[settingsView].title}</h1>
+            <p>{LEGAL_PAGES[settingsView].intro}</p>
+            {LEGAL_PAGES[settingsView].sections.map((section) => (
+              <section className="account-detail-card" key={section.heading}>
+                <h2>{section.heading}</h2>
+                <p>{section.body}</p>
+              </section>
+            ))}
+            <p className="legal-note">Placeholder text for this demo.</p>
           </section>
         )}
 

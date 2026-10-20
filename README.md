@@ -53,6 +53,7 @@ progression: a strip of chord diagrams, then the bars with the playing chord hig
 | Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
 | Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that shows "Processing" for about 8 seconds, then turns Ready with a sample tab and a "Your tab is ready" banner or toast (the tab is not made from your audio) |
 | Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |
+| Terms of Use and Privacy Policy screens (Settings > About) | Their wording is placeholder text (`src/legalText.ts`) |
 
 ## Where things live
 
