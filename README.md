@@ -35,12 +35,13 @@ Then open http://localhost:5173. Needs Node 20.19+ (22 or newer recommended).
 | Old Mill Road | Everything confident: no "?" markers at all |
 | First Full Song | "No bass part found", tuning reported as an offset |
 | Lantern Light | Audio is on another iPhone: tab only, no synced playback; tuning "Unknown" |
-| Sunday Morning Idea / Phone Recording 04 | Processing and Failed states |
+| Sunday Morning Idea / Phone Recording 04 | Processing and Failed states (tap Retry on Phone Recording 04 and it finishes) |
 
 On a song: press play, change speed, tap **A-B** once at the start bar and again at the end bar,
 tap a note or bar number to jump, scroll away during playback to get **Back to playhead**,
 press and hold (or right-click) a note to edit it, tap an empty spot on a string for **+ Add note**,
-and tap a chord name for its diagram. Pick **Chords** instead of **Tab** to see the song as its chord
+tap a chord name for its diagram, and open **Mix** to hear the other part: **Mute my part** silences
+the instrument you are playing, or set a volume for each. Pick **Chords** instead of **Tab** to see the song as its chord
 progression: a strip of chord diagrams, then the bars with the playing chord highlighted. **Undo** reverts tab edits.
 
 ## Real vs. mocked
@@ -48,9 +49,9 @@ progression: a strip of chord diagrams, then the bars with the playing chord hig
 | Real (works as in the app) | Mocked |
 | --- | --- |
 | All screens, navigation, light/dark/system appearance | Sign-in: every option is a fake "Continue" |
-| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits live in memory and reset on reload |
+| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits and library changes are saved in this browser; Settings has "Reset demo data" |
 | Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
-| Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that stays "Processing" |
+| Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that shows "Processing" for about 8 seconds, then turns Ready with a sample tab and a "Your tab is ready" banner or toast (the tab is not made from your audio) |
 | Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |
 
 ## Where things live
