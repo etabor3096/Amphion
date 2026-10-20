@@ -10,6 +10,7 @@ import type { LibrarySong, Transcription } from "./mock/types";
 import { toCheckLabel } from "./tab/edits";
 import { systemTheme } from "./theme";
 import { resetDemoData, usePersistentState } from "./usePersistentState";
+import EditSongDialog, { type SongDetails } from "./EditSongDialog";
 
 type Tab = "library" | "add" | "settings";
 type Song = LibrarySong;
@@ -185,7 +186,7 @@ function SongCard({
   transcription?: Transcription;
   revealed: boolean;
   onReveal: () => void;
-  onAction: (action: "menu" | "rename" | "delete" | "move") => void;
+  onAction: (action: "menu" | "edit" | "delete" | "move") => void;
   onRetry: () => void;
   onOpen?: () => void;
 }) {
@@ -215,7 +216,7 @@ function SongCard({
       }}
     >
       <div className="swipe-actions" aria-hidden={!revealed}>
-        <button tabIndex={revealed ? 0 : -1} type="button" onClick={() => onAction("rename")}>Rename</button>
+        <button tabIndex={revealed ? 0 : -1} type="button" onClick={() => onAction("edit")}>Edit details</button>
         <button tabIndex={revealed ? 0 : -1} className="delete-action" type="button" onClick={() => onAction("delete")}>Delete</button>
       </div>
       <div
@@ -351,8 +352,7 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
   const [query, setQuery] = useState("");
   const [revealedSong, setRevealedSong] = useState<number | null>(null);
   const [menuSong, setMenuSong] = useState<Song | null>(null);
-  const [dialog, setDialog] = useState<"rename" | "delete" | null>(null);
-  const [renameValue, setRenameValue] = useState("");
+  const [dialog, setDialog] = useState<"edit" | "delete" | null>(null);
   const [instrument, setInstrument] = usePersistentState<"guitar" | "bass">("instrument", "guitar", isOneOf("guitar", "bass"));
   const [appearance, setAppearance] = usePersistentState<"system" | Theme>("appearance", "system", isOneOf("system", "light", "dark"));
   const [addStep, setAddStep] = useState<"choose" | "mic-permission" | "record" | "review">("choose");
@@ -573,11 +573,10 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
     audio.src = url;
   };
 
-  const openAction = (song: Song, action: "menu" | "rename" | "delete" | "move") => {
+  const openAction = (song: Song, action: "menu" | "edit" | "delete" | "move") => {
     setMenuSong(song);
-    if (action === "rename") {
-      setRenameValue(song.title);
-      setDialog("rename");
+    if (action === "edit") {
+      setDialog("edit");
     } else if (action === "delete") {
       setDialog("delete");
     } else if (action === "move") {
@@ -585,10 +584,18 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
     }
   };
 
-  const saveRename = () => {
-    if (menuSong && renameValue.trim()) {
-      setSongs((current) => current.map((song) => song.id === menuSong.id ? { ...song, title: renameValue.trim() } : song));
+  /** Saves an edited title and artist (DD-12). Drops artist filters that no longer match any song so the Library isn't left filtered by a name it can't show. */
+  const updateSongDetails = (songId: number, { title, artist }: SongDetails) => {
+    const withDetails = (song: Song) => song.id === songId ? { ...song, title, artist } : song;
+    setSongs((current) => current.map(withDetails));
+    const remainingArtists = new Set(songs.map((song) => withDetails(song).artist));
+    if (filters.artists.some((name) => !remainingArtists.has(name))) {
+      setOtherFilters((current) => ({ ...current, artists: current.artists.filter((name) => remainingArtists.has(name)) }));
     }
+  };
+
+  const saveDetails = (details: SongDetails) => {
+    if (menuSong) updateSongDetails(menuSong.id, details);
     setDialog(null);
     setMenuSong(null);
   };
@@ -668,7 +675,7 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
             setActiveSongId(null);
             window.scrollTo({ top: 0 });
           }}
-          onRename={(title) => setSongs((current) => current.map((song) => song.id === activeSong.id ? { ...song, title } : song))}
+          onEditDetails={(details) => updateSongDetails(activeSong.id, details)}
           onPhotoChange={(photo) => setSongs((current) => current.map((song) => song.id === activeSong.id ? { ...song, photo } : song))}
           onDelete={() => {
             setSongs((current) => current.filter((song) => song.id !== activeSong.id));
@@ -1288,7 +1295,7 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
         <div className="modal-backdrop" role="presentation" onClick={() => setMenuSong(null)}>
           <div className="action-sheet" role="dialog" aria-modal="true" aria-label={`Actions for ${menuSong.title}`} onClick={(event) => event.stopPropagation()}>
             <p>{menuSong.title}</p>
-            <button type="button" onClick={() => { setRenameValue(menuSong.title); setDialog("rename"); }}>Rename</button>
+            <button type="button" onClick={() => setDialog("edit")}>Edit details</button>
             <button type="button" onClick={() => { setMoveFolderOpen(true); }}>Move to Folder</button>
             <button className="destructive" type="button" onClick={() => setDialog("delete")}>Delete</button>
             <button className="cancel-action" type="button" onClick={() => setMenuSong(null)}>Cancel</button>
@@ -1324,32 +1331,19 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
         </div>
       )}
 
-      {menuSong && dialog && (
+      {menuSong && dialog === "edit" && (
+        <EditSongDialog song={menuSong} onSave={saveDetails} onCancel={() => { setDialog(null); setMenuSong(null); }} />
+      )}
+
+      {menuSong && dialog === "delete" && (
         <div className="modal-backdrop" role="presentation">
           <div className="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-            {dialog === "rename" ? (
-              <>
-                <h2 id="dialog-title">Rename song</h2>
-                <p>Choose a name you'll recognize later.</p>
-                <label>
-                  <span className="sr-only">Song name</span>
-                  <input autoFocus value={renameValue} onChange={(event) => setRenameValue(event.target.value)} />
-                </label>
-                <div>
-                  <button className="dialog-cancel" type="button" onClick={() => { setDialog(null); setMenuSong(null); }}>Cancel</button>
-                  <button className="dialog-confirm" type="button" onClick={saveRename}>Save</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2 id="dialog-title">Delete '{menuSong.title}'?</h2>
-                <p>This removes the tab and its audio from this phone.</p>
-                <div>
-                  <button className="dialog-cancel" type="button" onClick={() => { setDialog(null); setMenuSong(null); }}>Cancel</button>
-                  <button className="dialog-delete" type="button" onClick={deleteSong}>Delete</button>
-                </div>
-              </>
-            )}
+            <h2 id="dialog-title">Delete '{menuSong.title}'?</h2>
+            <p>This removes the tab and its audio from this phone.</p>
+            <div>
+              <button className="dialog-cancel" type="button" onClick={() => { setDialog(null); setMenuSong(null); }}>Cancel</button>
+              <button className="dialog-delete" type="button" onClick={deleteSong}>Delete</button>
+            </div>
           </div>
         </div>
       )}
