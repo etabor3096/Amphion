@@ -743,6 +743,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
                     Artist: {artist} <span aria-hidden="true">×</span>
                   </button>
                 ))}
+                <button className="active-filter-clear" type="button" onClick={clearFilters}>Clear all</button>
               </div>
             )}
 
