@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useAddedLabel } from "./mock/songs";
 import type { Instrument, LibrarySong, Transcription } from "./mock/types";
 import { SimulatedClock } from "./playback/clock";
 import { usePlaybackState } from "./playback/usePlayback";
@@ -45,7 +46,8 @@ function describeTuning(cents: number | null) {
 }
 
 export default function SongScreen({ song, transcription, defaultInstrument, onBack, onRename, onPhotoChange, onDelete }: SongScreenProps) {
-  const { title, artist, length, added, folder, art, photo, audioOnThisDevice } = song;
+  const { title, artist, length, folder, art, photo, audioOnThisDevice } = song;
+  const added = useAddedLabel(song.addedAt);
   // One playback clock per open song. Swap SimulatedClock for a real audio-backed clock later.
   const [clock] = useState(() => new SimulatedClock(transcription.duration));
   const { playing } = usePlaybackState(clock);

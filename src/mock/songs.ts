@@ -1,18 +1,40 @@
+import { useEffect, useState } from "react";
 import type { LibrarySong } from "./types";
 
 const DAY = 24 * 60 * 60 * 1000;
 
+const startOfDay = (time: number) => new Date(time).setHours(0, 0, 0, 0);
+
 /** "Today", "Yesterday", or a short date like "Sep 28". */
 export function addedLabel(addedAt: number, now = Date.now()) {
-  const startOfDay = (time: number) => new Date(time).setHours(0, 0, 0, 0);
   const days = Math.round((startOfDay(now) - startOfDay(addedAt)) / DAY);
   if (days <= 0) return "Today";
   if (days === 1) return "Yesterday";
   return new Date(addedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function song(fields: Omit<LibrarySong, "added" | "audioOnThisDevice"> & { audioOnThisDevice?: boolean }): LibrarySong {
-  return { audioOnThisDevice: true, ...fields, added: addedLabel(fields.addedAt) };
+/**
+ * The added label for a song, kept current: it re-renders at local midnight and when the app
+ * comes back to the foreground (timers can be paused while the phone sleeps).
+ */
+export function useAddedLabel(addedAt: number) {
+  const [today, setToday] = useState(() => startOfDay(Date.now()));
+  useEffect(() => {
+    const refresh = () => setToday(startOfDay(Date.now()));
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const timer = window.setTimeout(refresh, tomorrow.getTime() - Date.now() + 1000);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, [today]);
+  return addedLabel(addedAt, today);
+}
+
+function song(fields: Omit<LibrarySong, "audioOnThisDevice"> & { audioOnThisDevice?: boolean }): LibrarySong {
+  return { audioOnThisDevice: true, ...fields };
 }
 
 const now = Date.now();
