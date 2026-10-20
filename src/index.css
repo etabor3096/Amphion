@@ -1101,6 +1101,16 @@ svg {
   cursor: pointer;
 }
 
+.active-filter-chips .active-filter-clear {
+  padding: 0 6px;
+  color: var(--color-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .folder-chip-row {
   margin-bottom: 19px;
 }
