@@ -231,7 +231,7 @@ const SPECS: SongSpec[] = [
     bass: "pulse",
     seed: 11,
     unsureGuitar: { "3:6:2": 0.46, "6:3:3": 0.52, "7:5:3": 0.41 },
-    unsureBass: { "4:4": 0.5 },
+    unsureBass: { "2:2": 0.43, "4:4": 0.5, "6:0": 0.55, "7:6": 0.39 },
     unsureChords: { 3: 0.48 },
   },
   {
@@ -271,3 +271,9 @@ const SPECS: SongSpec[] = [
 ];
 
 export const INITIAL_TRANSCRIPTIONS: Transcription[] = SPECS.map(buildTranscription);
+
+/** A tab for a song added in the demo: one of the ready-song samples with guitar, bass and a few unsure notes, under the new id. */
+export function createDemoTranscription(songId: number): Transcription {
+  const samples = SPECS.filter((spec) => spec.bass && spec.unsureGuitar);
+  return buildTranscription({ ...samples[songId % samples.length], songId });
+}

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useAddedLabel } from "./mock/songs";
 import type { Instrument, LibrarySong, Transcription } from "./mock/types";
-import { SimulatedClock } from "./playback/clock";
+import { SimulatedClock, type PlaybackClock } from "./playback/clock";
+import { SynthClock } from "./playback/SynthClock";
 import { usePlaybackState } from "./playback/usePlayback";
 import SyncedTab from "./tab/SyncedTab";
 
@@ -48,8 +49,10 @@ function describeTuning(cents: number | null) {
 export default function SongScreen({ song, transcription, defaultInstrument, onBack, onRename, onPhotoChange, onDelete }: SongScreenProps) {
   const { title, artist, length, folder, art, photo, audioOnThisDevice } = song;
   const added = useAddedLabel(song.addedAt);
-  // One playback clock per open song. Swap SimulatedClock for a real audio-backed clock later.
-  const [clock] = useState(() => new SimulatedClock(transcription.duration));
+  // One playback clock per open song. The synth clock makes sound; a song whose audio is on another device stays silent.
+  const [clock] = useState<PlaybackClock & { dispose?(): void }>(() =>
+    audioOnThisDevice && window.AudioContext ? new SynthClock(transcription.duration) : new SimulatedClock(transcription.duration),
+  );
   const { playing } = usePlaybackState(clock);
   const [detailInfo, setDetailInfo] = useState<"key" | "tempo" | "tuning" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -63,7 +66,13 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => () => clock.pause(), [clock]);
+  useEffect(
+    () => () => {
+      clock.pause();
+      clock.dispose?.();
+    },
+    [clock],
+  );
 
   useEffect(() => {
     const handleScroll = () => setHeaderCollapsed(window.scrollY > 300);
@@ -117,16 +126,17 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
           <span>{length} <i aria-hidden="true">·</i> Added {added}{folder && <><i aria-hidden="true">·</i> {folder}</>}</span>
         </div>
         <div className="song-hero-actions">
-          <button
-            className="hero-play-button"
-            type="button"
-            disabled={!audioOnThisDevice}
-            onClick={() => (playing ? clock.pause() : clock.play())}
-            aria-label={!audioOnThisDevice ? "Playback unavailable on this iPhone" : playing ? "Pause song" : "Play song"}
-          >
-            <SongIcon name={playing ? "pause" : "play"} />
-            {playing ? "Pause" : "Play"}
-          </button>
+          {audioOnThisDevice && (
+            <button
+              className="hero-play-button"
+              type="button"
+              onClick={() => (playing ? clock.pause() : clock.play())}
+              aria-label={playing ? "Pause song" : "Play song"}
+            >
+              <SongIcon name={playing ? "pause" : "play"} />
+              {playing ? "Pause" : "Play"}
+            </button>
+          )}
           <button className="change-photo-button" type="button" onClick={() => setPhotoActionsOpen(true)}>
             <SongIcon name="camera" />
             Change Photo
