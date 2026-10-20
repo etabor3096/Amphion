@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { accountJustDeleted } from "./demoStorage";
 import LoginPage from "./LoginPage";
 import type { Theme } from "./LoginPage";
 import MainApp from "./MainApp";
@@ -17,7 +18,9 @@ export default function App() {
   const alreadySignedIn = location.hash === "#library";
   const [theme, setTheme] = useState<Theme>(systemTheme);
   const [signedIn, setSignedIn] = useState(alreadySignedIn);
-  const [showSplash, setShowSplash] = useState(!alreadySignedIn);
+  // Right after deleting the account the page reloads straight to sign-in, which says the account is gone.
+  const [showSplash, setShowSplash] = useState(!alreadySignedIn && !accountJustDeleted);
+  const [showAccountDeleted, setShowAccountDeleted] = useState(accountJustDeleted);
   const [newAccountName, setNewAccountName] = useState<string>();
 
   if (showStyleGuide) return <StyleGuide />;
@@ -42,9 +45,11 @@ export default function App() {
       <LoginPage
         theme={theme}
         onThemeChange={setTheme}
+        accountDeleted={showAccountDeleted}
         onSignIn={(displayName) => {
           window.history.replaceState(null, "", "#library");
           setNewAccountName(displayName);
+          setShowAccountDeleted(false);
           setSignedIn(true);
         }}
       />

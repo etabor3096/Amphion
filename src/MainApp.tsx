@@ -3,13 +3,14 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
 import ReadyBanner from "./ReadyBanner";
 import SongScreen from "./SongScreen";
+import { isAccountDeleted } from "./demoStorage";
 import { INITIAL_SONGS, useAddedLabel } from "./mock/songs";
 import { addTranscription, removeTranscription, useAllTranscriptions } from "./mock/store";
 import { createDemoTranscription } from "./mock/transcriptions";
 import type { LibrarySong, Transcription } from "./mock/types";
 import { toCheckLabel } from "./tab/edits";
 import { systemTheme } from "./theme";
-import { resetDemoData, usePersistentState } from "./usePersistentState";
+import { deleteDemoAccount, resetDemoData, usePersistentState } from "./usePersistentState";
 import EditSongDialog, { type SongDetails } from "./EditSongDialog";
 
 type Tab = "library" | "add" | "settings";
@@ -59,6 +60,9 @@ interface MainAppProps {
 const DAY = 24 * 60 * 60 * 1000;
 /** How long the demo takes to turn a new song into a tab. */
 const PROCESSING_MS = 8000;
+/** After the account is deleted the library starts empty, not seeded. Deleting and resetting both reload, so this is read once. */
+const ACCOUNT_DELETED = isAccountDeleted();
+const INITIAL_FOLDERS = ACCOUNT_DELETED ? [] : ["Worship Set", "Practice This Week"];
 
 function Icon({ name }: { name: "library" | "folder" | "filter" | "add" | "settings" | "search" | "mic" | "mic-off" | "upload" | "more" | "alert" | "retry" | "lock" | "music" | "play" | "stop" | "chevron" | "back" | "eye" | "check" | "mail" | "bell" }) {
   const common = { viewBox: "0 0 24 24", "aria-hidden": true };
@@ -348,7 +352,7 @@ function FolderChip({
 
 export default function MainApp({ theme, onThemeChange, newAccountName, onSignOut }: MainAppProps) {
   const [tab, setTab] = useState<Tab>("library");
-  const [songs, setSongs] = usePersistentState<Song[]>("songs", INITIAL_SONGS, isSongList);
+  const [songs, setSongs] = usePersistentState<Song[]>("songs", ACCOUNT_DELETED ? [] : INITIAL_SONGS, isSongList);
   const [query, setQuery] = useState("");
   const [revealedSong, setRevealedSong] = useState<number | null>(null);
   const [menuSong, setMenuSong] = useState<Song | null>(null);
@@ -384,7 +388,7 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
   const [hasAskedForNotifications, setHasAskedForNotifications] = usePersistentState("hasAskedForNotifications", false, isBoolean);
   const [activeSongId, setActiveSongId] = useState<number | null>(null);
   const [discardRecordingOpen, setDiscardRecordingOpen] = useState(false);
-  const [folders, setFolders] = usePersistentState<string[]>("folders", ["Worship Set", "Practice This Week"], isStringArray);
+  const [folders, setFolders] = usePersistentState<string[]>("folders", INITIAL_FOLDERS, isStringArray);
   const [selectedFolder, setSelectedFolder] = useState("");
   const [folderDialogOpen, setFolderDialogOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
@@ -1381,7 +1385,7 @@ export default function MainApp({ theme, onThemeChange, newAccountName, onSignOu
             </label>
             <div>
               <button className="dialog-cancel" type="button" onClick={() => setDeleteAccountOpen(false)}>Cancel</button>
-              <button className="dialog-delete" type="button" disabled={deleteText !== "DELETE" || !providerConfirmed} onClick={onSignOut}>Delete account</button>
+              <button className="dialog-delete" type="button" disabled={deleteText !== "DELETE" || !providerConfirmed} onClick={deleteDemoAccount}>Delete account</button>
             </div>
           </div>
         </div>
