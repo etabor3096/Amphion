@@ -12,7 +12,7 @@ Run `npm install`, then `npm run dev` (Vite on http://localhost:5173). `npm run 
 - `src/main.tsx` - Entry point. Desktop browsers get `device/PhoneFrame` (the app in a 390×844 iframe); inside the frame or on a phone it mounts `App`
 - `src/App.tsx` - Splash → fake sign-in → `MainApp`
 - `src/MainApp.tsx` - Library, Add Song, Settings screens and their dialogs
-- `src/SongScreen.tsx` - Song screen header, details, and photo/rename/delete; the tab itself is `src/tab/SyncedTab.tsx`
+- `src/SongScreen.tsx` - Song screen header, details, and photo/edit-details/delete (`EditSongDialog.tsx` is shared with the Library); the tab itself is `src/tab/SyncedTab.tsx`
 - `src/playback/` - `PlaybackClock` (the single clock for song time, RC-18/DD-14), `SynthClock` (Web Audio synth; song time from `AudioContext.currentTime`), `SimulatedClock` (silent fallback), and the one animation-frame hook
 - `src/tab/` - Tab rows, `ChordView` (the Chords view), interactions, practice bar, note editor, chord popover, and pure edit functions
 - `src/mock/` - Data types (mirror RC-20), songs, generated tab data, in-memory store with undo
