@@ -478,6 +478,32 @@ svg {
   line-height: 20px;
 }
 
+.signup-terms {
+  margin: -5px 0 0;
+  color: var(--color-muted);
+  text-align: center;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.signup-terms strong {
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.login-page .password-rules {
+  margin-top: -7px;
+}
+
+.login-page .password-rules svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .login-error {
   padding: 12px 14px;
   display: flex;
@@ -1099,6 +1125,16 @@ svg {
   font-size: 0.6875rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.active-filter-chips .active-filter-clear {
+  padding: 0 6px;
+  color: var(--color-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .folder-chip-row {
@@ -5526,6 +5562,25 @@ svg {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 14%, transparent);
 }
 
+.edit-song-dialog label > span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.edit-song-dialog label > span small {
+  margin-left: 5px;
+  color: var(--color-muted);
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.edit-song-dialog label + label {
+  margin-top: 14px;
+}
+
 .confirm-dialog > div {
   margin-top: 22px;
   display: flex;
@@ -6017,6 +6072,18 @@ svg {
   background: color-mix(in srgb, var(--color-primary) 8%, transparent);
   border-radius: 10px;
   font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.account-deleted-note {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
   line-height: 1.4;
 }
 

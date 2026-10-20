@@ -1,4 +1,4 @@
-import "../demoStorage";
+import { isAccountDeleted } from "../demoStorage";
 import { useSyncExternalStore } from "react";
 import { INITIAL_TRANSCRIPTIONS } from "./transcriptions";
 import type { Transcription } from "./types";
@@ -9,6 +9,7 @@ import type { Transcription } from "./types";
  * Each song keeps an undo stack for this session only (US-11). Saved transcriptions persist in
  * localStorage: every emit() schedules a debounced save, so any mutation is stored automatically.
  * On load, the mock data is overlaid with the saved entries by songId, minus any removed mock songs.
+ * After the account is deleted there is no mock data to start from, only what the user adds afterwards.
  */
 
 const STORAGE_KEY = "amphion-demo:v1:transcriptions";
@@ -31,9 +32,13 @@ function isTranscription(value: unknown): value is Transcription {
   );
 }
 
+function startingTranscriptions() {
+  return new Map<number, Transcription>(isAccountDeleted() ? [] : INITIAL_TRANSCRIPTIONS.map((t) => [t.songId, t]));
+}
+
 /** Starts from the mock data, then applies saved edits, saved additions and saved deletions. */
 function loadTranscriptions() {
-  const map = new Map<number, Transcription>(INITIAL_TRANSCRIPTIONS.map((t) => [t.songId, t]));
+  const map = startingTranscriptions();
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return map;
@@ -46,7 +51,7 @@ function loadTranscriptions() {
       for (const entry of data.saved) if (isTranscription(entry)) map.set(entry.songId, entry);
     }
   } catch {
-    return new Map(INITIAL_TRANSCRIPTIONS.map((t) => [t.songId, t]));
+    return startingTranscriptions();
   }
   return map;
 }

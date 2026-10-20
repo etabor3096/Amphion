@@ -3,6 +3,7 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import type { Theme } from "./LoginPage";
 import ReadyBanner from "./ReadyBanner";
 import SongScreen from "./SongScreen";
+import { isAccountDeleted } from "./demoStorage";
 import { LEGAL_PAGES } from "./legalText";
 import type { LegalPageId } from "./legalText";
 import { INITIAL_SONGS, useAddedLabel } from "./mock/songs";
@@ -11,7 +12,8 @@ import { createDemoTranscription } from "./mock/transcriptions";
 import type { LibrarySong, Transcription } from "./mock/types";
 import { toCheckLabel } from "./tab/edits";
 import { systemTheme } from "./theme";
-import { resetDemoData, usePersistentState } from "./usePersistentState";
+import { deleteDemoAccount, resetDemoData, usePersistentState } from "./usePersistentState";
+import EditSongDialog, { type SongDetails } from "./EditSongDialog";
 
 type Tab = "library" | "add" | "settings";
 type Song = LibrarySong;
@@ -52,12 +54,17 @@ const isSongList = (value: unknown) =>
 interface MainAppProps {
   theme: Theme;
   onThemeChange: (theme: Theme) => void;
+  /** Display name entered when the user just created an account; replaces the saved one. */
+  newAccountName?: string;
   onSignOut: () => void;
 }
 
 const DAY = 24 * 60 * 60 * 1000;
 /** How long the demo takes to turn a new song into a tab. */
 const PROCESSING_MS = 8000;
+/** After the account is deleted the library starts empty, not seeded. Deleting and resetting both reload, so this is read once. */
+const ACCOUNT_DELETED = isAccountDeleted();
+const INITIAL_FOLDERS = ACCOUNT_DELETED ? [] : ["Worship Set", "Practice This Week"];
 
 function Icon({ name }: { name: "library" | "folder" | "filter" | "add" | "settings" | "search" | "mic" | "mic-off" | "upload" | "more" | "alert" | "retry" | "lock" | "music" | "play" | "stop" | "chevron" | "back" | "eye" | "check" | "mail" | "bell" }) {
   const common = { viewBox: "0 0 24 24", "aria-hidden": true };
@@ -185,7 +192,7 @@ function SongCard({
   transcription?: Transcription;
   revealed: boolean;
   onReveal: () => void;
-  onAction: (action: "menu" | "rename" | "delete" | "move") => void;
+  onAction: (action: "menu" | "edit" | "delete" | "move") => void;
   onRetry: () => void;
   onOpen?: () => void;
 }) {
@@ -215,7 +222,7 @@ function SongCard({
       }}
     >
       <div className="swipe-actions" aria-hidden={!revealed}>
-        <button tabIndex={revealed ? 0 : -1} type="button" onClick={() => onAction("rename")}>Rename</button>
+        <button tabIndex={revealed ? 0 : -1} type="button" onClick={() => onAction("edit")}>Edit details</button>
         <button tabIndex={revealed ? 0 : -1} className="delete-action" type="button" onClick={() => onAction("delete")}>Delete</button>
       </div>
       <div
@@ -345,14 +352,13 @@ function FolderChip({
   );
 }
 
-export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProps) {
+export default function MainApp({ theme, onThemeChange, newAccountName, onSignOut }: MainAppProps) {
   const [tab, setTab] = useState<Tab>("library");
-  const [songs, setSongs] = usePersistentState<Song[]>("songs", INITIAL_SONGS, isSongList);
+  const [songs, setSongs] = usePersistentState<Song[]>("songs", ACCOUNT_DELETED ? [] : INITIAL_SONGS, isSongList);
   const [query, setQuery] = useState("");
   const [revealedSong, setRevealedSong] = useState<number | null>(null);
   const [menuSong, setMenuSong] = useState<Song | null>(null);
-  const [dialog, setDialog] = useState<"rename" | "delete" | null>(null);
-  const [renameValue, setRenameValue] = useState("");
+  const [dialog, setDialog] = useState<"edit" | "delete" | null>(null);
   const [instrument, setInstrument] = usePersistentState<"guitar" | "bass">("instrument", "guitar", isOneOf("guitar", "bass"));
   const [appearance, setAppearance] = usePersistentState<"system" | Theme>("appearance", "system", isOneOf("system", "light", "dark"));
   const [addStep, setAddStep] = useState<"choose" | "mic-permission" | "record" | "review">("choose");
@@ -367,6 +373,9 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
   const [settingsView, setSettingsView] = useState<"main" | "account" | "password" | "email" | LegalPageId>("main");
   const [accountMethod, setAccountMethod] = usePersistentState<AccountMethod>("accountMethod", "apple", isOneOf("apple", "google", "email"));
   const [displayName, setDisplayName] = usePersistentState("displayName", "Elijah", isString);
+  useEffect(() => {
+    if (newAccountName) setDisplayName(newAccountName);
+  }, [newAccountName, setDisplayName]);
   const [passwords, setPasswords] = useState({ current: "", next: "", confirm: "" });
   const [visiblePasswords, setVisiblePasswords] = useState({ current: false, next: false, confirm: false });
   const [newEmail, setNewEmail] = useState("");
@@ -381,7 +390,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
   const [hasAskedForNotifications, setHasAskedForNotifications] = usePersistentState("hasAskedForNotifications", false, isBoolean);
   const [activeSongId, setActiveSongId] = useState<number | null>(null);
   const [discardRecordingOpen, setDiscardRecordingOpen] = useState(false);
-  const [folders, setFolders] = usePersistentState<string[]>("folders", ["Worship Set", "Practice This Week"], isStringArray);
+  const [folders, setFolders] = usePersistentState<string[]>("folders", INITIAL_FOLDERS, isStringArray);
   const [selectedFolder, setSelectedFolder] = useState("");
   const [folderDialogOpen, setFolderDialogOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
@@ -570,11 +579,10 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
     audio.src = url;
   };
 
-  const openAction = (song: Song, action: "menu" | "rename" | "delete" | "move") => {
+  const openAction = (song: Song, action: "menu" | "edit" | "delete" | "move") => {
     setMenuSong(song);
-    if (action === "rename") {
-      setRenameValue(song.title);
-      setDialog("rename");
+    if (action === "edit") {
+      setDialog("edit");
     } else if (action === "delete") {
       setDialog("delete");
     } else if (action === "move") {
@@ -582,10 +590,18 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
     }
   };
 
-  const saveRename = () => {
-    if (menuSong && renameValue.trim()) {
-      setSongs((current) => current.map((song) => song.id === menuSong.id ? { ...song, title: renameValue.trim() } : song));
+  /** Saves an edited title and artist (DD-12). Drops artist filters that no longer match any song so the Library isn't left filtered by a name it can't show. */
+  const updateSongDetails = (songId: number, { title, artist }: SongDetails) => {
+    const withDetails = (song: Song) => song.id === songId ? { ...song, title, artist } : song;
+    setSongs((current) => current.map(withDetails));
+    const remainingArtists = new Set(songs.map((song) => withDetails(song).artist));
+    if (filters.artists.some((name) => !remainingArtists.has(name))) {
+      setOtherFilters((current) => ({ ...current, artists: current.artists.filter((name) => remainingArtists.has(name)) }));
     }
+  };
+
+  const saveDetails = (details: SongDetails) => {
+    if (menuSong) updateSongDetails(menuSong.id, details);
     setDialog(null);
     setMenuSong(null);
   };
@@ -665,7 +681,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
             setActiveSongId(null);
             window.scrollTo({ top: 0 });
           }}
-          onRename={(title) => setSongs((current) => current.map((song) => song.id === activeSong.id ? { ...song, title } : song))}
+          onEditDetails={(details) => updateSongDetails(activeSong.id, details)}
           onPhotoChange={(photo) => setSongs((current) => current.map((song) => song.id === activeSong.id ? { ...song, photo } : song))}
           onDelete={() => {
             setSongs((current) => current.filter((song) => song.id !== activeSong.id));
@@ -745,6 +761,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
                     Artist: {artist} <span aria-hidden="true">×</span>
                   </button>
                 ))}
+                <button className="active-filter-clear" type="button" onClick={clearFilters}>Clear all</button>
               </div>
             )}
 
@@ -1310,7 +1327,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
         <div className="modal-backdrop" role="presentation" onClick={() => setMenuSong(null)}>
           <div className="action-sheet" role="dialog" aria-modal="true" aria-label={`Actions for ${menuSong.title}`} onClick={(event) => event.stopPropagation()}>
             <p>{menuSong.title}</p>
-            <button type="button" onClick={() => { setRenameValue(menuSong.title); setDialog("rename"); }}>Rename</button>
+            <button type="button" onClick={() => setDialog("edit")}>Edit details</button>
             <button type="button" onClick={() => { setMoveFolderOpen(true); }}>Move to Folder</button>
             <button className="destructive" type="button" onClick={() => setDialog("delete")}>Delete</button>
             <button className="cancel-action" type="button" onClick={() => setMenuSong(null)}>Cancel</button>
@@ -1346,32 +1363,19 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
         </div>
       )}
 
-      {menuSong && dialog && (
+      {menuSong && dialog === "edit" && (
+        <EditSongDialog song={menuSong} onSave={saveDetails} onCancel={() => { setDialog(null); setMenuSong(null); }} />
+      )}
+
+      {menuSong && dialog === "delete" && (
         <div className="modal-backdrop" role="presentation">
           <div className="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-            {dialog === "rename" ? (
-              <>
-                <h2 id="dialog-title">Rename song</h2>
-                <p>Choose a name you'll recognize later.</p>
-                <label>
-                  <span className="sr-only">Song name</span>
-                  <input autoFocus value={renameValue} onChange={(event) => setRenameValue(event.target.value)} />
-                </label>
-                <div>
-                  <button className="dialog-cancel" type="button" onClick={() => { setDialog(null); setMenuSong(null); }}>Cancel</button>
-                  <button className="dialog-confirm" type="button" onClick={saveRename}>Save</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2 id="dialog-title">Delete '{menuSong.title}'?</h2>
-                <p>This removes the tab and its audio from this phone.</p>
-                <div>
-                  <button className="dialog-cancel" type="button" onClick={() => { setDialog(null); setMenuSong(null); }}>Cancel</button>
-                  <button className="dialog-delete" type="button" onClick={deleteSong}>Delete</button>
-                </div>
-              </>
-            )}
+            <h2 id="dialog-title">Delete '{menuSong.title}'?</h2>
+            <p>This removes the tab and its audio from this phone.</p>
+            <div>
+              <button className="dialog-cancel" type="button" onClick={() => { setDialog(null); setMenuSong(null); }}>Cancel</button>
+              <button className="dialog-delete" type="button" onClick={deleteSong}>Delete</button>
+            </div>
           </div>
         </div>
       )}
@@ -1409,7 +1413,7 @@ export default function MainApp({ theme, onThemeChange, onSignOut }: MainAppProp
             </label>
             <div>
               <button className="dialog-cancel" type="button" onClick={() => setDeleteAccountOpen(false)}>Cancel</button>
-              <button className="dialog-delete" type="button" disabled={deleteText !== "DELETE" || !providerConfirmed} onClick={onSignOut}>Delete account</button>
+              <button className="dialog-delete" type="button" disabled={deleteText !== "DELETE" || !providerConfirmed} onClick={deleteDemoAccount}>Delete account</button>
             </div>
           </div>
         </div>
