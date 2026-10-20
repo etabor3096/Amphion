@@ -10,10 +10,45 @@ export function usePlaybackState(clock: PlaybackClock) {
   return { playing, rate, loop };
 }
 
+/** Where animation frames come from; tests pass one that never fires, like a hidden tab. */
+export interface FrameScheduler {
+  request(callback: () => void): number;
+  cancel(handle: number): void;
+}
+
+const animationFrames: FrameScheduler = {
+  request: (callback) => requestAnimationFrame(callback),
+  cancel: (handle) => cancelAnimationFrame(handle),
+};
+
 /**
- * The single animation-frame loop for synced playback. Every frame it reads the clock once and
- * passes the song time the listener is hearing right now to `onFrame`. The playhead, note
- * highlights and auto-scroll are all drawn from that value; there is no other timer.
+ * Reads the clock and passes the song time the listener is hearing right now to `onTime`: once
+ * per animation frame, and at once on every discrete change (play, pause, seek, speed, loop, end).
+ * The second path is what keeps a seek visible when frames don't run, as in a hidden tab.
+ * Returns a function that stops both.
+ */
+export function watchPlayback(clock: PlaybackClock, onTime: (songTime: number) => void, frames: FrameScheduler = animationFrames) {
+  const report = () => {
+    const position = clock.currentTime();
+    onTime(clock.isPlaying() ? Math.max(0, position - clock.outputLatency()) : position);
+  };
+  let frame = 0;
+  const tick = () => {
+    report();
+    frame = frames.request(tick);
+  };
+  frame = frames.request(tick);
+  const unsubscribe = clock.subscribe(report);
+  return () => {
+    frames.cancel(frame);
+    unsubscribe();
+  };
+}
+
+/**
+ * The single animation-frame loop for synced playback (see watchPlayback). The playhead, note
+ * highlights and auto-scroll are all drawn from the song time it passes to `onFrame`; there is
+ * no other timer.
  */
 export function usePlaybackFrame(clock: PlaybackClock, onFrame: (songTime: number) => void) {
   const callback = useRef(onFrame);
@@ -21,15 +56,5 @@ export function usePlaybackFrame(clock: PlaybackClock, onFrame: (songTime: numbe
     callback.current = onFrame;
   });
 
-  useEffect(() => {
-    let frame = 0;
-    const tick = () => {
-      const position = clock.currentTime();
-      const heard = clock.isPlaying() ? Math.max(0, position - clock.outputLatency()) : position;
-      callback.current(heard);
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [clock]);
+  useEffect(() => watchPlayback(clock, (songTime) => callback.current(songTime)), [clock]);
 }
