@@ -1,2 +1,68 @@
-# Amphion
-An AI-powered mobile app that listens to a song, live or from an uploaded file, and generates synced guitar and bass tabs so beginner and intermediate players can learn and play along.
+# Amphion — front-end demo
+
+Amphion is an AI-powered mobile app that listens to a song, live or from an uploaded file, and generates
+synced guitar and bass tabs so beginner and intermediate players can learn and play along.
+
+This branch holds a click-through demo of the Amphion iOS app (song → guitar/bass tab, played in sync), built from
+the Figma Make prototype. It is front-end only: no Firebase, no sign-in, no network calls.
+Everything runs on mock data in `src/mock/`.
+
+## Documents
+
+- `docs/SDD.pdf`: the Software Design Document (v0.3), the authority on behavior.
+- `docs/SDD.txt`: plain-text copy of the SDD for search and for agents that can't read PDFs.
+- `docs/tasks/`: self-contained task briefs for the next pieces of work (start with `synth-playback.md`).
+- `AGENTS.md`: project rules and file map for coding agents (`CLAUDE.md` points to it).
+
+## Run it
+
+```bash
+npm install
+npm run dev
+```
+
+Then open http://localhost:5173. Needs Node 20.19+ (22 or newer recommended).
+
+- On a desktop browser the app runs inside an iPhone-sized frame (390×844).
+- `http://localhost:5173/?frame=0` shows it without the frame; on a phone it fills the screen.
+- `npm run build` type-checks and builds; `npm run typecheck` only type-checks.
+
+## Things to try
+
+| Song | Shows |
+| --- | --- |
+| Back Porch Chorus | Guitar and bass tabs, a few "?" notes on guitar and bass, and an unsure chord |
+| Old Mill Road | Everything confident: no "?" markers at all |
+| First Full Song | "No bass part found", tuning reported as an offset |
+| Lantern Light | Audio is on another iPhone: tab only, no synced playback; tuning "Unknown" |
+| Sunday Morning Idea / Phone Recording 04 | Processing and Failed states (tap Retry on Phone Recording 04 and it finishes) |
+
+On a song: press play, change speed, tap **A-B** once at the start bar and again at the end bar,
+tap a note or bar number to jump, scroll away during playback to get **Back to playhead**,
+press and hold (or right-click) a note to edit it, tap an empty spot on a string for **+ Add note**,
+tap a chord name for its diagram, and open **Mix** to hear the other part: **Mute my part** silences
+the instrument you are playing, or set a volume for each. Pick **Chords** instead of **Tab** to see the song as its chord
+progression: a strip of chord diagrams, then the bars with the playing chord highlighted. **Undo** reverts tab edits.
+
+## Real vs. mocked
+
+| Real (works as in the app) | Mocked |
+| --- | --- |
+| All screens, navigation, light/dark/system appearance | Sign-in: every option is a fake "Continue" |
+| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits and library changes are saved in this browser; Settings has "Reset demo data" |
+| Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
+| Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that shows "Processing" for about 8 seconds, then turns Ready with a sample tab and a "Your tab is ready" banner or toast (the tab is not made from your audio) |
+| Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |
+| Terms of Use and Privacy Policy screens (Settings > About) | Their wording is placeholder text (`src/legalText.ts`) |
+
+## Where things live
+
+- `src/playback/clock.ts`: the `PlaybackClock` interface (the one clock for song time, RC-18/DD-14) and
+  `SimulatedClock`, the silent clock used when the song's audio is on another device.
+- `src/playback/SynthClock.ts`: the clock `SongScreen` uses otherwise. Song time comes from `AudioContext.currentTime`,
+  and the shown tab's notes are synthesized with Web Audio. To use real audio, implement the interface around an
+  audio player instead; the UI does not change.
+- `src/playback/usePlayback.ts`: the single `requestAnimationFrame` loop that drives everything synced.
+- `src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), chords view (`ChordView`), practice bar, note editor, chord popover, edits.
+- `src/mock/`: data types (match the SDD's stored tab format, RC-20), songs, tab data, in-memory store.
+- `src/device/`: the desktop phone frame and simulated status bar.

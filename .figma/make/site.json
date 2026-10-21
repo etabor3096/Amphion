@@ -1,0 +1,10 @@
+{
+  "description": "This app empowers beginner and intermediate guitar and bass players to learn songs by ear, offering AI-generated tabs, playback features, and a personal library.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
