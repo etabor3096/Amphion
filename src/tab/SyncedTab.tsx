@@ -1,14 +1,22 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { editTranscription, undoLastEdit, useUndoCount } from "../mock/store";
-import type { Instrument, Transcription } from "../mock/types";
+import type { Instrument, TabNote, Transcription } from "../mock/types";
 import type { PlaybackClock } from "../playback/clock";
 import { usePlaybackFrame, usePlaybackState } from "../playback/usePlayback";
+import ChordView from "./ChordView";
 import { addNote, confirmNote, deleteNote, isUnsure, moveNoteToString, renameChord, setNoteFret } from "./edits";
 import { barIndexAt, describePosition, getBars, getRows, rowIndexAt, slotLengthAt } from "./layout";
 import NoteEditorSheet from "./NoteEditorSheet";
 import PracticeBar from "./PracticeBar";
 import TabView from "./TabView";
 import { useAutoFollow } from "./useAutoFollow";
+
+type SongView = "tab" | "chords";
+
+/** Volume (0 to 1) of each part Amphion plays. */
+export type Mix = Record<Instrument, number>;
+
+const defaultMix = (shown: Instrument): Mix => ({ guitar: shown === "guitar" ? 1 : 0, bass: shown === "bass" ? 1 : 0 });
 
 interface SyncedTabProps {
   songId: number;
@@ -38,10 +46,13 @@ function BassIcon() {
  */
 export default function SyncedTab({ songId, transcription, clock, audioAvailable, defaultInstrument }: SyncedTabProps) {
   const [instrument, setInstrument] = useState<Instrument>(defaultInstrument);
+  const [view, setView] = useState<SongView>("tab");
   const [time, setTime] = useState(() => clock.currentTime());
   const [pendingLoopStart, setPendingLoopStart] = useState<number | null>(null);
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   const [hintDismissed, setHintDismissed] = useState(hintDismissedThisSession);
+  // null = the default mix (the shown instrument at full volume); set once the user changes it.
+  const [mixOverride, setMixOverride] = useState<Mix | null>(null);
   const { playing, rate, loop } = usePlaybackState(clock);
   const undoCount = useUndoCount(songId);
   const follow = useAutoFollow(playing && audioAvailable);
@@ -50,14 +61,33 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
   const rows = useMemo(() => getRows(bars), [bars]);
   const tab = transcription[instrument];
   const notes = tab?.notes ?? [];
+  const guitarNotes = transcription.guitar?.notes;
+  const bassNotes = transcription.bass?.notes;
+  const mix = mixOverride ?? defaultMix(instrument);
   const editingNote = editingNoteId ? notes.find((note) => note.id === editingNoteId) : undefined;
-  const unsureCount = notes.filter(isUnsure).length + transcription.chords.filter(isUnsure).length;
+  const unsureChordCount = transcription.chords.filter(isUnsure).length;
+  const unsureCount = notes.filter(isUnsure).length + unsureChordCount;
+  const chordsView = view === "chords";
+  const showHint = !hintDismissed && (chordsView ? unsureChordCount > 0 : Boolean(tab) && unsureCount > 0);
 
   // The single per-frame update: song time from the clock → state for drawing → auto-scroll.
   usePlaybackFrame(clock, (songTime) => {
     setTime(songTime);
     if (audioAvailable) follow.step(rowIndexAt(rows, songTime));
   });
+
+  // The synth clock plays the parts in the mix; a clock that can only play one part gets the loudest.
+  useEffect(() => {
+    const parts: { instrument: Instrument; notes: TabNote[]; volume: number }[] = [];
+    if (guitarNotes) parts.push({ instrument: "guitar", notes: guitarNotes, volume: mix.guitar });
+    if (bassNotes) parts.push({ instrument: "bass", notes: bassNotes, volume: mix.bass });
+    if (clock.setAudibleParts) {
+      clock.setAudibleParts(parts);
+      return;
+    }
+    const loudest = parts.reduce<(typeof parts)[number] | null>((best, part) => (part.volume > (best?.volume ?? 0) ? part : best), null);
+    clock.setAudibleNotes?.(loudest?.notes ?? []);
+  }, [clock, guitarNotes, bassNotes, mix.guitar, mix.bass]);
 
   // Keep the screen awake while a song plays (US-12), where the browser supports it.
   useEffect(() => {
@@ -124,18 +154,28 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
     setInstrument(next);
   };
 
+  const switchView = (next: SongView) => {
+    setEditingNoteId(null);
+    setView(next);
+  };
+
   return (
     <>
       <section className="tab-section" aria-labelledby="tab-title">
         <div className="song-section-heading">
           <div>
             <span>{instrument === "guitar" ? "Guitar" : "Bass"} · {bars.length} bars</span>
-            <h2 id="tab-title">{instrument === "guitar" ? "Guitar tab" : "Bass tab"}</h2>
+            <h2 id="tab-title">{chordsView ? "Chords" : instrument === "guitar" ? "Guitar tab" : "Bass tab"}</h2>
           </div>
           <button className="tab-undo-button" type="button" disabled={undoCount === 0} onClick={() => undoLastEdit(songId)} aria-label="Undo last tab edit">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>
             Undo
           </button>
+        </div>
+
+        <div className="segmented-control song-view-switch" role="group" aria-label="Song view">
+          <button type="button" className={!chordsView ? "selected" : ""} aria-pressed={!chordsView} onClick={() => switchView("tab")}>Tab</button>
+          <button type="button" className={chordsView ? "selected" : ""} aria-pressed={chordsView} onClick={() => switchView("chords")}>Chords</button>
         </div>
 
         <div className="song-instrument-switch" role="group" aria-label="Tab instrument">
@@ -148,17 +188,17 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
           </button>
         </div>
 
-        {tab && (
+        {!chordsView && tab && (
           <p className="tab-explainer">
             Each line is a string. Each number is the fret to press (0 = open string).{" "}
             {audioAvailable ? "Tap a note to jump there; press and hold it to edit." : "Press and hold a note to edit it."}
           </p>
         )}
 
-        {tab && unsureCount > 0 && !hintDismissed && (
+        {showHint && (
           <div className="tab-confidence-hint" role="note">
             <span className="tab-flag" aria-hidden="true">?</span>
-            <p><strong>? = Amphion isn't sure about this note.</strong> Check it by ear.</p>
+            <p><strong>? = Amphion isn't sure about this {chordsView ? "chord" : "note"}.</strong> Check it by ear.</p>
             <button
               type="button"
               aria-label="Dismiss hint"
@@ -172,7 +212,20 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
           </div>
         )}
 
-        {tab ? (
+        {chordsView ? (
+          <ChordView
+            transcription={transcription}
+            instrument={instrument}
+            bars={bars}
+            rows={rows}
+            time={time}
+            canSeek={audioAvailable}
+            loop={loop}
+            rowRef={follow.rowRef}
+            onSeek={seek}
+            onRenameChord={(chordId, name) => edit((current) => renameChord(current, chordId, name))}
+          />
+        ) : tab ? (
           <TabView
             transcription={transcription}
             instrument={instrument}
@@ -193,7 +246,7 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
           <div className="bass-empty-state" role="status">
             <span><BassIcon /></span>
             <strong>No bass part found</strong>
-            <p>Amphion couldn't hear a bass in this recording. Switch to Guitar to see the tab.</p>
+            <p>Amphion couldn't hear a bass in this recording.</p>
           </div>
         )}
       </section>
@@ -213,6 +266,11 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
             rate={rate}
             loop={loop}
             pendingLoopStart={pendingLoopStart}
+            instrument={instrument}
+            mix={mix}
+            hasBass={Boolean(bassNotes)}
+            onMixChange={setMixOverride}
+            onResetMix={() => setMixOverride(null)}
             onToggleLoop={toggleLoop}
             onScrub={(songTime) => {
               clock.seek(songTime);
@@ -227,7 +285,7 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
         </section>
       )}
 
-      {editingNote && (
+      {editingNote && !chordsView && (
         <NoteEditorSheet
           instrument={instrument}
           note={editingNote}

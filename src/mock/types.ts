@@ -15,12 +15,13 @@ export interface LibrarySong {
   title: string;
   artist?: string;
   folder?: string;
-  /** Short label shown on the card, e.g. "Today", "Sep 28". */
-  added: string;
+  /** When the song was added (ms since epoch). The card's "Today" / "Sep 28" label is derived from it. */
   addedAt: number;
   /** Audio length as m:ss. */
   length: string;
   status: SongStatus;
+  /** When a processing song will turn Ready (epoch ms). Songs without it stay as they are. */
+  readyAt?: number;
   /** Which generated default artwork to show (1-4). */
   art: number;
   photo?: string;

@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import EditSongDialog, { type SongDetails } from "./EditSongDialog";
+import { useAddedLabel } from "./mock/songs";
 import type { Instrument, LibrarySong, Transcription } from "./mock/types";
-import { SimulatedClock } from "./playback/clock";
+import { SimulatedClock, type PlaybackClock } from "./playback/clock";
+import { SynthClock } from "./playback/SynthClock";
 import { usePlaybackState } from "./playback/usePlayback";
 import SyncedTab from "./tab/SyncedTab";
 
@@ -9,7 +12,7 @@ interface SongScreenProps {
   transcription: Transcription;
   defaultInstrument: Instrument;
   onBack: () => void;
-  onRename: (title: string) => void;
+  onEditDetails: (details: SongDetails) => void;
   onPhotoChange: (photo?: string) => void;
   onDelete: () => void;
 }
@@ -44,15 +47,17 @@ function describeTuning(cents: number | null) {
   };
 }
 
-export default function SongScreen({ song, transcription, defaultInstrument, onBack, onRename, onPhotoChange, onDelete }: SongScreenProps) {
-  const { title, artist, length, added, folder, art, photo, audioOnThisDevice } = song;
-  // One playback clock per open song. Swap SimulatedClock for a real audio-backed clock later.
-  const [clock] = useState(() => new SimulatedClock(transcription.duration));
+export default function SongScreen({ song, transcription, defaultInstrument, onBack, onEditDetails, onPhotoChange, onDelete }: SongScreenProps) {
+  const { title, artist, length, folder, art, photo, audioOnThisDevice } = song;
+  const added = useAddedLabel(song.addedAt);
+  // One playback clock per open song. The synth clock makes sound; a song whose audio is on another device stays silent.
+  const [clock] = useState<PlaybackClock & { dispose?(): void }>(() =>
+    audioOnThisDevice && window.AudioContext ? new SynthClock(transcription.duration) : new SimulatedClock(transcription.duration),
+  );
   const { playing } = usePlaybackState(clock);
   const [detailInfo, setDetailInfo] = useState<"key" | "tempo" | "tuning" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [renameOpen, setRenameOpen] = useState(false);
-  const [renameValue, setRenameValue] = useState(title);
+  const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [headerCollapsed, setHeaderCollapsed] = useState(false);
   const [photoActionsOpen, setPhotoActionsOpen] = useState(false);
@@ -61,7 +66,13 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => () => clock.pause(), [clock]);
+  useEffect(
+    () => () => {
+      clock.pause();
+      clock.dispose?.();
+    },
+    [clock],
+  );
 
   useEffect(() => {
     const handleScroll = () => setHeaderCollapsed(window.scrollY > 300);
@@ -115,16 +126,17 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
           <span>{length} <i aria-hidden="true">·</i> Added {added}{folder && <><i aria-hidden="true">·</i> {folder}</>}</span>
         </div>
         <div className="song-hero-actions">
-          <button
-            className="hero-play-button"
-            type="button"
-            disabled={!audioOnThisDevice}
-            onClick={() => (playing ? clock.pause() : clock.play())}
-            aria-label={!audioOnThisDevice ? "Playback unavailable on this iPhone" : playing ? "Pause song" : "Play song"}
-          >
-            <SongIcon name={playing ? "pause" : "play"} />
-            {playing ? "Pause" : "Play"}
-          </button>
+          {audioOnThisDevice && (
+            <button
+              className="hero-play-button"
+              type="button"
+              onClick={() => (playing ? clock.pause() : clock.play())}
+              aria-label={playing ? "Pause song" : "Play song"}
+            >
+              <SongIcon name={playing ? "pause" : "play"} />
+              {playing ? "Pause" : "Play"}
+            </button>
+          )}
           <button className="change-photo-button" type="button" onClick={() => setPhotoActionsOpen(true)}>
             <SongIcon name="camera" />
             Change Photo
@@ -189,24 +201,19 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
         <div className="modal-backdrop" role="presentation" onClick={() => setMenuOpen(false)}>
           <div className="action-sheet" role="dialog" aria-modal="true" aria-label={`Actions for ${title}`} onClick={(event) => event.stopPropagation()}>
             <p>{title}</p>
-            <button type="button" onClick={() => { setRenameValue(title); setMenuOpen(false); setRenameOpen(true); }}>Rename</button>
+            <button type="button" onClick={() => { setMenuOpen(false); setEditOpen(true); }}>Edit details</button>
             <button className="destructive" type="button" onClick={() => { setMenuOpen(false); setDeleteOpen(true); }}>Delete</button>
             <button className="cancel-action" type="button" onClick={() => setMenuOpen(false)}>Cancel</button>
           </div>
         </div>
       )}
 
-      {renameOpen && (
-        <div className="modal-backdrop">
-          <div className="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="rename-song-title">
-            <h2 id="rename-song-title">Rename song</h2>
-            <label><span className="sr-only">Song name</span><input autoFocus value={renameValue} onChange={(event) => setRenameValue(event.target.value)} /></label>
-            <div>
-              <button className="dialog-cancel" type="button" onClick={() => setRenameOpen(false)}>Cancel</button>
-              <button className="dialog-confirm" type="button" onClick={() => { if (renameValue.trim()) onRename(renameValue.trim()); setRenameOpen(false); }}>Save</button>
-            </div>
-          </div>
-        </div>
+      {editOpen && (
+        <EditSongDialog
+          song={song}
+          onSave={(details) => { onEditDetails(details); setEditOpen(false); }}
+          onCancel={() => setEditOpen(false)}
+        />
       )}
 
       {deleteOpen && (

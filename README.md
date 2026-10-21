@@ -31,33 +31,38 @@ Then open http://localhost:5173. Needs Node 20.19+ (22 or newer recommended).
 
 | Song | Shows |
 | --- | --- |
-| Back Porch Chorus | Guitar and bass tabs, a few "?" notes and an unsure chord |
+| Back Porch Chorus | Guitar and bass tabs, a few "?" notes on guitar and bass, and an unsure chord |
 | Old Mill Road | Everything confident: no "?" markers at all |
 | First Full Song | "No bass part found", tuning reported as an offset |
 | Lantern Light | Audio is on another iPhone: tab only, no synced playback; tuning "Unknown" |
-| Sunday Morning Idea / Phone Recording 04 | Processing and Failed states |
+| Sunday Morning Idea / Phone Recording 04 | Processing and Failed states (tap Retry on Phone Recording 04 and it finishes) |
 
 On a song: press play, change speed, tap **A-B** once at the start bar and again at the end bar,
 tap a note or bar number to jump, scroll away during playback to get **Back to playhead**,
 press and hold (or right-click) a note to edit it, tap an empty spot on a string for **+ Add note**,
-and tap a chord name for its diagram. **Undo** reverts tab edits.
+tap a chord name for its diagram, and open **Mix** to hear the other part: **Mute my part** silences
+the instrument you are playing, or set a volume for each. Pick **Chords** instead of **Tab** to see the song as its chord
+progression: a strip of chord diagrams, then the bars with the playing chord highlighted. **Undo** reverts tab edits.
 
 ## Real vs. mocked
 
 | Real (works as in the app) | Mocked |
 | --- | --- |
 | All screens, navigation, light/dark/system appearance | Sign-in: every option is a fake "Continue" |
-| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits live in memory and reset on reload |
-| Tab layout, confidence markers, note editor, chord picker, undo | Audio: a simulated clock stands in for the audio player (no sound) |
-| Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that stays "Processing" |
+| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits and library changes are saved in this browser; Settings has "Reset demo data" |
+| Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
+| Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that shows "Processing" for about 8 seconds, then turns Ready with a sample tab and a "Your tab is ready" banner or toast (the tab is not made from your audio) |
 | Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |
+| Terms of Use and Privacy Policy screens (Settings > About) | Their wording is placeholder text (`src/legalText.ts`) |
 
 ## Where things live
 
 - `src/playback/clock.ts`: the `PlaybackClock` interface (the one clock for song time, RC-18/DD-14) and
-  `SimulatedClock`. To use real audio, implement the interface around an audio player and pass it to
-  `SongScreen` instead; the UI does not change.
+  `SimulatedClock`, the silent clock used when the song's audio is on another device.
+- `src/playback/SynthClock.ts`: the clock `SongScreen` uses otherwise. Song time comes from `AudioContext.currentTime`,
+  and the shown tab's notes are synthesized with Web Audio. To use real audio, implement the interface around an
+  audio player instead; the UI does not change.
 - `src/playback/usePlayback.ts`: the single `requestAnimationFrame` loop that drives everything synced.
-- `src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), practice bar, note editor, chord popover, edits.
+- `src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), chords view (`ChordView`), practice bar, note editor, chord popover, edits.
 - `src/mock/`: data types (match the SDD's stored tab format, RC-20), songs, tab data, in-memory store.
 - `src/device/`: the desktop phone frame and simulated status bar.
