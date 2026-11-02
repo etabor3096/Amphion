@@ -12,6 +12,9 @@ Everything runs on mock data in `src/mock/`.
 - `docs/SDD.pdf`: the Software Design Document (v0.3), the authority on behavior.
 - `docs/SDD.txt`: plain-text copy of the SDD for search and for agents that can't read PDFs.
 - `docs/tasks/`: self-contained task briefs for the next pieces of work (start with `synth-playback.md`).
+- `ARCHITECTURE.md`: components, data flow, allowed calls and the rules every change must keep.
+- `POLICY.md`: product scope, privacy, accounts, legal limits, user-facing wording and agent permissions.
+- `ROADMAP.md`: build phases P0 to P8 and the G1 accuracy gate. Tasks and status live in the GitHub Project.
 - `AGENTS.md`: project rules and file map for coding agents (`CLAUDE.md` points to it).
 
 ## Run it
