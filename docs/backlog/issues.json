@@ -1,0 +1,1114 @@
+{
+  "repo": "etabor3096/Amphion",
+  "phases": {
+    "P0": "Foundations",
+    "P1": "Pipeline Spike and Benchmark",
+    "P2": "Accounts and App Shell",
+    "P3": "Audio Input and Submission",
+    "P4": "Processing Service",
+    "P5": "Tab View and Synced Playback",
+    "P6": "Confidence and Editing",
+    "P7": "Library and Account Management",
+    "P8": "Accessibility and MVP Hardening"
+  },
+  "existing": [
+    {
+      "number": 33,
+      "phase": "P0",
+      "priority": "P1",
+      "area": "devops",
+      "seq": 1,
+      "note": "Build check on PRs into dev (React demo). Kept; P0-05 extends it to the iOS app and pipeline."
+    },
+    {
+      "number": 32,
+      "phase": "P2",
+      "priority": "P2",
+      "area": "ios",
+      "seq": 19,
+      "note": "Create account view in the React demo. Done in the demo; the native version is P2-02."
+    },
+    {
+      "number": 34,
+      "phase": "P2",
+      "priority": "P0",
+      "area": "firebase",
+      "seq": 17,
+      "note": "Firebase Auth parent. P2-02, P2-03 and P7-07 become its sub-issues."
+    },
+    {
+      "number": 29,
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "seq": 37,
+      "note": "US-12 parent. P5-04 to P5-09 become its sub-issues next to #30 and #31."
+    },
+    {
+      "number": 30,
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "seq": 40,
+      "note": "Closed: playhead and auto-scroll done in the React demo. The native version is P5-05."
+    },
+    {
+      "number": 31,
+      "phase": "P5",
+      "priority": "P1",
+      "area": "ios",
+      "seq": 41,
+      "note": "Bluetooth delay correction (RC-18). Kept as is; depends on P5-05."
+    }
+  ],
+  "issues": [
+    {
+      "key": "P0-01",
+      "title": "[P0-01] Set up the repo layout for the native app, pipeline and Firebase config",
+      "phase": "P0",
+      "priority": "P0",
+      "area": "devops",
+      "labels": [
+        "phase:P0",
+        "area:devops",
+        "ai-generated"
+      ],
+      "seq": 2,
+      "parent": null,
+      "deps": [
+        "#33"
+      ],
+      "body": "**Phase:** P0 Foundations \u00b7 **Plan key:** `P0-01` \u00b7 **Priority:** P0\n\n### Context\nThe repo holds only the React demo today. The native app, the processing pipeline, the Firebase rules and the benchmark need predictable homes before any agent starts writing code.\n\n### SDD traceability\n- SDD 5.1 three-part system (iOS app, Firebase, Python processing)\n- DD-04 native SwiftUI client\n- RC-06 secrets never committed\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P0\n\n### Scope\n- Move the React demo into `demo/` and fix its scripts and the #33 workflow paths (OD-02).\n- Add top-level folders `ios/`, `pipeline/`, `firebase/` and `benchmark/`, each with a short README saying what belongs there.\n- Add a root `.gitignore` covering Xcode, Python, Firebase emulator data, `.env` files and `GoogleService-Info.plist` (OD-03).\n- Update `AGENTS.md` and `README.md` with the new layout.\n\n### Out of scope and guardrails\n- No app, pipeline or rules code yet.\n- Do not delete the demo; it stays the UI reference.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] `demo/` runs with `npm install && npm run dev` exactly as before.\n- [ ] The four new folders exist with READMEs.\n- [ ] `git status` stays clean after building the demo and running the emulators (ignored files are ignored).\n- [ ] `AGENTS.md` lists every top-level folder and its purpose.\n\n### Dependencies\n- Blocked by #33\n\n### Verification\n- Run the demo from `demo/`.\n- Open a PR into `dev` and confirm the #33 build check still passes.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P0-02",
+      "title": "[P0-02] Create the SwiftUI Xcode project (iOS 17) with app and test targets",
+      "phase": "P0",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P0",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 3,
+      "parent": null,
+      "deps": [
+        "P0-01"
+      ],
+      "body": "**Phase:** P0 Foundations \u00b7 **Plan key:** `P0-02` \u00b7 **Priority:** P0\n\n### Context\nEvery client issue needs a building app. This creates the empty project the rest of the iOS work grows in.\n\n### SDD traceability\n- DD-04 native SwiftUI client\n- RC-14 iPhone on iOS 17 or later\n- SDD 5.1 Swift + SwiftUI\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P0\n\n### Scope\n- Xcode project `ios/Amphion.xcodeproj` with an `Amphion` app target (iPhone only, iOS 17 minimum) and an `AmphionTests` unit test target.\n- Swift Package Manager for dependencies (Firebase SDK is added in P2).\n- Folder groups: `App/`, `Features/` (one folder per screen), `Services/`, `Models/`, `DesignSystem/`.\n- A placeholder root view that says Amphion.\n\n### Out of scope and guardrails\n- No Firebase, sign-in or screens yet.\n- No iPad, Mac Catalyst or visionOS destinations (RC-14).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] `xcodebuild -scheme Amphion -destination 'platform=iOS Simulator,name=iPhone 16' build test` succeeds.\n- [ ] The deployment target is iOS 17.0 and the only supported destination is iPhone.\n- [ ] The app launches in the simulator and shows the placeholder.\n\n### Dependencies\n- Blocked by {{P0-01}}\n\n### Verification\n- Run the `xcodebuild` command above on the Mac.\n- Launch in the iPhone simulator.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P0-03",
+      "title": "[P0-03] Create the Firebase project (human-owned) and register the iOS app",
+      "phase": "P0",
+      "priority": "P0",
+      "area": "firebase",
+      "labels": [
+        "phase:P0",
+        "area:firebase",
+        "ai-generated",
+        "human-task"
+      ],
+      "seq": 4,
+      "parent": null,
+      "deps": [],
+      "body": "**Phase:** P0 Foundations \u00b7 **Plan key:** `P0-03` \u00b7 **Priority:** P0 \u00b7 **Human task**\n\n### Context\nThe Firebase and Google Cloud project must be owned by Elijah's account, with AiDev given a limited role, as decided in Lab 2. An agent must not create or own it.\n\n### SDD traceability\n- SDD 5.1 Firebase Auth, Firestore, Storage, Cloud Messaging\n- RC-06 secrets and credentials\n- #34 human owns the project, AiDev never Owner\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P0\n\n### Scope\n- Elijah creates the Firebase project on his own Google account and turns on Auth, Firestore, Storage and Cloud Messaging.\n- Register the iOS bundle ID and download `GoogleService-Info.plist` (kept out of git, OD-03).\n- Give the AiDev Google account a limited IAM role (for example Firebase Develop Admin on this project only), never Owner.\n- Set a budget alert on the Cloud billing account.\n- Record the project ID and region in `ARCHITECTURE.md`.\n\n### Out of scope and guardrails\n- No rules or functions deployed yet.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The project owner is Elijah's account; AiDev's role is listed and is not Owner or Editor.\n- [ ] Auth, Firestore, Storage and Cloud Messaging are enabled.\n- [ ] A budget alert exists.\n- [ ] No credentials are committed to the repo.\n\n### Dependencies\n- None\n\n### Verification\n- Screenshot the IAM page for the video.\n- Search the repo for `GoogleService-Info` and API keys; nothing tracked.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P0-04",
+      "title": "[P0-04] Set up the Firebase Emulator Suite and a deny-by-default rules test harness",
+      "phase": "P0",
+      "priority": "P0",
+      "area": "firebase",
+      "labels": [
+        "phase:P0",
+        "area:firebase",
+        "ai-generated"
+      ],
+      "seq": 5,
+      "parent": null,
+      "deps": [
+        "P0-01",
+        "P0-03"
+      ],
+      "body": "**Phase:** P0 Foundations \u00b7 **Plan key:** `P0-04` \u00b7 **Priority:** P0\n\n### Context\nSecurity rules are the backend's only gate for the app's direct Firestore and Storage access. They need automated tests that run locally and in CI before any feature relies on them.\n\n### SDD traceability\n- RC-01 authentication on every request\n- RC-02 per-user data isolation\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P0\n\n### Scope\n- `firebase/firebase.json`, `firestore.rules` and `storage.rules` that deny everything by default.\n- Emulator config for Auth, Firestore, Storage and Functions.\n- A rules test suite (`@firebase/rules-unit-testing`) with a first test proving an unauthenticated read is denied.\n- `npm test` in `firebase/` runs the suite against the emulators.\n\n### Out of scope and guardrails\n- Per-user rules come in P2-04.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] `firebase emulators:exec 'npm test'` passes locally.\n- [ ] The default rules deny all reads and writes.\n- [ ] No production deploy happens from this issue.\n\n### Dependencies\n- Blocked by {{P0-01}}\n- Blocked by {{P0-03}}\n\n### Verification\n- Run the emulator test command.\n- Change a rule to allow-all and confirm the test fails.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P0-05",
+      "title": "[P0-05] CI: build and test the iOS app, the pipeline and the rules on PRs into dev",
+      "phase": "P0",
+      "priority": "P1",
+      "area": "devops",
+      "labels": [
+        "phase:P0",
+        "area:devops",
+        "ai-generated"
+      ],
+      "seq": 6,
+      "parent": null,
+      "deps": [
+        "P0-02",
+        "P0-04",
+        "#33"
+      ],
+      "body": "**Phase:** P0 Foundations \u00b7 **Plan key:** `P0-05` \u00b7 **Priority:** P1\n\n### Context\nAiDev can merge into `dev` without a human approval, so CI is what keeps broken code out. #33 covers the demo; this covers the real product.\n\n### SDD traceability\n- Lab 2 dev-integration ruleset (AiDev self-merges into dev with 0 approvals)\n- #33 build check\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P0\n\n### Scope\n- GitHub Actions jobs, each running only when its folder changes: iOS (`macos` runner, `xcodebuild build test`), pipeline (`pytest`), Firebase rules (emulator tests).\n- Add the jobs as required checks in the `dev-integration` ruleset.\n- Cache SwiftPM and pip to keep runs short.\n\n### Out of scope and guardrails\n- No deploy steps. No workflow may start a coding agent or use secrets beyond the default token.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A PR that breaks the iOS build, a pipeline test or a rules test cannot merge into `dev`.\n- [ ] Jobs skip when their folder is unchanged.\n- [ ] Workflows use no repository secrets.\n\n### Dependencies\n- Blocked by {{P0-02}}\n- Blocked by {{P0-04}}\n- Blocked by #33\n\n### Verification\n- Open a test PR with a failing test and show the blocked merge.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P0-06",
+      "title": "[P0-06] Set up an AiDev account on the MacBook for iOS work",
+      "phase": "P0",
+      "priority": "P0",
+      "area": "devops",
+      "labels": [
+        "phase:P0",
+        "area:devops",
+        "ai-generated",
+        "human-task"
+      ],
+      "seq": 7,
+      "parent": null,
+      "deps": [
+        "P0-02"
+      ],
+      "body": "**Phase:** P0 Foundations \u00b7 **Plan key:** `P0-06` \u00b7 **Priority:** P0 \u00b7 **Human task**\n\n### Context\nThe Lab 2 AiDev environment is a Windows account, but Xcode runs only on macOS. iOS issues need an equally limited AiDev environment on the MacBook.\n\n### SDD traceability\n- Lab 2 AiDev least-privilege environment\n- OD-01\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P0\n\n### Scope\n- Create a Standard (non-admin) macOS user for AiDev.\n- Install Xcode, Git, GitHub CLI, Node, Python and Claude Code for that user; sign in to GitHub as the AiDev account only.\n- Confirm AiDev cannot read Elijah's home folder or change system settings.\n- Write the setup steps in `ARCHITECTURE.md` under Development environments.\n\n### Out of scope and guardrails\n- No Apple ID with payment details on the AiDev account.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] AiDev can clone, build P0-02 and push a branch as the AiDev GitHub account.\n- [ ] AiDev is not an administrator on the Mac.\n- [ ] Commits from this account show the AiDev author.\n\n### Dependencies\n- Blocked by {{P0-02}}\n\n### Verification\n- Show the user list and an AiDev commit on GitHub.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P0-07",
+      "title": "[P0-07] Add ARCHITECTURE.md, POLICY.md and ROADMAP.md and point AGENTS.md at them",
+      "phase": "P0",
+      "priority": "P0",
+      "area": "docs",
+      "labels": [
+        "phase:P0",
+        "area:docs",
+        "ai-generated"
+      ],
+      "seq": 8,
+      "parent": null,
+      "deps": [
+        "P0-01"
+      ],
+      "body": "**Phase:** P0 Foundations \u00b7 **Plan key:** `P0-07` \u00b7 **Priority:** P0\n\n### Context\nAgents need durable context that is true across every issue. This is HW/Lab 3 Challenge 2.\n\n### SDD traceability\n- Whole SDD (sections 4, 5, 7)\n- Implementation Plan Sections 2, 6\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P0\n\n### Scope\n- `ARCHITECTURE.md`: components, data flow, technology boundaries, allowed calls, and rules agents must keep (one clock, upload-triggered pipeline, audio deletion, no secrets).\n- `POLICY.md`: product rules, terminology, privacy, accounts, legal and ethical limits, and user-facing language.\n- `ROADMAP.md`: phases P0 to P8 and the G1 gate, stating that the GitHub Project and Issues are the authority for tasks and status.\n- `AGENTS.md` tells agents to read all three before starting any issue.\n\n### Out of scope and guardrails\n- Do not copy the SDD into these files; link to it by ID.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] All three files are in the repo root.\n- [ ] Each file's purpose is clear from its first paragraph.\n- [ ] Nothing in them contradicts the SDD or this plan.\n- [ ] ROADMAP.md names the GitHub Project as the source of truth for tasks.\n\n### Dependencies\n- Blocked by {{P0-01}}\n\n### Verification\n- Elijah reads each file and marks the issue Reviewed.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P1-01",
+      "title": "[P1-01] Prove Demucs, Basic Pitch, madmom and librosa install together in one container",
+      "phase": "P1",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P1",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 9,
+      "parent": null,
+      "deps": [
+        "P0-01"
+      ],
+      "body": "**Phase:** P1 Pipeline Spike and Benchmark \u00b7 **Plan key:** `P1-01` \u00b7 **Priority:** P0\n\n### Context\nmadmom's last release is from 2018, and Demucs and Basic Pitch pin their own ML library versions. If they cannot share one container, the pipeline design changes, so this is checked first.\n\n### SDD traceability\n- RISK-04 library compatibility\n- DD-02 pretrained models\n- SDD 5.1 technology table\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P1\n\n### Scope\n- `pipeline/Dockerfile` and pinned `requirements.txt` with one Python version.\n- A smoke test that imports all four libraries and runs each on a 10-second test clip.\n- Notes in `pipeline/README.md` on any library built from source or pinned, and why.\n\n### Out of scope and guardrails\n- No note-to-tab logic yet.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] `docker build` succeeds from a clean cache.\n- [ ] The smoke test passes inside the container.\n- [ ] If a library cannot be used, the issue records it and names an alternative for Elijah to approve; the agent does not swap libraries silently.\n\n### Dependencies\n- Blocked by {{P0-01}}\n\n### Verification\n- Run the smoke test in the container and paste its output in the PR.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P1-02",
+      "title": "[P1-02] Build the 10-song benchmark set with hand-checked reference tabs",
+      "phase": "P1",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P1",
+        "area:pipeline",
+        "ai-generated",
+        "human-task"
+      ],
+      "seq": 10,
+      "parent": null,
+      "deps": [
+        "P0-01"
+      ],
+      "body": "**Phase:** P1 Pipeline Spike and Benchmark \u00b7 **Plan key:** `P1-02` \u00b7 **Priority:** P0 \u00b7 **Human task**\n\n### Context\nAccuracy can only be measured against songs whose correct tab is known. Elijah picks the songs and checks the reference tabs by hand; an agent can format them but cannot invent the answers.\n\n### SDD traceability\n- RC-10 accuracy benchmark\n- RISK-01 go/no-go checkpoint\n- RISK-03 recording quality\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P1\n\n### Scope\n- At least 10 songs Elijah has the right to use, including uploaded files and phone-mic recordings, and songs with a bass part.\n- A reference file per song in the RC-20 note format: notes with pitch, start, length, string and fret, plus beats and chord segments.\n- Store the audio privately, not in the public repo (OD-04); commit only the reference files and a manifest.\n\n### Out of scope and guardrails\n- No copyrighted audio in the repo.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The manifest lists 10 or more songs with input type (upload or mic) and instruments.\n- [ ] Every reference file passes a schema check.\n- [ ] Elijah has checked each reference by ear.\n\n### Dependencies\n- Blocked by {{P0-01}}\n\n### Verification\n- Run the schema check over `benchmark/references/`.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P1-03",
+      "title": "[P1-03] Benchmark scoring harness: note F-measure, string and fret accuracy, chord accuracy",
+      "phase": "P1",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P1",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 11,
+      "parent": null,
+      "deps": [
+        "P1-02"
+      ],
+      "body": "**Phase:** P1 Pipeline Spike and Benchmark \u00b7 **Plan key:** `P1-03` \u00b7 **Priority:** P0\n\n### Context\nRISK-01 and every later pipeline change are judged by one repeatable score. The harness must follow RC-10 exactly.\n\n### SDD traceability\n- RC-10 scoring rules (pitch match, onset within 50 ms)\n- RISK-01 F-measure and chord accuracy bars\n- SDD 8 mir_eval\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P1\n\n### Scope\n- `benchmark/score.py` using mir_eval: note precision, recall and F-measure (pitch match, onset within 50 ms), scored separately for guitar and bass and for uploads and mic recordings.\n- String and fret accuracy, scored separately from note detection.\n- Chord accuracy as the share of beats whose chord matches the reference.\n- A markdown report written to `benchmark/reports/<date>.md`.\n\n### Out of scope and guardrails\n- Do not change the 50 ms window or the bars in RISK-01.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Scoring a reference against itself gives 100% on every metric.\n- [ ] Unit tests cover an extra note, a missed note and a note 60 ms late.\n- [ ] The report shows every metric per song and in total.\n\n### Dependencies\n- Blocked by {{P1-02}}\n\n### Verification\n- `pytest benchmark/` passes.\n- Attach a sample report to the PR.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P1-04",
+      "title": "[P1-04] Pipeline command-line prototype: audio file in, RC-20 tab data out",
+      "phase": "P1",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P1",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 12,
+      "parent": null,
+      "deps": [
+        "P1-01"
+      ],
+      "body": "**Phase:** P1 Pipeline Spike and Benchmark \u00b7 **Plan key:** `P1-04` \u00b7 **Priority:** P0\n\n### Context\nThis proves the whole analysis chain on a laptop before any cloud work. The P4 function will wrap this same code.\n\n### SDD traceability\n- DD-16 separate guitar and bass first\n- US-07 notes on the beat grid\n- US-09 key, tempo, tuning\n- RC-20 tab data format\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P1\n\n### Scope\n- `pipeline/amphion_pipeline/` package with one function per stage: separate (Demucs 6-part), detect notes (Basic Pitch) per part, beats and downbeats, chords and key (madmom), tempo and tuning offset (librosa).\n- A CLI: `python -m amphion_pipeline song.wav -o result.json`.\n- Output in RC-20 shape. Each note's string and fret stay empty until P1-05; every value that cannot be found is null and reported as Unknown (RC-11).\n- Separated parts live only in a temp folder that is deleted on exit (RC-03).\n\n### Out of scope and guardrails\n- No string and fret assignment (P1-05).\n- No cloud code.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The CLI produces a valid RC-20 file for a benchmark song.\n- [ ] Times are in seconds from the start of the input file (RC-18).\n- [ ] The temp folder is gone after success and after an exception.\n- [ ] Each stage has a unit test on a short fixture clip.\n\n### Dependencies\n- Blocked by {{P1-01}}\n\n### Verification\n- Run the CLI on two benchmark songs.\n- Validate output against the RC-20 schema.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P1-05",
+      "title": "[P1-05] Tab-assignment module: choose beginner-friendly strings and frets (DD-15)",
+      "phase": "P1",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P1",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 13,
+      "parent": null,
+      "deps": [
+        "P1-04"
+      ],
+      "body": "**Phase:** P1 Pipeline Spike and Benchmark \u00b7 **Plan key:** `P1-05` \u00b7 **Priority:** P0\n\n### Context\nNo library applies Amphion's beginner rules, so this is project code. It takes detected notes and picks a string and fret for each one.\n\n### SDD traceability\n- DD-15 beginner-friendly string and fret choices\n- US-08 playable positions\n- SDD 5.1 tab-assignment module\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P1\n\n### Scope\n- A scored search over string and fret options with named, adjustable weights: prefer open strings and lower frets, keep simultaneous notes within a 4-fret span, avoid big hand jumps.\n- Hard rules: no two simultaneous notes on one string; positions shift correctly for the tuning offset.\n- Guitar (6 strings, standard tuning) and bass (4 strings).\n- Plug the module into the P1-04 CLI.\n\n### Out of scope and guardrails\n- No simplified fingerings or difficulty toggle (deferred, SDD 2.3).\n- Never drop a detected note to make a shape easier.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Unit tests prove each hard rule and that open position wins when the options tie.\n- [ ] Weights live in one config file with comments.\n- [ ] String and fret accuracy on the benchmark is reported by P1-03.\n\n### Design references\n- Demo source: [`src/music/tuning.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/music/tuning.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P1-04}}\n\n### Verification\n- `pytest pipeline/`.\n- Run the benchmark and attach the report.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P1-06",
+      "title": "[P1-06] Run the RISK-01 accuracy checkpoint and record the G1 go/no-go decision",
+      "phase": "P1",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P1",
+        "area:pipeline",
+        "ai-generated",
+        "human-task"
+      ],
+      "seq": 14,
+      "parent": null,
+      "deps": [
+        "P1-03",
+        "P1-05"
+      ],
+      "body": "**Phase:** P1 Pipeline Spike and Benchmark \u00b7 **Plan key:** `P1-06` \u00b7 **Priority:** P0 \u00b7 **Human task**\n\n### Context\nThis is gate G1. If guitar note accuracy on uploaded files misses the bar, the MVP falls back to the synced chord chart. The decision is Elijah's.\n\n### SDD traceability\n- RISK-01 tab accuracy checkpoint\n- OQ-07 proposed 60% bar\n- DD-01 tablature first, chords as fallback\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P1\n\n### Scope\n- Run the pipeline and scoring over the full benchmark.\n- First run 2 or 3 songs to confirm the 60% bar is sensible (OQ-07) and record the result.\n- Write `docs/decisions/G1-accuracy.md` with the scores, the bar and Elijah's go or no-go.\n\n### Out of scope and guardrails\n- An agent must not lower either bar or switch to the fallback without this measurement and Elijah's decision.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The report covers all benchmark songs, split by upload and mic.\n- [ ] The decision file states go or no-go and is signed off by Elijah.\n- [ ] If no-go, follow-up issues are opened to change P4 and P5 to the chord-chart fallback.\n\n### Dependencies\n- Blocked by {{P1-03}}\n- Blocked by {{P1-05}}\n\n### Verification\n- Elijah reviews the report and records the decision.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P1-07",
+      "title": "[P1-07] Measure processing time for a 3-minute song on CPU",
+      "phase": "P1",
+      "priority": "P1",
+      "area": "pipeline",
+      "labels": [
+        "phase:P1",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 15,
+      "parent": null,
+      "deps": [
+        "P1-04"
+      ],
+      "body": "**Phase:** P1 Pipeline Spike and Benchmark \u00b7 **Plan key:** `P1-07` \u00b7 **Priority:** P1\n\n### Context\nStem separation is slow on CPU. Knowing the real time early decides the Cloud Run sizing and whether a GPU is needed (OD-06).\n\n### SDD traceability\n- RC-08 under 2 minutes from upload to Ready\n- RISK-02 processing time and cost\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P1\n\n### Scope\n- Time each stage of the pipeline on a 3-minute song inside the container, at 2, 4 and 8 vCPU.\n- Add the timings to `pipeline/README.md`.\n\n### Out of scope and guardrails\n- No switch to GPU without a cost check and Elijah's approval.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A timing table per stage and CPU size is recorded.\n- [ ] The issue states whether RC-08 looks reachable on CPU.\n\n### Dependencies\n- Blocked by {{P1-04}}\n\n### Verification\n- Re-run one timing and compare.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P2-01",
+      "title": "[P2-01] App shell: tab bar (Library, Add Song, Settings), theme and appearance",
+      "phase": "P2",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P2",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 16,
+      "parent": null,
+      "deps": [
+        "P0-02"
+      ],
+      "body": "**Phase:** P2 Accounts and App Shell \u00b7 **Plan key:** `P2-01` \u00b7 **Priority:** P0\n\n### Context\nEvery screen hangs off this shell. It also sets up the warm orange and cream look, light and dark, used in the prototype.\n\n### SDD traceability\n- SDD 6.1 experience flow\n- Figure 2 UX flow\n- RC-14 iPhone, iOS 17\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P2\n\n### Scope\n- Bottom tab bar with Library, Add Song and Settings (empty screens for now).\n- `DesignSystem/` with color and type tokens matching the demo, light and dark.\n- Appearance setting: System, Light, Dark, saved on the device.\n- Bottom padding so the tab bar never covers the last list item (SDD 6.3).\n\n### Out of scope and guardrails\n- No sign-in gate yet (P2-02).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The three tabs switch screens.\n- [ ] Appearance changes apply immediately and persist after relaunch.\n- [ ] Colors match the demo in both themes.\n\n### Design references\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n- Demo screen `05-add-song`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/05-add-song.png\" width=\"260\" alt=\"05-add-song\">\n- Demo screen `06-settings`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/06-settings.png\" width=\"260\" alt=\"06-settings\">\n- Demo source: [`src/designTokens.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/designTokens.ts) (behavior reference, do not port line for line)\n- Demo source: [`src/index.css`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/index.css) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P0-02}}\n\n### Verification\n- Screenshots in light and dark compared with the demo.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P2-02",
+      "title": "[P2-02] Email and password sign-up, sign-in and password reset with Firebase Auth",
+      "phase": "P2",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P2",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 18,
+      "parent": "#34",
+      "deps": [
+        "P2-01",
+        "P0-03"
+      ],
+      "body": "**Phase:** P2 Accounts and App Shell \u00b7 **Plan key:** `P2-02` \u00b7 **Priority:** P0\n**Parent:** #34\n\n### Context\nThe native version of the demo sign-in and Create account views (#32). Everything except sign-in requires an account (RC-01).\n\n### SDD traceability\n- US-01 create account and sign in\n- RC-01 authentication\n- DD-10 provider-managed credentials\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P2\n\n### Scope\n- Add the Firebase iOS SDK (Auth) through Swift Package Manager.\n- Sign-in screen and Create account view as in the demo, with the same password rules.\n- Forgot password sends a reset email.\n- Auth gate: signed-out users see only sign-in; signed-in users land on Library.\n- Sign out from Settings.\n\n### Out of scope and guardrails\n- Apple and Google sign-in (P2-03).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A new email account reaches the Library.\n- [ ] A wrong password shows an error and never grants access.\n- [ ] Signing out and back in shows the same account.\n- [ ] A reset email arrives and the new password works.\n- [ ] Works against the Auth emulator in tests.\n\n### Design references\n- Demo screen `01-sign-in`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/01-sign-in.png\" width=\"260\" alt=\"01-sign-in\">\n- Demo screen `02-create-account`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/02-create-account.png\" width=\"260\" alt=\"02-create-account\">\n- Demo source: [`src/LoginPage.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/LoginPage.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P2-01}}\n- Blocked by {{P0-03}}\n\n### Verification\n- UI test against the Auth emulator.\n- Manual run on a device.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P2-03",
+      "title": "[P2-03] Sign in with Apple and Google",
+      "phase": "P2",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P2",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 20,
+      "parent": "#34",
+      "deps": [
+        "P2-02"
+      ],
+      "body": "**Phase:** P2 Accounts and App Shell \u00b7 **Plan key:** `P2-03` \u00b7 **Priority:** P0\n**Parent:** #34\n\n### Context\nUS-01 needs all three sign-in methods. Sign in with Apple needs a paid Apple Developer Program membership (OD-05).\n\n### SDD traceability\n- US-01 three sign-in methods\n- DD-10 provider-managed credentials\n- OD-05 Apple Developer Program\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P2\n\n### Scope\n- Sign in with Apple through Firebase Auth (nonce flow).\n- Google sign-in through Firebase Auth.\n- Buttons as in the demo; signing in with an existing email links correctly.\n\n### Out of scope and guardrails\n- No password fields for Apple or Google users (DD-10).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Each method creates an account and reaches the Library.\n- [ ] Signing out and back in with the same method shows the same library.\n- [ ] Canceling the system sheet returns to sign-in without an error.\n\n### Design references\n- Demo screen `01-sign-in`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/01-sign-in.png\" width=\"260\" alt=\"01-sign-in\">\n- Demo source: [`src/LoginPage.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/LoginPage.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P2-02}}\n\n### Verification\n- Manual test of both methods on a real iPhone.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P2-04",
+      "title": "[P2-04] Per-user Firestore and Storage security rules with emulator tests",
+      "phase": "P2",
+      "priority": "P0",
+      "area": "firebase",
+      "labels": [
+        "phase:P2",
+        "area:firebase",
+        "ai-generated"
+      ],
+      "seq": 21,
+      "parent": null,
+      "deps": [
+        "P0-04"
+      ],
+      "body": "**Phase:** P2 Accounts and App Shell \u00b7 **Plan key:** `P2-04` \u00b7 **Priority:** P0\n\n### Context\nUsers may only ever touch their own data. These rules enforce it for every later feature.\n\n### SDD traceability\n- RC-02 per-user data isolation\n- RC-01 verify identity on every request\n- RC-04 private by design\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P2\n\n### Scope\n- Data paths: `users/{uid}`, `users/{uid}/songs/{songId}` with `tabs` chunks and `folders`, Storage `uploads/{uid}/...` and `artwork/{uid}/...`.\n- Owner-only read and write; only the processing service writes tab results and status.\n- Storage limits: audio types and size, image types and 1 MB (RC-07, RC-17).\n- Tests for: owner allowed, other user denied, signed-out denied, client cannot set status Ready.\n\n### Out of scope and guardrails\n- No sharing rules of any kind (RC-04).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] All rules tests pass in CI.\n- [ ] A second test user cannot read or write the first user's songs, tabs, folders, uploads or artwork.\n\n### Dependencies\n- Blocked by {{P0-04}}\n\n### Verification\n- Emulator rules tests.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P2-05",
+      "title": "[P2-05] Settings: Terms of Use and Privacy Policy screens",
+      "phase": "P2",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P2",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 22,
+      "parent": null,
+      "deps": [
+        "P2-01"
+      ],
+      "body": "**Phase:** P2 Accounts and App Shell \u00b7 **Plan key:** `P2-05` \u00b7 **Priority:** P1\n\n### Context\nSettings must link to Terms and a Privacy Policy, and the Terms must say users need the right to use their audio.\n\n### SDD traceability\n- RC-16 Terms and Privacy\n- RISK-05 user-provided audio\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P2\n\n### Scope\n- Settings rows for Terms of Use and Privacy Policy opening readable screens.\n- Text taken from the demo's `legalText.ts` after Elijah approves it (OD-07).\n- App version row.\n\n### Out of scope and guardrails\n- The agent does not write new legal terms.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Both screens open from Settings and scroll.\n- [ ] The Terms state that users must have the right to use audio they record or upload.\n\n### Design references\n- Demo screen `06-settings`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/06-settings.png\" width=\"260\" alt=\"06-settings\">\n- Demo source: [`src/legalText.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/legalText.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P2-01}}\n\n### Verification\n- Manual check in the simulator.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P3-01",
+      "title": "[P3-01] Local audio store: keep the exact file and record its duration and fingerprint",
+      "phase": "P3",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P3",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 23,
+      "parent": null,
+      "deps": [
+        "P0-02"
+      ],
+      "body": "**Phase:** P3 Audio Input and Submission \u00b7 **Plan key:** `P3-01` \u00b7 **Priority:** P0\n\n### Context\nThe tab is timed against the uploaded file, so playback must use exactly that file. The app keeps a copy and a hash to prove it matches.\n\n### SDD traceability\n- RC-19 same audio for analysis and playback\n- RC-03 the phone keeps its local copy\n- OQ-03 second-device playback\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P3\n\n### Scope\n- A `LocalAudioStore` service that copies a recording or imported file into the app container without trimming or re-encoding.\n- SHA-256 fingerprint and duration for each file.\n- Lookup by song ID, and a check that the stored hash still matches.\n\n### Out of scope and guardrails\n- No upload yet (P3-05).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A stored file's hash equals the original file's hash.\n- [ ] A missing or changed file is reported as not matching.\n- [ ] Unit tests cover store, lookup, mismatch and delete.\n\n### Dependencies\n- Blocked by {{P0-02}}\n\n### Verification\n- Unit tests.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P3-02",
+      "title": "[P3-02] Record a song with the microphone (up to 3 minutes)",
+      "phase": "P3",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P3",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 24,
+      "parent": null,
+      "deps": [
+        "P3-01",
+        "P2-01"
+      ],
+      "body": "**Phase:** P3 Audio Input and Submission \u00b7 **Plan key:** `P3-02` \u00b7 **Priority:** P0\n\n### Context\nUsers can transcribe a song playing nearby or their own playing. Recording only happens while the user chooses.\n\n### SDD traceability\n- US-04 record with the microphone\n- RC-05 microphone use\n- RC-07 3-minute limit\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P3\n\n### Scope\n- Microphone screen as in the demo: permission explainer, then Record, Stop and Replay.\n- `NSMicrophoneUsageDescription` in plain words.\n- Auto-stop at 3:00 with a visible timer.\n- The saved file goes to the local audio store (P3-01).\n\n### Out of scope and guardrails\n- No background or always-on recording (RC-05).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Start, stop and replay work.\n- [ ] Recording stops by itself at 3 minutes.\n- [ ] Denying permission shows how to turn it on in Settings.\n- [ ] Recording stops if the app goes to the background.\n\n### Design references\n- Demo screen `08-record`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/08-record.png\" width=\"260\" alt=\"08-record\">\n- Demo screen `05-add-song`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/05-add-song.png\" width=\"260\" alt=\"05-add-song\">\n\n### Dependencies\n- Blocked by {{P3-01}}\n- Blocked by {{P2-01}}\n\n### Verification\n- Manual test on an iPhone, including denying permission.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P3-03",
+      "title": "[P3-03] Import an audio file (MP3, M4A, WAV up to 3 minutes)",
+      "phase": "P3",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P3",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 25,
+      "parent": null,
+      "deps": [
+        "P3-01",
+        "P2-01"
+      ],
+      "body": "**Phase:** P3 Audio Input and Submission \u00b7 **Plan key:** `P3-03` \u00b7 **Priority:** P0\n\n### Context\nUsers can transcribe songs they already have as files.\n\n### SDD traceability\n- US-05 upload an audio file\n- RC-07 input limits\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P3\n\n### Scope\n- Upload Audio File opens the system document picker filtered to MP3, M4A and WAV.\n- Check type and duration on the device before going further.\n- Clear messages for an unsupported type and for over 3 minutes.\n- Accepted files go to the local audio store (P3-01).\n\n### Out of scope and guardrails\n- No streaming links (SDD 2.3).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] MP3, M4A and WAV files up to 3:00 are accepted.\n- [ ] Other types and longer files are rejected with a message that says why.\n- [ ] Add Song shows the supported types and the limit.\n\n### Design references\n- Demo screen `05-add-song`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/05-add-song.png\" width=\"260\" alt=\"05-add-song\">\n\n### Dependencies\n- Blocked by {{P3-01}}\n- Blocked by {{P2-01}}\n\n### Verification\n- Try one file of each type plus a 3:30 file and a PDF.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P3-04",
+      "title": "[P3-04] Review step: replay, name, artist and folder before submitting",
+      "phase": "P3",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P3",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 26,
+      "parent": null,
+      "deps": [
+        "P3-02",
+        "P3-03"
+      ],
+      "body": "**Phase:** P3 Audio Input and Submission \u00b7 **Plan key:** `P3-04` \u00b7 **Priority:** P1\n\n### Context\nAfter recording or importing, the user checks the audio and names the song before it is sent for processing.\n\n### SDD traceability\n- SDD 6.1 review step\n- DD-12 artist entered by the user\n- US-16 folder choice\n- SDD 6.3 recording tips card\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P3\n\n### Scope\n- Review screen: replay the audio, song name (required), artist (optional), folder (optional, from the user's folders).\n- Recording tips card on Add Song.\n- Submit hands off to P3-05.\n\n### Out of scope and guardrails\n- No automatic song or artist recognition (DD-12).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Submit is disabled until the song has a name.\n- [ ] Artist and folder are optional.\n- [ ] Canceling discards the local file.\n\n### Design references\n- Demo screen `05-add-song`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/05-add-song.png\" width=\"260\" alt=\"05-add-song\">\n- Demo source: [`src/MainApp.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/MainApp.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P3-02}}\n- Blocked by {{P3-03}}\n\n### Verification\n- Manual walk-through for both record and import.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P3-05",
+      "title": "[P3-05] Upload the audio and create the song record with status Processing",
+      "phase": "P3",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P3",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 27,
+      "parent": null,
+      "deps": [
+        "P3-04",
+        "P2-02",
+        "P2-04"
+      ],
+      "body": "**Phase:** P3 Audio Input and Submission \u00b7 **Plan key:** `P3-05` \u00b7 **Priority:** P0\n\n### Context\nSubmitting stores the song record and uploads the exact local file, which starts processing in the cloud (P4).\n\n### SDD traceability\n- DD-05 upload-triggered pipeline\n- US-06 Processing state\n- RC-19 duration and fingerprint on the record\n- RC-07 checked again on the backend\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P3\n\n### Scope\n- Create `users/{uid}/songs/{songId}` with title, artist, folder, duration, hash, created date and status Processing.\n- Upload the file unchanged to `uploads/{uid}/{songId}` with upload progress.\n- Return to the Library, where the song shows Processing.\n- A failed upload can be retried from the local copy.\n\n### Out of scope and guardrails\n- The app never calls the processing service directly (DD-05).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The Storage object's hash matches the local file's hash.\n- [ ] The song shows Processing in the Library right after submit.\n- [ ] Turning off the network mid-upload shows a retry, not a stuck state.\n\n### Design references\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n\n### Dependencies\n- Blocked by {{P3-04}}\n- Blocked by {{P2-02}}\n- Blocked by {{P2-04}}\n\n### Verification\n- Run against the emulators and check the record and the object.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P4-01",
+      "title": "[P4-01] Upload-triggered Cloud Run function skeleton with ownership checks and guaranteed audio deletion",
+      "phase": "P4",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P4",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 28,
+      "parent": null,
+      "deps": [
+        "P0-04",
+        "P2-04",
+        "P1-04"
+      ],
+      "body": "**Phase:** P4 Processing Service \u00b7 **Plan key:** `P4-01` \u00b7 **Priority:** P0\n\n### Context\nThe cloud side of processing. Its most important rule: the uploaded audio is deleted however the job ends.\n\n### SDD traceability\n- DD-05 upload-triggered pipeline\n- RC-03 delete audio when the job finishes or fails\n- RC-01 verify identity\n- RC-07 backend re-check\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P4\n\n### Scope\n- Python Cloud Run function triggered when an object lands in `uploads/{uid}/{songId}`.\n- Check that the song record exists, belongs to that uid and is Processing; re-check type and duration.\n- Set status Failed on any rejection.\n- Delete the uploaded object in a `finally` block on every path.\n- Deploy script for the human-owned project; emulator tests.\n\n### Out of scope and guardrails\n- No analysis yet (P4-02).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A valid upload moves through the function and the object is deleted.\n- [ ] An over-length or wrong-type file ends Failed and is deleted.\n- [ ] An upload whose record belongs to another user is rejected and deleted.\n- [ ] No credentials in code; the function uses its service account.\n\n### Dependencies\n- Blocked by {{P0-04}}\n- Blocked by {{P2-04}}\n- Blocked by {{P1-04}}\n\n### Verification\n- Emulator tests for each path, then one test on the real project.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P4-02",
+      "title": "[P4-02] Run the transcription pipeline inside the function for guitar and bass",
+      "phase": "P4",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P4",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 29,
+      "parent": null,
+      "deps": [
+        "P4-01",
+        "P1-05",
+        "P1-06"
+      ],
+      "body": "**Phase:** P4 Processing Service \u00b7 **Plan key:** `P4-02` \u00b7 **Priority:** P0\n\n### Context\nConnects the proven P1 pipeline to the cloud function. Starts only after G1 is decided, because a no-go changes what this produces.\n\n### SDD traceability\n- US-07, US-08, US-09\n- DD-16 separation first\n- RC-11 Unknown instead of guessing\n- G1 decision (P1-06)\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P4\n\n### Scope\n- Package the P1 pipeline and tab-assignment module into the function image.\n- Produce guitar and bass results; mark bass as not found when there is no bass part.\n- Key, tempo and tuning offset, each null (Unknown) when not determined.\n- Separated parts stay in temp storage inside the job only.\n\n### Out of scope and guardrails\n- No storage of separated parts (RC-03).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A benchmark song produces the same result in the function as in the CLI.\n- [ ] A song without bass produces a not-found bass result, not an empty tab.\n- [ ] Nothing but results leaves the job.\n\n### Dependencies\n- Blocked by {{P4-01}}\n- Blocked by {{P1-05}}\n- Blocked by {{P1-06}}\n\n### Verification\n- Run two benchmark songs through the emulator function and diff with the CLI output.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P4-03",
+      "title": "[P4-03] Write results to Firestore in bar-range chunks, then flip status to Ready",
+      "phase": "P4",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P4",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 30,
+      "parent": null,
+      "deps": [
+        "P4-02"
+      ],
+      "body": "**Phase:** P4 Processing Service \u00b7 **Plan key:** `P4-03` \u00b7 **Priority:** P0\n\n### Context\nResults must fit Firestore's 1 MB document limit as songs grow, and the app must never see half a tab.\n\n### SDD traceability\n- RC-20 tab data format and chunking\n- RC-09 never show a partial tab\n- OQ-04 full-length songs later\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P4\n\n### Scope\n- Schema doc `firebase/SCHEMA.md` for the song record and `tabs/{instrument}_{chunk}` documents, with a schema version.\n- Write all chunks in a batch, then set status Ready with key, tempo, tuning and counts last.\n- Swift `Codable` models matching the schema, with decode tests.\n\n### Out of scope and guardrails\n- No client UI (P5).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] No chunk is over 500 KB for a 3-minute song.\n- [ ] Status is Ready only after every chunk is written.\n- [ ] The Swift models decode a real result from the emulator.\n\n### Design references\n- Demo source: [`src/mock/types.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/mock/types.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P4-02}}\n\n### Verification\n- Emulator integration test.\n- Swift decode unit test.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P4-04",
+      "title": "[P4-04] Failed state, timeouts and retry",
+      "phase": "P4",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P4",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 31,
+      "parent": null,
+      "deps": [
+        "P4-01",
+        "P3-05"
+      ],
+      "body": "**Phase:** P4 Processing Service \u00b7 **Plan key:** `P4-04` \u00b7 **Priority:** P0\n\n### Context\nA failed or timed-out job must show Failed with Retry. Because cloud audio is deleted, retry uploads the phone's copy again.\n\n### SDD traceability\n- US-06 Failed state with retry\n- RC-09 failure handling\n- RC-03 audio already deleted\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P4\n\n### Scope\n- Function timeout and error handling set status Failed with a short, plain reason.\n- A watchdog marks songs stuck in Processing past the timeout as Failed.\n- Retry in the app re-uploads from the local store and resets status to Processing.\n- A song with no local audio offers delete instead of retry.\n\n### Out of scope and guardrails\n- Never show a partial tab as complete.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A forced exception ends in Failed and the audio is gone.\n- [ ] A stuck job is marked Failed by the watchdog.\n- [ ] Retry from the Library reaches Ready on a good file.\n\n### Design references\n- Demo screen `17-library-failed-state`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/17-library-failed-state.png\" width=\"260\" alt=\"17-library-failed-state\">\n\n### Dependencies\n- Blocked by {{P4-01}}\n- Blocked by {{P3-05}}\n\n### Verification\n- Emulator test with a forced failure, then retry.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P4-05",
+      "title": "[P4-05] Push notification when a song is ready or failed",
+      "phase": "P4",
+      "priority": "P1",
+      "area": "firebase",
+      "labels": [
+        "phase:P4",
+        "area:firebase",
+        "ai-generated"
+      ],
+      "seq": 32,
+      "parent": null,
+      "deps": [
+        "P4-03",
+        "P2-02"
+      ],
+      "body": "**Phase:** P4 Processing Service \u00b7 **Plan key:** `P4-05` \u00b7 **Priority:** P1\n\n### Context\nUsers should not have to watch the screen while a song processes.\n\n### SDD traceability\n- US-06 notification when done\n- SDD 5.1 Firebase Cloud Messaging\n- OD-05 push needs the paid developer program\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P4\n\n### Scope\n- Register for notifications in the app and save the FCM token on the user record.\n- The function sends a notification on Ready or Failed.\n- Tapping it opens the song.\n- Settings toggle for Tab ready alerts.\n\n### Out of scope and guardrails\n- No marketing or other notification types.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] With the app in the background, a Ready song triggers a notification.\n- [ ] Turning the toggle off stops them.\n- [ ] Denied permission does not break processing.\n\n### Design references\n- Demo screen `06-settings`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/06-settings.png\" width=\"260\" alt=\"06-settings\">\n\n### Dependencies\n- Blocked by {{P4-03}}\n- Blocked by {{P2-02}}\n\n### Verification\n- Manual test on a real iPhone.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P4-06",
+      "title": "[P4-06] Measure end-to-end processing time on the deployed service",
+      "phase": "P4",
+      "priority": "P1",
+      "area": "pipeline",
+      "labels": [
+        "phase:P4",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 33,
+      "parent": null,
+      "deps": [
+        "P4-03",
+        "P3-05",
+        "P1-07"
+      ],
+      "body": "**Phase:** P4 Processing Service \u00b7 **Plan key:** `P4-06` \u00b7 **Priority:** P1\n\n### Context\nP1-07 measured the pipeline locally. This measures upload to Ready in the real cloud and records the cost per song.\n\n### SDD traceability\n- RC-08 under 2 minutes\n- RISK-02 time and cost\n- OD-06 CPU or GPU\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P4\n\n### Scope\n- Time upload to Ready for 5 benchmark songs of about 3 minutes.\n- Estimate cost per song at the chosen size.\n- Record results and any sizing change in `docs/decisions/`.\n\n### Out of scope and guardrails\n- Relaxing RC-08 or moving to GPU needs Elijah's decision.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Median and worst times are recorded.\n- [ ] The decision record states whether RC-08 is met.\n\n### Dependencies\n- Blocked by {{P4-03}}\n- Blocked by {{P3-05}}\n- Blocked by {{P1-07}}\n\n### Verification\n- Re-run one song and compare.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-01",
+      "title": "[P5-01] Render beat-synced tablature from the stored tab data",
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 34,
+      "parent": null,
+      "deps": [
+        "P1-05",
+        "P2-01"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-01` \u00b7 **Priority:** P0\n\n### Context\nThe main view of the app. It draws the tab from Firestore results, bar by bar.\n\n### SDD traceability\n- US-07 beat-synced tablature\n- RC-20 tab data\n- OQ-06 chord line above the tab\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Song screen with the playlist-style header (artwork, title, artist) and the tab below.\n- Six string lines for guitar, four for bass, labeled; bar lines from the beat grid; notes at their times with fret numbers; simultaneous notes stacked in one column.\n- Chord names in a line above the tab.\n- Short explainer of how to read tab (RC-13).\n- Smooth scrolling for a 3-minute song.\n- Load tab data through the P4-03 Swift models; until P4-03 lands, load a fixture JSON produced by the P1 CLI.\n\n### Out of scope and guardrails\n- No playback yet (P5-04).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A Ready song shows its tab with correct strings, frets and bars.\n- [ ] Chord names sit above the right beats.\n- [ ] Scrolling a 3-minute song stays smooth on an iPhone.\n\n### Design references\n- Demo screen `07-song-screen`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/07-song-screen.png\" width=\"260\" alt=\"07-song-screen\">\n- Demo screen `10-tab-view`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/10-tab-view.png\" width=\"260\" alt=\"10-tab-view\">\n- Demo source: [`src/tab/TabView.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/TabView.tsx) (behavior reference, do not port line for line)\n- Demo source: [`src/tab/TabRow.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/TabRow.tsx) (behavior reference, do not port line for line)\n- Demo source: [`src/tab/layout.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/layout.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P1-05}}\n- Blocked by {{P2-01}}\n\n### Verification\n- Snapshot tests of a fixture song.\n- Compare with the demo screenshot.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-02",
+      "title": "[P5-02] Switch between guitar and bass tabs; show No bass part found",
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 35,
+      "parent": null,
+      "deps": [
+        "P5-01"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-02` \u00b7 **Priority:** P0\n\n### Context\nPlayers pick their instrument. Guitar covers acoustic and electric.\n\n### SDD traceability\n- US-08 play the tab on my instrument\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Guitar or Bass switch on the Song screen.\n- Default instrument setting in Settings.\n- A clear No bass part found message when there is no bass result.\n\n### Out of scope and guardrails\n- No separate rhythm and lead tabs (RISK-06).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Switching changes the tab immediately.\n- [ ] The default instrument persists after relaunch.\n- [ ] A song with no bass shows the message, not an empty tab.\n\n### Design references\n- Demo screen `14-bass-tab`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/14-bass-tab.png\" width=\"260\" alt=\"14-bass-tab\">\n- Demo screen `06-settings`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/06-settings.png\" width=\"260\" alt=\"06-settings\">\n\n### Dependencies\n- Blocked by {{P5-01}}\n\n### Verification\n- Manual test with a fixture song that has no bass.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-03",
+      "title": "[P5-03] Show key, tempo and tuning, with Unknown and short explanations",
+      "phase": "P5",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 36,
+      "parent": null,
+      "deps": [
+        "P5-01"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-03` \u00b7 **Priority:** P1\n\n### Context\nPlayers need these to set up before playing.\n\n### SDD traceability\n- US-09 key, tempo, tuning\n- RC-11 Unknown, not guessed\n- RC-13 beginner language\n- OQ-05 tuning wording\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Key, Tempo and Tuning chips under the header; any null value shows Unknown.\n- An info button on each explains it in plain words (BPM, tuning offset).\n\n### Out of scope and guardrails\n- No named tunings (DD-08).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] All three show for every Ready song.\n- [ ] A null value shows Unknown.\n- [ ] Explanations use no technical ML terms.\n\n### Design references\n- Demo screen `07-song-screen`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/07-song-screen.png\" width=\"260\" alt=\"07-song-screen\">\n\n### Dependencies\n- Blocked by {{P5-01}}\n\n### Verification\n- Fixture with a null key.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-04",
+      "title": "[P5-04] Playback engine and the single song-time clock",
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 38,
+      "parent": "#29",
+      "deps": [
+        "P3-01",
+        "P5-01"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-04` \u00b7 **Priority:** P0\n**Parent:** #29\n\n### Context\nEverything synced reads song time from the audio player. A separate timer would drift. This issue builds the one clock the rest of P5 uses.\n\n### SDD traceability\n- RC-18 one clock for sync\n- DD-14 the audio player is the only clock\n- US-13 pitch-preserved speed\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- `PlaybackEngine` on AVAudioEngine with AVAudioUnitTimePitch, playing the local file for the song.\n- `currentSongTime()` read from the player's render time, in seconds.\n- Play, pause, seek; a display-refresh hook (CADisplayLink or TimelineView) that reads the clock each frame.\n- Audio session set up for playback.\n\n### Out of scope and guardrails\n- No other timer may drive synced UI, ever.\n- No highlight UI yet (P5-05).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Song time after pause, seek and resume matches the audio within 10 ms in a test.\n- [ ] There is no Timer or counter that advances song time anywhere in the app.\n- [ ] Unit tests cover seek and pause.\n\n### Design references\n- Demo source: [`src/playback/clock.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/playback/clock.ts) (behavior reference, do not port line for line)\n- Demo source: [`src/playback/usePlayback.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/playback/usePlayback.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P3-01}}\n- Blocked by {{P5-01}}\n\n### Verification\n- Unit tests.\n- Code search for Timer in Features/Song.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-05",
+      "title": "[P5-05] Playhead, note highlight and auto-scroll on iOS",
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 39,
+      "parent": "#29",
+      "deps": [
+        "P5-04"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-05` \u00b7 **Priority:** P0\n**Parent:** #29\n\n### Context\nThe native version of #30. The tab follows the song.\n\n### SDD traceability\n- US-12 play along with synced tabs\n- RC-18\n- #30 done in the demo\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Playhead line drawn at the current song time.\n- Notes sounding now are highlighted, not by color alone (RC-12).\n- Auto-scroll keeps the playhead on screen.\n- Scrolling by hand pauses auto-follow and shows Back to playhead.\n\n### Out of scope and guardrails\n- Bluetooth delay (#31).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The highlight stays within 50 ms of the sound on the speaker and wired headphones.\n- [ ] Auto-follow pauses on a manual scroll and Back to playhead restores it.\n- [ ] No dropped frames during normal playback on an iPhone.\n\n### Design references\n- Demo screen `11-synced-playback`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/11-synced-playback.png\" width=\"260\" alt=\"11-synced-playback\">\n- Demo source: [`src/tab/SyncedTab.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/SyncedTab.tsx) (behavior reference, do not port line for line)\n- Demo source: [`src/tab/useAutoFollow.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/useAutoFollow.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P5-04}}\n\n### Verification\n- Slow-motion video against a click track.\n- Manual scroll test.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-06",
+      "title": "[P5-06] Tap a note or bar to jump; scrub the timeline",
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 42,
+      "parent": "#29",
+      "deps": [
+        "P5-05"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-06` \u00b7 **Priority:** P0\n**Parent:** #29\n\n### Context\nPlayers jump straight to the part they want to practice.\n\n### SDD traceability\n- US-07 tap to jump\n- US-12 sync holds after scrubbing and jumps\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Tap a note or bar to seek there.\n- Progress slider in the practice bar for scrubbing.\n- Sync holds after every jump.\n\n### Out of scope and guardrails\n- Long press opens the editor (P6-03), not a seek.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Tapping a note starts playback at that note's time.\n- [ ] Scrubbing moves the playhead and audio together.\n- [ ] No drift after 20 jumps.\n\n### Design references\n- Demo screen `11-synced-playback`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/11-synced-playback.png\" width=\"260\" alt=\"11-synced-playback\">\n- Demo source: [`src/tab/PracticeBar.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/PracticeBar.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P5-05}}\n\n### Verification\n- Manual test with repeated jumps.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-07",
+      "title": "[P5-07] Slow down from 50% to 100% without changing pitch",
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 43,
+      "parent": "#29",
+      "deps": [
+        "P5-05"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-07` \u00b7 **Priority:** P0\n**Parent:** #29\n\n### Context\nBeginners practice hard parts slowly.\n\n### SDD traceability\n- US-13 slow the song down\n- RC-18 speed changes only song-time rate\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Speed menu 50, 60, 70, 75, 80, 90 and 100% in the practice bar.\n- AVAudioUnitTimePitch rate only; the tab data never changes.\n\n### Out of scope and guardrails\n- No pitch shifting or transposing.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Pitch is unchanged at every speed.\n- [ ] The playhead stays in sync at 50%.\n\n### Design references\n- Demo screen `16-speed`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/16-speed.png\" width=\"260\" alt=\"16-speed\">\n\n### Dependencies\n- Blocked by {{P5-05}}\n\n### Verification\n- Tuner app check at 50% and 100%.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-08",
+      "title": "[P5-08] A-B loop a section at any speed",
+      "phase": "P5",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 44,
+      "parent": "#29",
+      "deps": [
+        "P5-07"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-08` \u00b7 **Priority:** P0\n**Parent:** #29\n\n### Context\nPlayers repeat a tricky part until they learn it.\n\n### SDD traceability\n- US-14 loop a section\n- US-12 sync holds on every loop restart\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- A-B control: set A, set B, clear.\n- The loop region is shown on the tab.\n- Playback returns to A at B without a gap the user notices.\n\n### Out of scope and guardrails\n- No saved loops.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Playback repeats A to B until cleared.\n- [ ] Works at every speed.\n- [ ] The highlight is correct on every restart.\n\n### Design references\n- Demo screen `15-ab-loop`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/15-ab-loop.png\" width=\"260\" alt=\"15-ab-loop\">\n\n### Dependencies\n- Blocked by {{P5-07}}\n\n### Verification\n- Loop 10 times at 50% and watch for drift.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-09",
+      "title": "[P5-09] Keep the screen awake while playing, and handle missing local audio",
+      "phase": "P5",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 45,
+      "parent": "#29",
+      "deps": [
+        "P5-05",
+        "P3-01"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-09` \u00b7 **Priority:** P1\n**Parent:** #29\n\n### Context\nThe screen must not lock mid-song. A song opened on another iPhone has its tab but no audio.\n\n### SDD traceability\n- US-12 no auto-lock while playing\n- RC-19 hash check\n- OQ-03 second-device playback\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Turn off the idle timer only while playing.\n- On opening a song, check the local file and hash (P3-01).\n- If missing or changed, show the tab with a message that synced playback works only on the device that recorded or uploaded it, and disable Play.\n\n### Out of scope and guardrails\n- Never play a mismatched file.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The screen stays on while playing and can lock again when paused.\n- [ ] A song without matching audio shows the tab and the message, and Play is off.\n\n### Design references\n- Demo screen `17-library-failed-state`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/17-library-failed-state.png\" width=\"260\" alt=\"17-library-failed-state\">\n\n### Dependencies\n- Blocked by {{P5-05}}\n- Blocked by {{P3-01}}\n\n### Verification\n- Delete the local file in a debug build and open the song.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P5-10",
+      "title": "[P5-10] Tap a chord name to see its finger diagram",
+      "phase": "P5",
+      "priority": "P2",
+      "area": "ios",
+      "labels": [
+        "phase:P5",
+        "area:ios",
+        "ai-generated",
+        "blocked"
+      ],
+      "seq": 46,
+      "parent": null,
+      "deps": [
+        "P5-01"
+      ],
+      "body": "**Phase:** P5 Tab View and Synced Playback \u00b7 **Plan key:** `P5-10` \u00b7 **Priority:** P2\n> **Blocked on a decision:** OQ-06 must be settled by Elijah before work starts.\n\n### Context\nChord names above the tab open a finger diagram. Elijah is redesigning chord display (OQ-06), so this waits for that decision.\n\n### SDD traceability\n- US-08 chord diagram on tap\n- OQ-06 chord display redesign\n- RC-12 diagram text alternative\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P5\n\n### Scope\n- Tap a chord name to open a popover with its diagram.\n- Text alternative for VoiceOver, for example G major, open position.\n\n### Out of scope and guardrails\n- Do not start until OQ-06 is decided; follow the new design.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Every detected chord name opens a diagram.\n- [ ] VoiceOver reads the text alternative.\n\n### Design references\n- Demo screen `12-chord-popover`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/12-chord-popover.png\" width=\"260\" alt=\"12-chord-popover\">\n- Demo source: [`src/tab/ChordPopover.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/ChordPopover.tsx) (behavior reference, do not port line for line)\n- Demo source: [`src/tab/ChordDiagram.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/ChordDiagram.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P5-01}}\n\n### Verification\n- Manual test with VoiceOver on.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P6-01",
+      "title": "[P6-01] Calibrate the low-confidence thresholds for notes and chord names",
+      "phase": "P6",
+      "priority": "P0",
+      "area": "pipeline",
+      "labels": [
+        "phase:P6",
+        "area:pipeline",
+        "ai-generated"
+      ],
+      "seq": 47,
+      "parent": null,
+      "deps": [
+        "P1-03",
+        "P4-02"
+      ],
+      "body": "**Phase:** P6 Confidence and Editing \u00b7 **Plan key:** `P6-01` \u00b7 **Priority:** P0\n\n### Context\nFlags only help if the flagged notes are the likely-wrong ones. Thresholds are set from the benchmark, not guessed.\n\n### SDD traceability\n- OQ-01 confidence threshold\n- RC-10 benchmark\n- DD-06 show uncertainty\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P6\n\n### Scope\n- Using benchmark results, choose a note threshold and a chord threshold so flagged items are mostly wrong ones.\n- Store both in pipeline config; the pipeline writes a low-confidence flag per note and chord.\n- Record the chosen values and the precision of the flags.\n\n### Out of scope and guardrails\n- Elijah approves the final values.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Both thresholds are in config, not code.\n- [ ] The report shows what share of flagged notes were actually wrong.\n\n### Dependencies\n- Blocked by {{P1-03}}\n- Blocked by {{P4-02}}\n\n### Verification\n- Re-run scoring with the thresholds.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P6-02",
+      "title": "[P6-02] Show low-confidence markers on notes and chord names",
+      "phase": "P6",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P6",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 48,
+      "parent": null,
+      "deps": [
+        "P5-01",
+        "P6-01"
+      ],
+      "body": "**Phase:** P6 Confidence and Editing \u00b7 **Plan key:** `P6-02` \u00b7 **Priority:** P0\n\n### Context\nBeginners cannot judge accuracy by ear, so the app shows where to double-check.\n\n### SDD traceability\n- US-10 see where Amphion is unsure\n- RC-11 honest output\n- RC-12 not color alone\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P6\n\n### Scope\n- Dotted outline and a ? badge on flagged notes and chord names.\n- A dismissible explainer the first time.\n- Library card summary, for example 7 notes, 1 chord to check.\n\n### Out of scope and guardrails\n- Never hide a flagged note.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Flagged notes and chords show the marker without relying on color.\n- [ ] A song with no flags shows no markers.\n- [ ] The Library card count matches the Song screen.\n\n### Design references\n- Demo screen `10-tab-view`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/10-tab-view.png\" width=\"260\" alt=\"10-tab-view\">\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n\n### Dependencies\n- Blocked by {{P5-01}}\n- Blocked by {{P6-01}}\n\n### Verification\n- Fixture song with and without flags.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P6-03",
+      "title": "[P6-03] Note editor: change fret, move string, delete, and add a note",
+      "phase": "P6",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P6",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 49,
+      "parent": null,
+      "deps": [
+        "P5-01"
+      ],
+      "body": "**Phase:** P6 Confidence and Editing \u00b7 **Plan key:** `P6-03` \u00b7 **Priority:** P0\n\n### Context\nPlayers and teachers fix the transcription to match what they hear.\n\n### SDD traceability\n- US-11 correct a note\n- RC-20 user-edited flag\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P6\n\n### Scope\n- Press and hold a note to open the editor sheet: change fret, move to another string at the same pitch, delete.\n- Add a note on any string at a beat position.\n- An edited note is marked user-edited and loses its low-confidence marker.\n\n### Out of scope and guardrails\n- No techniques like bends or slides (SDD 2.3).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Each edit shows immediately.\n- [ ] Move-string only offers strings where the pitch is playable.\n- [ ] Edited notes show no ? marker.\n\n### Design references\n- Demo source: [`src/tab/NoteEditorSheet.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/NoteEditorSheet.tsx) (behavior reference, do not port line for line)\n- Demo source: [`src/tab/edits.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/edits.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P5-01}}\n\n### Verification\n- Unit tests for the edit functions.\n- Manual test.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P6-04",
+      "title": "[P6-04] Correct a chord name from a chord picker",
+      "phase": "P6",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P6",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 50,
+      "parent": null,
+      "deps": [
+        "P6-03"
+      ],
+      "body": "**Phase:** P6 Confidence and Editing \u00b7 **Plan key:** `P6-04` \u00b7 **Priority:** P1\n\n### Context\nChord names can be wrong too.\n\n### SDD traceability\n- US-11 correct a chord name\n- OQ-06 chord display\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P6\n\n### Scope\n- Pick a new chord name for a chord segment from a list.\n- The corrected chord is user-edited and loses its marker.\n\n### Out of scope and guardrails\n- Follow OQ-06 if the chord display changes.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] The new chord name shows above the tab.\n- [ ] It persists after relaunch (with P6-05).\n\n### Design references\n- Demo source: [`src/tab/ChordView.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/tab/ChordView.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P6-03}}\n\n### Verification\n- Manual test.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P6-05",
+      "title": "[P6-05] Save edits to Firestore and undo during the session",
+      "phase": "P6",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P6",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 51,
+      "parent": null,
+      "deps": [
+        "P6-03",
+        "P4-03"
+      ],
+      "body": "**Phase:** P6 Confidence and Editing \u00b7 **Plan key:** `P6-05` \u00b7 **Priority:** P0\n\n### Context\nEdits must survive a relaunch, and a mistake must be easy to take back.\n\n### SDD traceability\n- US-11 undo and persist\n- US-02 reopens with the same edits\n- RC-20 chunks\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P6\n\n### Scope\n- Write edits to the affected tab chunk.\n- Session undo stack with an Undo button.\n- Edits made offline sync when the network returns.\n\n### Out of scope and guardrails\n- No edit history across sessions.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Edits persist after relaunch.\n- [ ] Undo reverses edits in order.\n- [ ] Only the edited chunk is rewritten.\n\n### Design references\n- Demo screen `10-tab-view`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/10-tab-view.png\" width=\"260\" alt=\"10-tab-view\">\n- Demo source: [`src/mock/store.ts`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/mock/store.ts) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P6-03}}\n- Blocked by {{P4-03}}\n\n### Verification\n- Edit, force-quit, reopen.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P7-01",
+      "title": "[P7-01] Library list with live Processing, Ready and Failed states",
+      "phase": "P7",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P7",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 52,
+      "parent": null,
+      "deps": [
+        "P3-05",
+        "P4-03"
+      ],
+      "body": "**Phase:** P7 Library and Account Management \u00b7 **Plan key:** `P7-01` \u00b7 **Priority:** P0\n\n### Context\nThe Library is the home screen. It listens to Firestore so status changes show at once.\n\n### SDD traceability\n- US-02 save transcriptions to my library\n- US-06 track processing status\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P7\n\n### Scope\n- Song cards: artwork, title, artist, date, length, folder, key, tempo and flag count.\n- Processing, Ready and Failed states with Retry on Failed (P4-04).\n- Live updates from Firestore; works after relaunch.\n- Empty state for a new user.\n\n### Out of scope and guardrails\n- Search and filters (P7-04).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A finished song appears with its title and date.\n- [ ] Status changes show without pulling to refresh.\n- [ ] The list is the same after relaunch.\n\n### Design references\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n- Demo screen `17-library-failed-state`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/17-library-failed-state.png\" width=\"260\" alt=\"17-library-failed-state\">\n- Demo source: [`src/MainApp.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/MainApp.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P3-05}}\n- Blocked by {{P4-03}}\n\n### Verification\n- Process a song and watch the card change.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P7-02",
+      "title": "[P7-02] Rename and delete a song",
+      "phase": "P7",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P7",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 53,
+      "parent": null,
+      "deps": [
+        "P7-01"
+      ],
+      "body": "**Phase:** P7 Library and Account Management \u00b7 **Plan key:** `P7-02` \u00b7 **Priority:** P0\n\n### Context\nKeep the library tidy.\n\n### SDD traceability\n- US-03 manage my library\n- RC-17 artwork deleted with its song\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P7\n\n### Scope\n- More actions menu: Edit details (title, artist) and Delete.\n- Delete asks for confirmation, then removes the song record, its tab chunks, its artwork and the local audio.\n\n### Out of scope and guardrails\n- No bulk delete.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A rename persists after relaunch.\n- [ ] A deleted song no longer appears or opens, and its cloud data and local file are gone.\n\n### Design references\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n- Demo source: [`src/EditSongDialog.tsx`](https://github.com/etabor3096/Amphion/blob/a00aed13d46751ae5887d147293059b01b82afc1/src/EditSongDialog.tsx) (behavior reference, do not port line for line)\n\n### Dependencies\n- Blocked by {{P7-01}}\n\n### Verification\n- Delete a song and check Firestore, Storage and the app container.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P7-03",
+      "title": "[P7-03] Folders: create, rename, delete and move songs",
+      "phase": "P7",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P7",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 54,
+      "parent": null,
+      "deps": [
+        "P7-01"
+      ],
+      "body": "**Phase:** P7 Library and Account Management \u00b7 **Plan key:** `P7-03` \u00b7 **Priority:** P1\n\n### Context\nTeachers and worship players group songs.\n\n### SDD traceability\n- US-16 organize songs into folders\n- DD-11 one folder per song\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P7\n\n### Scope\n- Folder chips with song counts and All Songs.\n- Create, rename and delete folders; deleting asks first and moves its songs back to All Songs.\n- Move a song into a folder or out.\n\n### Out of scope and guardrails\n- A song is in at most one folder (DD-11).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] All folder actions persist after relaunch.\n- [ ] Deleting a folder never deletes songs.\n- [ ] Counts are correct.\n\n### Design references\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n\n### Dependencies\n- Blocked by {{P7-01}}\n\n### Verification\n- Manual test and a Firestore check.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P7-04",
+      "title": "[P7-04] Search, filter and sort the library",
+      "phase": "P7",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P7",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 55,
+      "parent": null,
+      "deps": [
+        "P7-01"
+      ],
+      "body": "**Phase:** P7 Library and Account Management \u00b7 **Plan key:** `P7-04` \u00b7 **Priority:** P1\n\n### Context\nFind a song fast as the library grows.\n\n### SDD traceability\n- US-17 search, filter and sort\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P7\n\n### Scope\n- Search by title or artist, ignoring case.\n- Filter menu: date saved (Last 7 days, Last 30 days, custom range) and one or more artists.\n- Sort: Newest, Oldest, Song name A-Z, Artist A-Z.\n- Active filters as removable chips with Clear all; No songs match message.\n\n### Out of scope and guardrails\n- No server-side search.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Every rule in the US-17 pass/fail check holds.\n- [ ] No matches shows No songs match, not a blank screen.\n\n### Design references\n- Demo screen `04-filter-sort`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/04-filter-sort.png\" width=\"260\" alt=\"04-filter-sort\">\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n\n### Dependencies\n- Blocked by {{P7-01}}\n\n### Verification\n- Unit tests for the filter and sort logic.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P7-05",
+      "title": "[P7-05] Song artwork: default art, choose or take a photo, crop and upload",
+      "phase": "P7",
+      "priority": "P2",
+      "area": "ios",
+      "labels": [
+        "phase:P7",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 56,
+      "parent": null,
+      "deps": [
+        "P7-01",
+        "P2-04"
+      ],
+      "body": "**Phase:** P7 Library and Account Management \u00b7 **Plan key:** `P7-05` \u00b7 **Priority:** P2\n\n### Context\nArtwork makes the library easy to scan and follows the user to other iPhones.\n\n### SDD traceability\n- US-18 set song artwork\n- RC-17 artwork images\n- DD-13 artwork stored in the cloud\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P7\n\n### Scope\n- Generated default artwork for every song.\n- Change Photo: system photo picker, camera (permission asked only then), or reset.\n- Square crop, compress to at most 1024 x 1024 and 1 MB, upload to `artwork/{uid}/{songId}`.\n- Shown on the Song header and Library card.\n\n### Out of scope and guardrails\n- Never request full photo-library access.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] New artwork shows at once and after relaunch on another signed-in iPhone.\n- [ ] Unsupported or oversized images are rejected with a message.\n\n### Design references\n- Demo screen `07-song-screen`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/07-song-screen.png\" width=\"260\" alt=\"07-song-screen\">\n- Demo screen `03-library`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/03-library.png\" width=\"260\" alt=\"03-library\">\n\n### Dependencies\n- Blocked by {{P7-01}}\n- Blocked by {{P2-04}}\n\n### Verification\n- Manual test with JPEG, PNG, HEIC and a 20 MB file.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P7-06",
+      "title": "[P7-06] Account screen: sign-in method, display name, change email and password",
+      "phase": "P7",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P7",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 57,
+      "parent": null,
+      "deps": [
+        "P2-03"
+      ],
+      "body": "**Phase:** P7 Library and Account Management \u00b7 **Plan key:** `P7-06` \u00b7 **Priority:** P1\n\n### Context\nUsers stay in control of their account.\n\n### SDD traceability\n- US-15 manage my account\n- DD-09 display name only\n- DD-10 provider-managed credentials\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P7\n\n### Scope\n- Show the sign-in method and email.\n- Edit display name.\n- Email and password users: change password or email after re-entering the current password; a new email applies after verification.\n- Apple and Google users see their email as managed by the provider and no password option.\n\n### Out of scope and guardrails\n- No username (DD-09).\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Display name persists after relaunch.\n- [ ] Password and email changes need the current password.\n- [ ] Provider users see no password option.\n\n### Design references\n- Demo screen `09-account`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/09-account.png\" width=\"260\" alt=\"09-account\">\n- Demo screen `06-settings`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/06-settings.png\" width=\"260\" alt=\"06-settings\">\n\n### Dependencies\n- Blocked by {{P2-03}}\n\n### Verification\n- Test with an email account and an Apple account.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P7-07",
+      "title": "[P7-07] Delete account and all of the user's data",
+      "phase": "P7",
+      "priority": "P0",
+      "area": "firebase",
+      "labels": [
+        "phase:P7",
+        "area:firebase",
+        "ai-generated"
+      ],
+      "seq": 58,
+      "parent": "#34",
+      "deps": [
+        "P7-06",
+        "P7-05",
+        "#34"
+      ],
+      "body": "**Phase:** P7 Library and Account Management \u00b7 **Plan key:** `P7-07` \u00b7 **Priority:** P0\n**Parent:** #34\n\n### Context\nApple requires in-app account deletion. It must remove everything the user owns.\n\n### SDD traceability\n- RC-15 account deletion\n- US-15 delete account\n- RC-17 artwork deleted with the account\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P7\n\n### Scope\n- Delete account in Settings > Account with typed confirmation and recent sign-in.\n- A server function on user deletion removes all Firestore records and Storage artwork for that uid.\n- Local audio files are removed and the user is signed out.\n\n### Out of scope and guardrails\n- Deletion cannot be undone; say so in the confirmation.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] After deletion the old credentials cannot sign in.\n- [ ] No Firestore or Storage data remains for that uid.\n- [ ] Local songs are gone from the device.\n\n### Design references\n- Demo screen `09-account`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/09-account.png\" width=\"260\" alt=\"09-account\">\n\n### Dependencies\n- Blocked by {{P7-06}}\n- Blocked by {{P7-05}}\n- Blocked by #34\n\n### Verification\n- Emulator test plus a manual run.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P8-01",
+      "title": "[P8-01] Accessibility pass: VoiceOver, Dynamic Type and bar-by-bar tab reading",
+      "phase": "P8",
+      "priority": "P0",
+      "area": "ios",
+      "labels": [
+        "phase:P8",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 59,
+      "parent": null,
+      "deps": [
+        "P5-05",
+        "P6-02"
+      ],
+      "body": "**Phase:** P8 Accessibility and MVP Hardening \u00b7 **Plan key:** `P8-01` \u00b7 **Priority:** P0\n\n### Context\nThe app must be usable with VoiceOver and large text.\n\n### SDD traceability\n- RC-12 accessibility\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P8\n\n### Scope\n- VoiceOver labels on every control.\n- Dynamic Type on all text.\n- Tab read bar by bar, for example Bar 3, beat 1: A string, fret 2.\n- Highlight and confidence markers not by color alone; chord diagram text.\n\n### Out of scope and guardrails\n- No iPad layouts.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Every screen passes the Xcode Accessibility Inspector audit.\n- [ ] A full song can be read bar by bar with VoiceOver.\n- [ ] Largest text size does not clip core controls.\n\n### Design references\n- Demo screen `10-tab-view`:\n\n  <img src=\"https://raw.githubusercontent.com/etabor3096/Amphion/dev/docs/design/screens/10-tab-view.png\" width=\"260\" alt=\"10-tab-view\">\n\n### Dependencies\n- Blocked by {{P5-05}}\n- Blocked by {{P6-02}}\n\n### Verification\n- Manual VoiceOver run on an iPhone.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P8-02",
+      "title": "[P8-02] Beginner-language pass on all user-facing text",
+      "phase": "P8",
+      "priority": "P1",
+      "area": "ios",
+      "labels": [
+        "phase:P8",
+        "area:ios",
+        "ai-generated"
+      ],
+      "seq": 60,
+      "parent": null,
+      "deps": [
+        "P5-03",
+        "P7-04"
+      ],
+      "body": "**Phase:** P8 Accessibility and MVP Hardening \u00b7 **Plan key:** `P8-02` \u00b7 **Priority:** P1\n\n### Context\nUsers are beginners; no ML or internal terms.\n\n### SDD traceability\n- RC-13 beginner-friendly language\n- OQ-05 tuning wording\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P8\n\n### Scope\n- Review every string in the app; explain tab, BPM and tuning offset where they appear.\n- Final tuning offset wording per OQ-05.\n- Move all strings into a localizable strings file.\n\n### Out of scope and guardrails\n- No new features.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] No user-facing text mentions models, stems, inference or similar.\n- [ ] Elijah approves the tuning wording.\n\n### Dependencies\n- Blocked by {{P5-03}}\n- Blocked by {{P7-04}}\n\n### Verification\n- Elijah reads the strings file.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P8-03",
+      "title": "[P8-03] Security and privacy audit before MVP",
+      "phase": "P8",
+      "priority": "P0",
+      "area": "firebase",
+      "labels": [
+        "phase:P8",
+        "area:firebase",
+        "ai-generated"
+      ],
+      "seq": 61,
+      "parent": null,
+      "deps": [
+        "P4-04",
+        "P7-07"
+      ],
+      "body": "**Phase:** P8 Accessibility and MVP Hardening \u00b7 **Plan key:** `P8-03` \u00b7 **Priority:** P0\n\n### Context\nA final check of the rules that protect users.\n\n### SDD traceability\n- RC-02 isolation\n- RC-03 audio deletion\n- RC-05 microphone\n- RC-06 secrets\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P8\n\n### Scope\n- Re-run rules tests; add any missing cross-user case.\n- Confirm no audio objects remain after success, failure and timeout.\n- Scan the repo history and the app bundle for secrets.\n- Check permission strings for microphone and camera.\n\n### Out of scope and guardrails\n- Fixes go in their own issues if large.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] A written checklist with each RC marked pass and how it was checked.\n- [ ] Storage `uploads/` is empty after a test batch of 5 songs including a forced failure.\n\n### Dependencies\n- Blocked by {{P4-04}}\n- Blocked by {{P7-07}}\n\n### Verification\n- Checklist reviewed by Elijah.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    },
+    {
+      "key": "P8-04",
+      "title": "[P8-04] MVP acceptance: run every user story check on an iPhone and the final benchmark",
+      "phase": "P8",
+      "priority": "P0",
+      "area": "devops",
+      "labels": [
+        "phase:P8",
+        "area:devops",
+        "ai-generated",
+        "human-task"
+      ],
+      "seq": 62,
+      "parent": null,
+      "deps": [
+        "P8-01",
+        "P8-02",
+        "P8-03",
+        "P6-05",
+        "P7-04",
+        "P5-09"
+      ],
+      "body": "**Phase:** P8 Accessibility and MVP Hardening \u00b7 **Plan key:** `P8-04` \u00b7 **Priority:** P0 \u00b7 **Human task**\n\n### Context\nThe MVP is done when every story passes on a real iPhone.\n\n### SDD traceability\n- SDD 3 every user story pass/fail check\n- RC-08 processing time\n- RC-10 benchmark\n- OD-05 installing on a device\n- Source: [SDD v0.3](https://github.com/etabor3096/Amphion/blob/main/docs/SDD.pdf) \u00b7 Implementation Plan Section 3, phase P8\n\n### Scope\n- Run the final benchmark and attach the report.\n- Walk through each US pass/fail check on an iPhone and record pass or fail.\n- Open bug issues for every failure.\n\n### Out of scope and guardrails\n- Stretch goals stay out until this passes.\n- Read `AGENTS.md`, `ARCHITECTURE.md` and `POLICY.md` first. If something here conflicts with the SDD, stop and ask in a comment instead of guessing.\n\n### Acceptance criteria\n- [ ] Every US check is recorded with a result.\n- [ ] The benchmark report is attached.\n- [ ] Elijah signs off the MVP or lists what blocks it.\n\n### Dependencies\n- Blocked by {{P8-01}}\n- Blocked by {{P8-02}}\n- Blocked by {{P8-03}}\n- Blocked by {{P6-05}}\n- Blocked by {{P7-04}}\n- Blocked by {{P5-09}}\n\n### Verification\n- Recorded walkthrough for the final video.\n- PR into `dev` with CI green; Elijah reviews before promotion to `staging`."
+    }
+  ]
+}
