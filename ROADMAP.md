@@ -1,7 +1,7 @@
 # Amphion roadmap
 
 This file sets the order in which Amphion is built: nine phases, P0 to P8, with one go/no-go gate, G1. It does not track
-tasks or status. **The [Amphion GitHub Project](https://github.com/etabor3096/Amphion/projects) and its Issues are the
+tasks or status. **The [Amphion GitHub Project](https://github.com/users/etabor3096/projects/1) and its Issues are the
 source of truth for what to do next and how far along each item is.** If this file and the Project disagree about a task,
 the Project wins. Behavior comes from [SDD v0.3](docs/SDD.pdf). Technical and product rules are in
 [ARCHITECTURE.md](ARCHITECTURE.md) and [POLICY.md](POLICY.md).
