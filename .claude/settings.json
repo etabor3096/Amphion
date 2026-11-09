@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run typecheck)",
+      "Bash(npm run build)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(gh issue view*)",
+      "Bash(gh pr view*)",
+      "Bash(gh project item-list*)",
+      "Bash(gh project field-list*)"
+    ],
+    "ask": [
+      "Edit(.claude/settings.json)",
+      "Edit(.claude/hooks/**)",
+      "Write(.claude/hooks/**)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/*.pem)",
+      "Read(./**/*.key)",
+      "Read(./**/serviceAccount*.json)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-git-gh.py\""
+          }
+        ]
+      }
+    ]
+  }
+}
