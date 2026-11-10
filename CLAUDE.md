@@ -44,8 +44,8 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 ## Definition of Done
 
 - Each acceptance criterion in the Issue is checked, with concrete evidence (test output, command result, screenshot).
-- `npm run typecheck` and `npm run build` pass, and any tests that exist pass. When a PR build check exists (Issue #33),
-  it is green.
+- `npm run typecheck` and `npm run build` pass, and any tests that exist pass. The PR build check
+  (`.github/workflows/build.yml`, job `build`: `npm ci` + `npm run build` on PRs into `dev`) is green.
 - UI changes include a screenshot in the PR. Non-UI changes do not need one.
 - Docs are updated if behavior, structure or commands changed.
 - The PR links the Issue, states what was and was not verified, and is labeled `ai-generated`.
