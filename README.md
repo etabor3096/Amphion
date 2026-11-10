@@ -15,7 +15,8 @@ Everything runs on mock data in `src/mock/`.
 - `ARCHITECTURE.md`: components, data flow, allowed calls and the rules every change must keep.
 - `POLICY.md`: product scope, privacy, accounts, legal limits, user-facing wording and agent permissions.
 - `ROADMAP.md`: build phases P0 to P8 and the G1 accuracy gate. Tasks and status live in the GitHub Project.
-- `AGENTS.md`: project rules and file map for coding agents (`CLAUDE.md` points to it).
+- `CLAUDE.md`: the always-on operating guide for Claude Code (sources of truth, Git trust rules, Definition of Done, escalation). It points to `AGENTS.md`.
+- `AGENTS.md`: file map and rules for the React demo in `src/`.
 
 ## Run it
 
