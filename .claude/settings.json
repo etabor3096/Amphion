@@ -9,7 +9,18 @@
       "Bash(gh issue view*)",
       "Bash(gh pr view*)",
       "Bash(gh project item-list*)",
-      "Bash(gh project field-list*)"
+      "Bash(gh project field-list*)",
+      "PowerShell(npm run typecheck)",
+      "PowerShell(npm run build)",
+      "PowerShell(git status*)",
+      "PowerShell(git diff*)",
+      "PowerShell(git log*)",
+      "PowerShell(gh issue view*)",
+      "PowerShell(gh pr view*)",
+      "PowerShell(gh project item-list*)",
+      "PowerShell(gh project field-list*)",
+      "PowerShell(npm.cmd run typecheck)",
+      "PowerShell(npm.cmd run build)"
     ],
     "ask": [
       "Edit(.claude/settings.json)",
@@ -27,7 +38,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": "Bash|PowerShell",
         "hooks": [
           {
             "type": "command",
