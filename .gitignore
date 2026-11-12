@@ -22,3 +22,6 @@ logs/
 
 # macOS
 .DS_Store
+
+# Claude Code local overrides (personal, not shared)
+.claude/settings.local.json

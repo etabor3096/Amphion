@@ -1,17 +1,13 @@
-# Amphion front-end demo
+# Amphion front-end demo (applies to `src/` only)
+
+> **Demo only.** The file map and rules below describe the React demo in `src/`. They do not apply to the planned `ios/`, `pipeline/` or `firebase/` code. The project-wide rules (sources of truth, Git trust rules, Definition of Done, escalation) are in `CLAUDE.md`.
 
 React + Vite + Tailwind CSS click-through demo of the Amphion iOS app, originally exported from Figma Make.
-Front-end only: no backend, no network calls, all data from `src/mock/`. `docs/SDD.pdf` is the authority on behavior (`docs/SDD.txt` is a plain-text copy). Task briefs live in `docs/tasks/`.
+Front-end only: no backend, no network calls, all data from `src/mock/`. `docs/SDD.pdf` is the authority on behavior (`docs/SDD.txt` is a plain-text copy). The GitHub Issues define the work; `docs/tasks/` holds older task briefs for reference.
 
 ## Before you start any Issue
 
-Read these three files first. They hold for every Issue:
-
-- `ARCHITECTURE.md`: the components, the data flow, the allowed calls, and rules A1 to A10 (one clock, the upload-triggered pipeline, audio deletion, no secrets and the rest).
-- `POLICY.md`: the scope, privacy, accounts, legal and ethical limits, user-facing wording, and what agents may and may not do.
-- `ROADMAP.md`: the phases P0 to P8, gate G1, the open decisions and their defaults, and the pickup rule. The GitHub Project and its Issues are the source of truth for tasks and status.
-
-If an Issue, these files and the SDD disagree, stop and ask in an Issue comment instead of guessing.
+Read `ARCHITECTURE.md`, `POLICY.md` and `ROADMAP.md` (repo root) first; `CLAUDE.md` says when to consult each. If an Issue, these files and the SDD disagree, stop and ask in an Issue comment instead of guessing.
 
 ## Development Server
 
