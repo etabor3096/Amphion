@@ -46,14 +46,28 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 - Each acceptance criterion in the Issue is checked, with concrete evidence (test output, command result, screenshot).
 - `npm run typecheck` and `npm run build` pass, and any tests that exist pass. The PR build check
   (`.github/workflows/build.yml`, job `build`: `npm ci` + `npm run build` on PRs into `dev`) is green.
-- UI changes include a screenshot in the PR. Non-UI changes do not need one.
+- UI changes include screenshots saved in `docs/screenshots/` (see Screenshots of changes) and shown in the PR. Non-UI changes do not need them.
 - Docs are updated if behavior, structure or commands changed.
 - The PR links the Issue, states what was and was not verified, and is labeled `ai-generated`.
+
+## Screenshots of changes
+
+Any change that affects what the app looks like or how a screen behaves needs screenshots, so Elijah can see what changed.
+
+- Save them in `docs/screenshots/`, in one subfolder per view, for example `docs/screenshots/library/`, `docs/screenshots/song-screen/`, `docs/screenshots/chord-view/`. Use a short kebab-case name for the view.
+- Reuse the view's subfolder if it exists. When a change adds a new type of view (a new screen, sheet, dialog or popover), create a new subfolder for it. Never put screenshots loose in `docs/screenshots/`.
+- Take them from the running app (`npm run dev`, then the `run` skill), not mockups. Capture the app at phone size, as the phone frame shows it.
+- Capture the screen after the change. If the screen already existed, also capture it before, so the difference is visible.
+- Name files `<change>-before.png` and `<change>-after.png`, for example `docs/screenshots/tab-view/playhead-before.png`. Use a short kebab-case change name.
+- Commit the screenshots with the change they show.
+- Skip screenshots for changes with no visible effect (docs, refactors, tests, config), and say so in the PR.
+- If the app can't be run to capture them, say so in the PR instead of leaving them out silently.
+- `docs/design/screens/` holds the original design reference. Don't add change screenshots there.
 
 ## Project agents, skills and hooks (`.claude/`)
 
 - `issue-gate` agent: run before starting an Issue, or to ask "does anything qualify?". Read-only; returns GO, NO-GO or ESCALATE.
-- `reviewer` agent: run after implementing and before the PR. Read-only; checks acceptance criteria, A1 to A10, `POLICY.md`, typecheck and build.
+- `reviewer` agent: run after implementing and before the PR. Read-only; checks acceptance criteria, A1 to A10, `POLICY.md`, screenshots for UI changes, typecheck and build.
 - `/finish-issue <n>` skill: reviewer, then PR into `dev` with the evidence body, then Project status to Agent Review.
 - `.claude/settings.json` + `hooks/guard-git-gh.py`: deterministic block on pushes to `staging`/`main`, force-pushes, PRs not based on `dev`,
   Staging Candidate/Released/Human Review changes, and ruleset or repo-settings changes. These are enforced, not advisory: do not try to work around a block, tell Elijah.

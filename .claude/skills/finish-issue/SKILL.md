@@ -12,7 +12,7 @@ repeatable hand-off; the rules it enforces live in `CLAUDE.md`. Do not skip step
 1. **Review first.** Delegate to the `reviewer` agent with the Issue number and branch. Fix every FAIL it reports and
    re-run it. Open the PR only on READY FOR PR. If it says ESCALATE, stop and ask Elijah; do not choose a side.
 2. **Last local checks.** `npm run typecheck` and `npm run build` pass (once `ios/`, `pipeline/` or `firebase/` have
-   commands in `CLAUDE.md`, run those too). For UI changes, take a screenshot and keep it for the PR.
+   commands in `CLAUDE.md`, run those too). For UI changes, take screenshots into `docs/screenshots/<view>/` as `CLAUDE.md` describes and commit them.
 3. **Push the branch** (never `staging` or `main`): `git push -u origin <branch>`.
 4. **Open the PR into dev**, always with an explicit base:
    `gh pr create --base dev --label ai-generated --title "<type>: <summary> (#<n>)" --body-file <file>`
@@ -22,7 +22,7 @@ repeatable hand-off; the rules it enforces live in `CLAUDE.md`. Do not skip step
    - **Checks run**: commands and results. Say plainly what was not run (for example an iPhone test).
    - **Architecture and policy**: rules A1 to A10 / `POLICY.md` points checked, and any concern.
    - **Needs Elijah**: anything only he can verify or decide.
-   - Screenshot(s) if the change is UI.
+   - Screenshot(s) if the change is UI (the ones committed under `docs/screenshots/`).
 5. **Project status.** Move the item to **Agent Review** (`gh project item-edit`, Status field, option Agent Review
    `244683b4`). After the PR merges into `dev`, move it to **Done in Dev** (`d635d035`). Never set Staging Candidate,
    Released, or Human Review; the project hook blocks those.
