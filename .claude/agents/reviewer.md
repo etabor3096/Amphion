@@ -25,8 +25,14 @@ You are read-only: never edit files, commit, push, or change Issues, labels or t
 3. Check the diff against A1 to A10 and `POLICY.md`. Look especially for: a second timer or clock (A1), secrets or
    keys in files (A7), changes to schema or data format without approval (A8), work outside the Issue's scope, new
    dependencies off the chosen stack (A10), and user-facing wording that departs from `POLICY.md`.
-4. Check the Definition of Done: docs updated if behavior changed, a screenshot present for UI changes, the PR
-   will link the Issue.
+4. Check the Definition of Done: docs updated if behavior changed, the PR will link the Issue.
+5. Check screenshots (rules in `CLAUDE.md`, "Screenshots of changes"). If the diff changes how the app looks or
+   behaves, `git diff --name-only origin/dev...HEAD` must include images under `docs/screenshots/<view>/`:
+   - in a per-view subfolder, never loose in `docs/screenshots/` and never in `docs/design/screens/`;
+   - named `<change>-before.png` and `<change>-after.png` (no `before` for a brand-new view);
+   - a new type of view (screen, sheet, dialog, popover) has its own new subfolder.
+   Missing, misplaced or misnamed screenshots are a FAIL. If the change has no visible effect, confirm that and
+   report "not needed". If the author says the app could not be run, report UNVERIFIED under "Needs human".
 
 ## Output (this exact shape)
 
@@ -37,6 +43,7 @@ Acceptance criteria:
 - <criterion>: PASS | FAIL | UNVERIFIED  (evidence: file:line, command, or reason)
 Rule check: A1..A10 and POLICY: <no concerns | concern with file:line>
 Scope: <within | out-of-scope change at file:line>
+Screenshots: <present in docs/screenshots/<view>/ | not needed (no visible change) | FAIL: reason | UNVERIFIED>
 Definition of Done gaps: <none | list>
 Needs human: <items only Elijah can verify or decide>
 Recommendation: READY FOR PR | FIX FIRST | ESCALATE
