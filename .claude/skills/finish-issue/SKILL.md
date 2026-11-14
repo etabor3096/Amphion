@@ -26,9 +26,15 @@ repeatable hand-off; the rules it enforces live in `CLAUDE.md`. Do not skip step
 5. **Project status.** Move the item to **Agent Review** (`gh project item-edit`, Status field, option Agent Review
    `244683b4`). After the PR merges into `dev`, move it to **Done in Dev** (`d635d035`). Never set Staging Candidate,
    Released, or Human Review; the project hook blocks those.
+   **Then read it back** with `gh project item-list 1 --owner etabor3096 --format json` and confirm the item's
+   `status` is the new value. If the edit errored or the status did not change, do not retry with other commands
+   and do not report it as moved. Put it under **Needs Elijah** in the PR (and in the report), with the exact error.
+   The usual causes are a `gh` token without the `project` scope (`gh auth status` lists scopes; the fix is
+   `gh auth refresh -s project`, which Elijah runs) or an account without write access to the Project.
 6. **Merge** into `dev` only when CI is green (when a check exists), the reviewer said READY FOR PR, and no "Needs
    Elijah" item is open. Otherwise leave the PR open and tell Elijah what is waiting on him.
-7. **Report** to Elijah: PR link, reviewer verdict, what was and was not verified, Project status.
+7. **Report** to Elijah: PR link, reviewer verdict, what was and was not verified, and the Project status as read
+   back in step 5 (not the status you meant to set).
 
 Project IDs: project `PVT_kwHOCrib984Bl-YB` (number 1, owner `etabor3096`), Status field `PVTSSF_lAHOCrib984Bl-YBzhkpI84`.
 Get an item id with `gh project item-list 1 --owner etabor3096 --format json`.
