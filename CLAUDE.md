@@ -34,7 +34,8 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 - No force-push, history rewrites, or branch deletes on shared branches.
 - Label AI-drafted Issues and PRs `ai-generated`.
 - Project Status: you may move your Issue Ready, In Progress, Agent Review, then Done in Dev (after the PR merges into
-  `dev`). Staging Candidate and Released are Elijah's. Never set Human Review.
+  `dev`). Staging Candidate and Released are Elijah's. Never set Human Review. After every Status change, read the
+  item back; if it did not change, report that as a blocker for Elijah instead of saying it moved.
 
 ## Commands
 
