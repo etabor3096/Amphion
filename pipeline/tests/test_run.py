@@ -21,10 +21,17 @@ def test_result_validates_and_has_the_approved_top_level_fields(result, clip_pat
     assert abs(result["duration"] - 10.0) < 0.01
 
 
-def test_string_and_fret_stay_null_until_tab_assignment(result):
-    notes = [n for part in ("guitar", "bass") if result[part] for n in result[part]["notes"]]
-    assert notes
-    assert all(n["string"] is None and n["fret"] is None for n in notes)
+def test_every_note_has_a_playable_string_and_fret_that_match_its_pitch(result):
+    from amphion_pipeline.tab_weights import OPEN_STRING_PITCHES
+
+    for instrument in ("guitar", "bass"):
+        if result[instrument] is None:
+            continue
+        for n in result[instrument]["notes"]:
+            if n["string"] is None:  # kept, but no legal position (never dropped)
+                assert n["fret"] is None
+            else:
+                assert OPEN_STRING_PITCHES[instrument][n["string"] - 1] + n["fret"] == n["pitch"]
 
 
 def test_every_time_is_song_time_inside_the_file(result):

@@ -115,13 +115,13 @@
         "startTime": { "$ref": "#/$defs/time" },
         "duration": { "description": "Length of the note in seconds.", "type": "number", "exclusiveMinimum": 0 },
         "string": {
-          "description": "String number. 1 is the highest-pitched string. null until the tab-assignment step (P1-05) fills it in.",
+          "description": "String number. 1 is the highest-pitched string. null only for a note with no playable position (a pitch outside the instrument's range, or more simultaneous notes than strings); it is never dropped.",
           "type": ["integer", "null"],
           "minimum": 1,
           "maximum": 6
         },
         "fret": {
-          "description": "Fret number, 0 is open. null until the tab-assignment step (P1-05) fills it in. string and fret are both null or both set.",
+          "description": "Fret number, 0 is open. null only when string is null. string and fret are both null or both set.",
           "type": ["integer", "null"],
           "minimum": 0,
           "maximum": 24

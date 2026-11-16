@@ -13,6 +13,7 @@ from .beats import track_beats
 from .harmony import detect_chords, detect_key
 from .notes import detect_notes
 from .separate import INSTRUMENTS, separate
+from .tab_assign import assign_strings_and_frets
 from .tempo_tuning import estimate_tempo, estimate_tuning_offset_cents
 
 log = logging.getLogger("amphion_pipeline")
@@ -66,6 +67,9 @@ def analyze(audio_path: str | Path, *, tmp_root: str | Path | None = None, timin
         key = _detail("key", lambda: detect_key(audio.mono, audio.sample_rate))
         bpm = _detail("tempo", lambda: estimate_tempo(audio.mono, audio.sample_rate))
         tuning = _detail("tuning", lambda: estimate_tuning_offset_cents(audio.mono, audio.sample_rate))
+    with _stage("tab", timings):
+        for instrument in INSTRUMENTS:
+            tabs[instrument] = assign_strings_and_frets(tabs[instrument], instrument, tuning)
 
     document = {
         "schemaVersion": rc20.SCHEMA_VERSION,
