@@ -27,6 +27,12 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 
 ## Git and trust rules
 
+- **Use the dev GitHub account (`FruitFlyDev42`, the AiDev identity) for everything on this project, never Elijah's own
+  `etabor3096` login.** That covers `gh`, `git push`, commits, PRs, merges, Issue comments and Project changes. Check
+  `gh api user -q .login` says `FruitFlyDev42` before any GitHub write. If the dev account is not available, stop and ask
+  Elijah for its token; do not fall back to his account. Two traps: Parallax's `merge_when_ready` merges as Elijah, so
+  merge with `gh pr merge` instead; and uncommitted files get checkpoint-committed under Elijah's git identity at the end of
+  a turn, so commit your own work first.
 - Branch from `dev`; open the PR into `dev` only. Never push to, merge into, or open PRs targeting `staging` or `main`.
   Promotion from `dev` to `staging` to `main` is Elijah's alone (Lab 2 rulesets `dev-integration` and `promotion-gate`).
 - You may merge your own PR into `dev` when the rulesets allow it and the Definition of Done is met.
