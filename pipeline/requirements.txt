@@ -16,6 +16,7 @@ torch==2.14.1          # Demucs
 onnxruntime==1.23.2    # runs Basic Pitch's ONNX model, the same on macOS and Linux (CoreML is macOS only)
 soundfile==0.14.0      # reading and writing WAV in the pipeline and tests
 
-# --- scoring and tests ---
+# --- output format, scoring and tests ---
+jsonschema==4.26.0     # checks every result against rc20.schema.json before it is written (P1-04)
 mir-eval==0.8.2        # the benchmark scoring library (RC-10, P1-03)
 pytest==9.2.0

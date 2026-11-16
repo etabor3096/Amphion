@@ -31,6 +31,54 @@ The first Demucs run downloads its model (about 55 MB for `htdemucs_6s`) into th
 madmom (downbeats, chords, key), Basic Pitch (notes) and Demucs (six-part separation, checking `guitar` and `bass` are
 present). It checks that the stack works together, not that it is accurate. Accuracy is `benchmark/` (P1-03).
 
+## Run it (P1-04)
+
+```bash
+cd pipeline && source .venv/bin/activate
+python -m amphion_pipeline song.wav -o result.json     # add -v to print the time each stage takes
+```
+
+MP3, M4A and WAV are read. M4A (and any other compressed format librosa cannot decode itself) needs `ffmpeg` on the
+machine; the P4 container will have to install it. Without `-o` the JSON is printed to stdout and anything the libraries
+print goes to stderr, so `python -m amphion_pipeline song.wav 2>/dev/null | jq .` works. The exit code is 0 on success, 2 for a
+missing file and 1 for any other failure; on failure no output file is written (RC-09). A 10-second clip takes about
+10 s on an Apple-silicon CPU.
+
+| Stage (one module each) | Library | Output |
+| --- | --- | --- |
+| `audio.py` load | librosa, hashlib | 44.1 kHz stereo and mono mix; SHA-256 of the input file's exact bytes |
+| `separate.py` | Demucs `htdemucs_6s` | guitar and bass parts, written only to a temp folder |
+| `notes.py` | Basic Pitch (ONNX) | notes per part: start, length, pitch, confidence |
+| `beats.py` | madmom | beat and downbeat times, beats per bar |
+| `harmony.py` | madmom | chord segments, key |
+| `tempo_tuning.py` | librosa | tempo (BPM), tuning offset (cents from A = 440 Hz) |
+| `run.py` | | runs the stages, builds and validates the document |
+
+## The RC-20 format (fixed here, schema version 1)
+
+`rc20.schema.json` is the format (ARCHITECTURE.md rule A8: changing it needs a `schemaVersion` bump and Elijah's
+approval). Its field names mirror `demo/src/mock/types.ts`, but four values can be null where the demo type is a plain
+number: a note's `string` and `fret`, a chord's `confidence`, and `beatsPerBar`. The viewer (POC-03) and the demo's
+types have to accept null before a result loads unchanged. Decisions worth knowing:
+
+- **Song time.** Every time is seconds from the start of the input file, rounded to the millisecond (RC-18).
+- **`schemaVersion` and `audioSha256`** are top-level fields (approved by Elijah on 2026-11-09, see #49). The hash equals
+  `shasum -a 256 song.wav`. A player compares it with its own copy of the audio (RC-19).
+- **`string` and `fret` are null** on every note until the tab-assignment step (P1-05). String 1 is the highest-pitched
+  string. Both are null or both are set.
+- **Unknown is null (RC-11).** `key`, `bpm`, `tuningOffsetCents` and `beatsPerBar` are null when they could not be found,
+  and a failure in one of the key, tempo or tuning stages gives null with a warning, never a guess.
+- **A missing part is null.** `bass` (or `guitar`) is null when no notes were found in that part. The app then says
+  "No bass part found" (US-08). The threshold is "no notes at all" for now; the benchmark may tune it.
+- **Other failures stop the run.** If separation, note detection, beats or chords fail, nothing is written (RC-09).
+- **`confidence` on a note** is Basic Pitch's note amplitude (0 to 1). **On a chord it is null**, because madmom's chord
+  recognizer gives no score. P6-01 (OQ-01) decides how to flag uncertain chords.
+- **Tuning** is librosa's estimate and is only good to about 10 cents.
+- **Chord names** are `E`, `C#m` and so on. madmom's chord model knows only major and minor, and "no chord" stretches
+  are left out.
+- **The temp folder.** Separated parts exist only in a folder created under the system temp folder (or `--tmp-dir`) and
+  are deleted when the run ends: on success, on any exception, and on SIGTERM (tests cover each, RC-03, rule A3).
+
 ## What had to be pinned or built from source, and why (RISK-04)
 
 All four libraries install and run together on Python 3.10, but not out of the box. Verified 2026-11-16 on macOS 27 /

@@ -52,3 +52,27 @@ def clip_path(tmp_path_factory) -> str:
     path = tmp_path_factory.mktemp("clip") / "clip10.wav"
     sf.write(path, np.stack([mono, mono], axis=1), SR)
     return str(path)
+
+
+@pytest.fixture(scope="session")
+def audio(clip_path):
+    """The clip decoded the way the pipeline decodes it."""
+    from amphion_pipeline.audio import load_audio
+
+    return load_audio(clip_path)
+
+
+@pytest.fixture(scope="session")
+def stems(audio, tmp_path_factory):
+    """The separated guitar and bass parts of the clip, in a temp folder that lives for the test session."""
+    from amphion_pipeline.separate import separate
+
+    return separate(audio.stereo, audio.sample_rate, tmp_path_factory.mktemp("stems"))
+
+
+@pytest.fixture(scope="session")
+def result(clip_path):
+    """One full analysis of the clip, shared by the tests that only read it."""
+    from amphion_pipeline import analyze
+
+    return analyze(clip_path)
