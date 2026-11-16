@@ -34,7 +34,10 @@ def separate(stereo: np.ndarray, sample_rate: int, work_dir: Path) -> dict[str, 
     reference = wav.mean(0)
     wav = (wav - reference.mean()) / (reference.std() + 1e-8)  # same normalization the Demucs command line uses
     with torch.no_grad():
-        parts = apply_model(model, wav[None], device="cpu", split=True, overlap=0.25, progress=False)[0]
+        # shifts=0: Demucs's default (shifts=1) runs the model once at a RANDOM time offset, so the parts, and the notes found
+        # in them, differ from run to run. shifts=0 runs it once with no offset: the same cost, and a repeatable result,
+        # which the benchmark needs (RC-10).
+        parts = apply_model(model, wav[None], shifts=0, device="cpu", split=True, overlap=0.25, progress=False)[0]
     parts = parts * (reference.std() + 1e-8) + reference.mean()
     paths = {}
     for name in INSTRUMENTS:
