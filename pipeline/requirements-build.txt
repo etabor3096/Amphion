@@ -1,0 +1,6 @@
+# Build tools that must be installed BEFORE requirements.txt, because madmom is built from source and does not declare
+# them itself (RISK-04, see README.md). Install with:  pip install -r requirements-build.txt
+numpy==2.2.6         # madmom's C extensions are compiled against this exact numpy; keep it equal to requirements.txt
+cython==3.0.12
+setuptools==80.10.2  # below 81: madmom and resampy import pkg_resources, which setuptools 81 and later removed
+wheel==0.48.0
