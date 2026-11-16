@@ -1,0 +1,21 @@
+# Pinned analysis stack for the Amphion pipeline (P1-01, RISK-04). Python 3.10 only.
+# Install:  pip install -r requirements-build.txt && pip install --no-build-isolation -r requirements.txt
+# Every pin below has a reason in README.md. Do not bump one without rerunning tests/test_stack_smoke.py.
+
+# --- the four analysis libraries (SDD 5.1) ---
+demucs==4.1.0          # 6-part separation, model htdemucs_6s (DD-16)
+basic-pitch==0.4.0     # note detection (run on the ONNX model, see onnxruntime)
+librosa==0.11.0        # tempo and tuning offset
+madmom @ git+https://github.com/CPJKU/madmom.git@27f032e8947204902c675e5e341a3faf5dc86dae  # beats, chords, key; see README.md
+
+# --- pins that make the four work together ---
+numpy==2.2.6           # same version as requirements-build.txt
+scipy==1.14.1          # 1.15.x has a native module that fails to load on macOS 27 (section __DATA/__thread_bss)
+setuptools==80.10.2    # below 81, for pkg_resources (madmom, resampy)
+torch==2.14.1          # Demucs
+onnxruntime==1.23.2    # runs Basic Pitch's ONNX model, the same on macOS and Linux (CoreML is macOS only)
+soundfile==0.14.0      # reading and writing WAV in the pipeline and tests
+
+# --- scoring and tests ---
+mir-eval==0.8.2        # the benchmark scoring library (RC-10, P1-03)
+pytest==9.2.0
