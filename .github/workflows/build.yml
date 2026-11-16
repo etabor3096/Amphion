@@ -1,5 +1,5 @@
 # Build check for pull requests into dev (Issue #33).
-# Runs the React demo's type check + Vite build. It only builds: no coding agent, no secrets, no deploy.
+# Runs the React demo's type check + Vite build (the demo lives in demo/ since P0-01). It only builds: no coding agent, no secrets, no deploy.
 # Making this a required status check in the `dev-integration` ruleset is Elijah's step, not this file's.
 name: Build
 
@@ -16,9 +16,13 @@ concurrency:
 
 jobs:
   build:
+    # The job name `build` is the required status check in the `dev-integration` ruleset. Do not rename it.
     name: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: demo
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,6 +32,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: demo/package-lock.json
 
       - run: npm ci
 

@@ -5,7 +5,7 @@ synced guitar and bass tabs so beginner and intermediate players can learn and p
 
 This branch holds a click-through demo of the Amphion iOS app (song → guitar/bass tab, played in sync), built from
 the Figma Make prototype. It is front-end only: no Firebase, no sign-in, no network calls.
-Everything runs on mock data in `src/mock/`.
+Everything runs on mock data in `demo/src/mock/`.
 
 ## Documents
 
@@ -16,11 +16,23 @@ Everything runs on mock data in `src/mock/`.
 - `POLICY.md`: product scope, privacy, accounts, legal limits, user-facing wording and agent permissions.
 - `ROADMAP.md`: build phases P0 to P8 and the G1 accuracy gate. Tasks and status live in the GitHub Project.
 - `CLAUDE.md`: the always-on operating guide for Claude Code (sources of truth, Git trust rules, Definition of Done, escalation). It points to `AGENTS.md`.
-- `AGENTS.md`: file map and rules for the React demo in `src/`.
+- `AGENTS.md`: file map and rules for the React demo in `demo/`.
+
+## Repository layout
+
+| Folder | Holds |
+| --- | --- |
+| `demo/` | The React click-through demo (this README's "Run it") |
+| `ios/` | The native SwiftUI app (not started; P0-02) |
+| `pipeline/` | The Python analysis code and processing function |
+| `firebase/` | Firebase config, security rules and the stored-data schema |
+| `benchmark/` | Hand-checked reference tabs, the scoring harness and reports (never the audio) |
+| `docs/` | The SDD, decision records, task briefs and design screenshots |
 
 ## Run it
 
 ```bash
+cd demo
 npm install
 npm run dev
 ```
@@ -53,20 +65,20 @@ progression: a strip of chord diagrams, then the bars with the playing chord hig
 | Real (works as in the app) | Mocked |
 | --- | --- |
 | All screens, navigation, light/dark/system appearance | Sign-in: every option is a fake "Continue" |
-| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `src/mock/`; edits and library changes are saved in this browser; Settings has "Reset demo data" |
+| Library search, filters, sort, folders, rename, delete | Songs and tabs come from `demo/src/mock/`; edits and library changes are saved in this browser; Settings has "Reset demo data" |
 | Tab layout, confidence markers, note editor, chord picker, undo | Audio: the tab is played by a Web Audio synth, not the recording (songs with audio on another iPhone stay silent) |
 | Synced playback logic: playhead, highlights, auto-scroll, speed, A-B loop | Recording and upload create a song that shows "Processing" for about 8 seconds, then turns Ready with a sample tab and a "Your tab is ready" banner or toast (the tab is not made from your audio) |
 | Upload file-type and 3-minute checks (read locally in the browser) | Notifications, account changes, account deletion |
-| Terms of Use and Privacy Policy screens (Settings > About) | Their wording is placeholder text (`src/legalText.ts`) |
+| Terms of Use and Privacy Policy screens (Settings > About) | Their wording is placeholder text (`demo/src/legalText.ts`) |
 
 ## Where things live
 
-- `src/playback/clock.ts`: the `PlaybackClock` interface (the one clock for song time, RC-18/DD-14) and
+- `demo/src/playback/clock.ts`: the `PlaybackClock` interface (the one clock for song time, RC-18/DD-14) and
   `SimulatedClock`, the silent clock used when the song's audio is on another device.
-- `src/playback/SynthClock.ts`: the clock `SongScreen` uses otherwise. Song time comes from `AudioContext.currentTime`,
+- `demo/src/playback/SynthClock.ts`: the clock `SongScreen` uses otherwise. Song time comes from `AudioContext.currentTime`,
   and the shown tab's notes are synthesized with Web Audio. To use real audio, implement the interface around an
   audio player instead; the UI does not change.
-- `src/playback/usePlayback.ts`: the single `requestAnimationFrame` loop that drives everything synced.
-- `src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), chords view (`ChordView`), practice bar, note editor, chord popover, edits.
-- `src/mock/`: data types (match the SDD's stored tab format, RC-20), songs, tab data, in-memory store.
-- `src/device/`: the desktop phone frame and simulated status bar.
+- `demo/src/playback/usePlayback.ts`: the single `requestAnimationFrame` loop that drives everything synced.
+- `demo/src/tab/`: tab view (`TabRow`, `TabView`, `SyncedTab`), chords view (`ChordView`), practice bar, note editor, chord popover, edits.
+- `demo/src/mock/`: data types (match the SDD's stored tab format, RC-20), songs, tab data, in-memory store.
+- `demo/src/device/`: the desktop phone frame and simulated status bar.

@@ -11,7 +11,7 @@ repeatable hand-off; the rules it enforces live in `CLAUDE.md`. Do not skip step
 
 1. **Review first.** Delegate to the `reviewer` agent with the Issue number and branch. Fix every FAIL it reports and
    re-run it. Open the PR only on READY FOR PR. If it says ESCALATE, stop and ask Elijah; do not choose a side.
-2. **Last local checks.** `npm run typecheck` and `npm run build` pass (once `ios/`, `pipeline/` or `firebase/` have
+2. **Last local checks.** `npm run typecheck` and `npm run build` pass from `demo/` (once `ios/`, `pipeline/` or `firebase/` have
    commands in `CLAUDE.md`, run those too). For UI changes, take screenshots into `docs/screenshots/<view>/` as `CLAUDE.md` describes and commit them.
 3. **Push the branch** (never `staging` or `main`): `git push -u origin <branch>`.
 4. **Open the PR into dev**, always with an explicit base:
