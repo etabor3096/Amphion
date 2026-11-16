@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/etabor3096/Amphion/pipeline/rc20.schema.json",
+  "title": "Amphion RC-20 tab data, schema version 1",
+  "description": "What the analysis pipeline writes for one song (SDD RC-20). Fixed by P1-04 (#49). Changing it needs a schemaVersion bump and Elijah's approval in the Issue first (ARCHITECTURE.md rule A8). Every time is song time: seconds from the start of the audio file (RC-18). The names mirror the types in demo/src/mock/types.ts. A value the analysis could not find is null and the app shows it as Unknown (RC-11). P4-03 later splits this into Firestore chunks by bar range; the notes and chords themselves keep this shape.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "audioSha256",
+    "duration",
+    "key",
+    "bpm",
+    "tuningOffsetCents",
+    "beatsPerBar",
+    "beats",
+    "downbeats",
+    "chords",
+    "guitar",
+    "bass"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "description": "The version of this format. Always 1 for this schema.",
+      "const": 1
+    },
+    "audioSha256": {
+      "description": "Lowercase hex SHA-256 of the exact bytes of the audio file that was analyzed (RC-19). Equals `shasum -a 256 <file>`. Lets a player check it has the same file. Approved by Elijah on 2026-11-09 (A8).",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "duration": {
+      "description": "Length of the audio file in seconds, as decoded.",
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "key": {
+      "description": "The song's key, for example \"E minor\" or \"G major\". null means the analysis could not tell (Unknown).",
+      "type": ["string", "null"],
+      "pattern": "^[A-G][#b]? (major|minor)$"
+    },
+    "bpm": {
+      "description": "Tempo in beats per minute. null means Unknown.",
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0
+    },
+    "tuningOffsetCents": {
+      "description": "How far the recording sits from standard pitch (A = 440 Hz), in cents. Negative is flat (DD-08). null means Unknown.",
+      "type": ["number", "null"],
+      "minimum": -50,
+      "maximum": 50
+    },
+    "beatsPerBar": {
+      "description": "Beats in a bar, found with the beat grid. null when no full bar was found.",
+      "type": ["integer", "null"],
+      "minimum": 1
+    },
+    "beats": {
+      "description": "Time of every beat, in seconds, ascending.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/time" }
+    },
+    "downbeats": {
+      "description": "Time of the first beat of every bar, in seconds, ascending. Each one is also in `beats`.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/time" }
+    },
+    "chords": {
+      "description": "Chord-name segments, in time order. Stretches with no chord are left out.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/chord" }
+    },
+    "guitar": {
+      "description": "The guitar tab, or null when no guitar part was found.",
+      "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/guitarTab" }]
+    },
+    "bass": {
+      "description": "The bass tab, or null when no bass part was found. The app then says \"No bass part found\" (US-08).",
+      "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/bassTab" }]
+    }
+  },
+  "$defs": {
+    "time": {
+      "type": "number",
+      "minimum": 0
+    },
+    "chord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "startTime", "endTime", "name", "confidence", "edited"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "startTime": { "$ref": "#/$defs/time" },
+        "endTime": { "$ref": "#/$defs/time" },
+        "name": {
+          "description": "Display name: a note name, with a trailing \"m\" for minor, for example \"E\", \"C#m\".",
+          "type": "string",
+          "pattern": "^[A-G][#b]?m?$"
+        },
+        "confidence": {
+          "description": "0 to 1. null means the chord recognizer gives no score; P6-01 (OQ-01) decides how to flag chords.",
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "edited": { "description": "True once the user changed it. The pipeline always writes false.", "type": "boolean" }
+      }
+    },
+    "note": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "startTime", "duration", "string", "fret", "pitch", "confidence", "edited"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "startTime": { "$ref": "#/$defs/time" },
+        "duration": { "description": "Length of the note in seconds.", "type": "number", "exclusiveMinimum": 0 },
+        "string": {
+          "description": "String number. 1 is the highest-pitched string. null until the tab-assignment step (P1-05) fills it in.",
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 6
+        },
+        "fret": {
+          "description": "Fret number, 0 is open. null until the tab-assignment step (P1-05) fills it in. string and fret are both null or both set.",
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 24
+        },
+        "pitch": { "description": "MIDI note number of the sounding note.", "type": "integer", "minimum": 0, "maximum": 127 },
+        "confidence": { "description": "0 to 1. How sure the note detector is.", "type": "number", "minimum": 0, "maximum": 1 },
+        "edited": { "description": "True once the user changed or confirmed it. The pipeline always writes false.", "type": "boolean" }
+      },
+      "oneOf": [
+        { "properties": { "string": { "type": "null" }, "fret": { "type": "null" } } },
+        { "properties": { "string": { "type": "integer" }, "fret": { "type": "integer" } } }
+      ]
+    },
+    "guitarTab": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["notes"],
+      "properties": {
+        "notes": {
+          "description": "Notes in time order (start time, then pitch). Guitar has six strings.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/note" }
+        }
+      }
+    },
+    "bassTab": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["notes"],
+      "properties": {
+        "notes": {
+          "description": "Notes in time order (start time, then pitch). Bass has four strings.",
+          "type": "array",
+          "items": {
+            "allOf": [
+              { "$ref": "#/$defs/note" },
+              { "properties": { "string": { "maximum": 4 } } }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

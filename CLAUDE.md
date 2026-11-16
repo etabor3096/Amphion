@@ -40,7 +40,7 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 ## Commands
 
 - React demo, run from `demo/` (`cd demo` first): `npm install`, `npm run dev` (Vite, http://localhost:5173), `npm run typecheck`, `npm run build` (typecheck + build).
-- Pipeline, run from `pipeline/` with its Python 3.10 virtualenv active (setup in `pipeline/README.md`): `python -m pytest`.
+- Pipeline, run from `pipeline/` with its Python 3.10 virtualenv active (setup in `pipeline/README.md`): `python -m pytest` (about a minute); run it on a song with `python -m amphion_pipeline song.wav -o result.json`.
 - These cover the React demo and the pipeline. Add commands for `ios/` and `firebase/` here as those folders appear.
 
 ## Definition of Done
