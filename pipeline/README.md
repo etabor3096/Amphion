@@ -52,6 +52,7 @@ missing file and 1 for any other failure; on failure no output file is written (
 | `beats.py` | madmom | beat and downbeat times, beats per bar |
 | `harmony.py` | madmom | chord segments, key |
 | `tempo_tuning.py` | librosa | tempo (BPM), tuning offset (cents from A = 440 Hz) |
+| `tab_assign.py` | project code | a string and fret for every note (P1-05); weights in `tab_weights.py` |
 | `run.py` | | runs the stages, builds and validates the document |
 
 ## The RC-20 format (fixed here, schema version 1)
@@ -64,8 +65,8 @@ types have to accept null before a result loads unchanged. Decisions worth knowi
 - **Song time.** Every time is seconds from the start of the input file, rounded to the millisecond (RC-18).
 - **`schemaVersion` and `audioSha256`** are top-level fields (approved by Elijah on 2026-11-09, see #49). The hash equals
   `shasum -a 256 song.wav`. A player compares it with its own copy of the audio (RC-19).
-- **`string` and `fret` are null** on every note until the tab-assignment step (P1-05). String 1 is the highest-pitched
-  string. Both are null or both are set.
+- **`string` and `fret`** come from the tab-assignment step (P1-05). String 1 is the highest-pitched string. Both are
+  null or both are set, and they are null only for a note with no legal position (see below). No note is ever dropped.
 - **Unknown is null (RC-11).** `key`, `bpm`, `tuningOffsetCents` and `beatsPerBar` are null when they could not be found,
   and a failure in one of the key, tempo or tuning stages gives null with a warning, never a guess.
 - **A missing part is null.** `bass` (or `guitar`) is null when no notes were found in that part. The app then says
@@ -78,6 +79,28 @@ types have to accept null before a result loads unchanged. Decisions worth knowi
   are left out.
 - **The temp folder.** Separated parts exist only in a folder created under the system temp folder (or `--tmp-dir`) and
   are deleted when the run ends: on success, on any exception, and on SIGTERM (tests cover each, RC-03, rule A3).
+
+## Choosing strings and frets (P1-05, DD-15)
+
+`tab_assign.py` gives each note a string and fret. Every option for a pitch is scored, and a beam search keeps the best
+partial tabs through the whole song (`beam_width` in `tab_weights.py`, 32 by default; the search for 460 notes takes
+10 ms). Notes that start within 50 ms of each other form one column and are placed together.
+
+- **Preferences** (all named, adjustable weights in `tab_weights.py`, with a comment each): open strings, then lower
+  frets; notes in one column within 4 frets (open strings do not count); a small cost for moving the hand between
+  columns, smaller when there is time to move. Tune them against the benchmark and report the scores (rule A9).
+- **Hard rules:** no two notes that sound together share a string, whether they start together or one is still ringing
+  from earlier (a note rings until its end time, forgiving 80 ms of detector error); frets run 0 to 20 (the demo's limit;
+  the schema allows 24); the fret matches the tuning offset.
+- **Tuning offset.** The pipeline's own estimate is a fraction of a semitone, so it never moves a position. A whole
+  semitone offset cannot be measured (OQ-05), but the code supports one: `tuning_offset_cents=-100` makes the open low
+  string one semitone flat, so pitch 39 is fret 0 on string 6 instead of unplayable.
+- **A note with no legal position** keeps `string` and `fret` null and a warning is logged with the count. That happens
+  for a pitch below the lowest string (for example a detector error one semitone below a bass's low E), above fret 20, or
+  a seventh simultaneous note on a six-string guitar. It is never dropped and never given a wrong position.
+- **Known limit.** The "still ringing" rule is strict. If the detector reports long overlapping notes, some notes that
+  fit only one string will come out null instead of cutting the earlier note, as a player would. The benchmark (P1-03)
+  will show whether that is worth relaxing.
 
 ## What had to be pinned or built from source, and why (RISK-04)
 
