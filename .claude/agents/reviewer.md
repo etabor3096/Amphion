@@ -14,11 +14,11 @@ You are read-only: never edit files, commit, push, or change Issues, labels or t
 - The change: `git diff origin/dev...HEAD` and `git log origin/dev..HEAD`.
 - `ARCHITECTURE.md` rules A1 to A10, `POLICY.md` (scope, wording, what agents may do), the SDD sections the Issue
   cites (`docs/SDD.txt`), and `CLAUDE.md` Definition of Done.
-- For `src/` changes, also `AGENTS.md` (the demo rules, such as one clock).
+- For `demo/` changes, also `AGENTS.md` (the demo rules, such as one clock).
 
 ## Do
 
-1. Run `npm run typecheck` and `npm run build` when `package.json` applies to the change. Report real output; if a
+1. Run `npm run typecheck` and `npm run build` (from `demo/`) when `demo/package.json` applies to the change. Report real output; if a
    command cannot run, say so rather than assuming it passed.
 2. For each acceptance criterion, find concrete evidence in the diff, test output or a command result. Mark PASS,
    FAIL, or UNVERIFIED (needs a human or a device, for example iPhone or screenshot checks).

@@ -49,7 +49,7 @@ flowchart LR
 | Processing function | Python on Cloud Run functions: Demucs, Basic Pitch, the tab-assignment module, madmom, librosa | `pipeline/` | Separating guitar and bass, finding notes, choosing string and fret, beats, chords, key, tempo, tuning; writing results; deleting the audio | DD-02, DD-03, DD-15, DD-16 |
 | Cloud Messaging | Firebase Cloud Messaging through APNs | Firebase console; sent from `pipeline/` | "Your song is ready" and failure notifications | US-06 |
 | Benchmark | Python, mir_eval | `benchmark/` | The 10-song reference set and accuracy scoring. Runs offline and is never deployed. | RC-10, RISK-01 |
-| React demo | React, Vite, Tailwind | repo root today, `demo/` after P0-01 | A click-through design reference for every screen. It is never shipped and never ported line for line. | SDD 6.3 |
+| React demo | React, Vite, Tailwind | `demo/` | A click-through design reference for every screen. It is never shipped and never ported line for line. | SDD 6.3 |
 
 ## Data flow
 
@@ -115,7 +115,7 @@ Synced UI reads song time from the audio player and nowhere else (RC-18, DD-14).
 - Never add a `Timer`, a counter, `asyncAfter`, or any value that moves song time forward on its own.
 - Speed changes and loops change only how fast song time moves. The stored tab never changes for them.
 - Bluetooth output delay is corrected inside the clock (#31), not in the views.
-- The React demo keeps the same rule: `PlaybackClock` in `src/playback/clock.ts` (under `demo/` after P0-01), read in one animation-frame loop.
+- The React demo keeps the same rule: `PlaybackClock` in `demo/src/playback/clock.ts`, read in one animation-frame loop.
 - This rule traces from US-12 to Issue #29 and its sub-issues P5-04 and P5-05.
 
 ### A2. Upload-triggered pipeline
@@ -170,7 +170,7 @@ ask in the Issue first. No analysis runs on the phone (DD-03).
 | Folder | Holds | From |
 | --- | --- | --- |
 | `docs/` | The SDD (`SDD.pdf`, plus the text copy `SDD.txt`), task briefs, decision records (`docs/decisions/`), the backlog spec and design screenshots | Today |
-| `src/`, `index.html`, `package.json` | The React demo | Today; moves to `demo/` in P0-01 (OD-02) |
+| `demo/` | The React demo (`src/`, `index.html`, `package.json`) | P0-01 (OD-02) |
 | `ios/` | The Xcode project: `App/`, `Features/` (one folder per screen), `Services/`, `Models/`, `DesignSystem/` | P0-01, P0-02 |
 | `pipeline/` | The processing function and the analysis code | P0-01, P1 |
 | `firebase/` | `firebase.json`, security rules, rules tests, `SCHEMA.md` | P0-01, P0-04 |

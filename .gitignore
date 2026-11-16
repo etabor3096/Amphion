@@ -25,3 +25,44 @@ logs/
 
 # Claude Code local overrides (personal, not shared)
 .claude/settings.local.json
+
+# --- Native app, pipeline, Firebase and benchmark (P0-01) ---
+
+# Xcode (ios/)
+xcuserdata/
+*.xcuserstate
+DerivedData/
+.build/
+*.xcarchive
+*.ipa
+Pods/
+
+# Python (pipeline/, benchmark/)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Firebase emulators and CLI (firebase/)
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+emulator-data/
+.runtimeconfig.json
+
+# Secrets and client config (RC-06, OD-03): never committed
+GoogleService-Info.plist
+google-services.json
+serviceAccount*.json
+*.pem
+*.p8
+*.p12
+
+# Benchmark audio may be copyrighted: it lives outside the repo (OD-04, POLICY.md). Only reference tabs are committed.
+/benchmark/audio/
+/benchmark/audio-private/

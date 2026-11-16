@@ -14,7 +14,7 @@ the detail; it does not repeat it. Do not put secrets in this file or anywhere e
 | `ROADMAP.md` | Phases P0 to P8, gate G1, open decisions (OD) and their defaults, the pickup rule | To place an Issue and to find the default for an open decision |
 
 The three docs live at the repo root (not `docs/`): every Issue body says "Read `AGENTS.md`, `ARCHITECTURE.md` and
-`POLICY.md` first". `AGENTS.md` is the file map and rules for the React demo in `src/`; read it before touching `src/`.
+`POLICY.md` first". `AGENTS.md` is the file map and rules for the React demo in `demo/`; read it before touching `demo/`.
 
 If an Issue, these docs and the SDD disagree, or the SDD does not settle something: stop and ask in an Issue comment.
 Do not guess.
@@ -39,14 +39,14 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 
 ## Commands
 
-- `npm install`, `npm run dev` (Vite, http://localhost:5173), `npm run typecheck`, `npm run build` (typecheck + build).
+- React demo, run from `demo/` (`cd demo` first): `npm install`, `npm run dev` (Vite, http://localhost:5173), `npm run typecheck`, `npm run build` (typecheck + build).
 - These cover the React demo only. Add commands for `ios/`, `pipeline/` and `firebase/` here as those folders appear.
 
 ## Definition of Done
 
 - Each acceptance criterion in the Issue is checked, with concrete evidence (test output, command result, screenshot).
-- `npm run typecheck` and `npm run build` pass, and any tests that exist pass. The PR build check
-  (`.github/workflows/build.yml`, job `build`: `npm ci` + `npm run build` on PRs into `dev`) is green.
+- `npm run typecheck` and `npm run build` pass (in `demo/`), and any tests that exist pass. The PR build check
+  (`.github/workflows/build.yml`, job `build`: `npm ci` + `npm run build` in `demo/` on PRs into `dev`) is green.
 - UI changes include screenshots saved in `docs/screenshots/` (see Screenshots of changes) and shown in the PR. Non-UI changes do not need them.
 - Docs are updated if behavior, structure or commands changed.
 - The PR links the Issue, states what was and was not verified, and is labeled `ai-generated`.
@@ -57,7 +57,7 @@ Any change that affects what the app looks like or how a screen behaves needs sc
 
 - Save them in `docs/screenshots/`, in one subfolder per view, for example `docs/screenshots/library/`, `docs/screenshots/song-screen/`, `docs/screenshots/chord-view/`. Use a short kebab-case name for the view.
 - Reuse the view's subfolder if it exists. When a change adds a new type of view (a new screen, sheet, dialog or popover), create a new subfolder for it. Never put screenshots loose in `docs/screenshots/`.
-- Take them from the running app (`npm run dev`, then the `run` skill), not mockups. Capture the app at phone size, as the phone frame shows it.
+- Take them from the running app (`npm run dev` in `demo/`, then the `run` skill), not mockups. Capture the app at phone size, as the phone frame shows it.
 - Capture the screen after the change. If the screen already existed, also capture it before, so the difference is visible.
 - Name files `<change>-before.png` and `<change>-after.png`, for example `docs/screenshots/tab-view/playhead-before.png`. Use a short kebab-case change name.
 - Commit the screenshots with the change they show.
