@@ -21,6 +21,11 @@ def test_result_validates_and_has_the_approved_top_level_fields(result, clip_pat
     assert abs(result["duration"] - 10.0) < 0.01
 
 
+def test_two_runs_on_the_same_file_give_the_same_result(result, clip_path):
+    """The benchmark compares scores before and after a change (RC-10), so the pipeline must be repeatable."""
+    assert analyze(clip_path) == result
+
+
 def test_every_note_has_a_playable_string_and_fret_that_match_its_pitch(result):
     from amphion_pipeline.tab_weights import OPEN_STRING_PITCHES
 

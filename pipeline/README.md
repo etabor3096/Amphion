@@ -42,7 +42,7 @@ MP3, M4A and WAV are read. M4A (and any other compressed format librosa cannot d
 machine; the P4 container will have to install it. Without `-o` the JSON is printed to stdout and anything the libraries
 print goes to stderr, so `python -m amphion_pipeline song.wav 2>/dev/null | jq .` works. The exit code is 0 on success, 2 for a
 missing file and 1 for any other failure; on failure no output file is written (RC-09). A 10-second clip takes about
-10 s on an Apple-silicon CPU.
+10 s and a 3-minute song about 2 minutes (see the timings below).
 
 | Stage (one module each) | Library | Output |
 | --- | --- | --- |
@@ -101,6 +101,53 @@ partial tabs through the whole song (`beam_width` in `tab_weights.py`, 32 by def
 - **Known limit.** The "still ringing" rule is strict. If the detector reports long overlapping notes, some notes that
   fit only one string will come out null instead of cutting the earlier note, as a player would. The benchmark (P1-03)
   will show whether that is worth relaxing.
+
+## Processing time for a 3-minute song (P1-07, RC-08, RISK-02)
+
+Measured 2026-11-16 with `python tools/time_stages.py song.wav --threads N`, each row in a fresh process (so each pays
+for loading the models once, as a cold instance would). Seconds per stage:
+
+| Threads | load | separate (Demucs) | notes (Basic Pitch) | beats (madmom) | chords (madmom) | key, tempo, tuning | tab | **Total** | Peak memory |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 2 | 0.3 | 76.4 | 7.5 | 12.3 | 38.6 | 4.3 | 0.0 | **140 s** | 2.2 GB |
+| 4 | 0.5 | 68.3 | 5.5 | 12.6 | 38.4 | 4.1 | 0.0 | **129 s** | 2.8 GB |
+| 4 (repeat) | 0.4 | 71.1 | 5.8 | 12.3 | 38.7 | 4.3 | 0.0 | **133 s** | 2.7 GB |
+| 4 (repeat, after the determinism fix) | 0.3 | 70.1 | 5.7 | 12.6 | 39.2 | 4.5 | 0.0 | **133 s** | 2.4 GB |
+| 8 | 0.4 | 61.4 | 8.2 | 13.3 | 39.4 | 4.3 | 0.0 | **127 s** | 2.4 GB |
+| 10 (all cores) | 0.4 | 68.6 | 10.1 | 12.5 | 41.8 | 4.5 | 0.0 | **138 s** | 2.8 GB |
+
+**What was measured, and what was not.** The audio is the generated 10-second clip repeated 18 times (a 180.0 s file), not
+a real song: the separation, beat and chord stages take time that depends on the length of the file, not on what is in it,
+but the note and tab stages scale with how many notes there are. The machine is an Apple M5 (4 performance and 6
+efficiency cores, 16 GB), not a container: there is no Docker here, and containerizing moved to P4-01. This Mac cannot pin
+cores, so `--threads` limits the thread pools of PyTorch, NumPy, numba and ONNX Runtime instead of giving the process
+exactly N CPUs. Upload, Cloud Run cold start, model download and the Firestore writes are not included. Treat the numbers
+as a lower bound for a cloud CPU, which is likely slower per core than an M5.
+
+**Findings.**
+
+- **More threads barely help.** 2 threads took 140 s and 8 took 127 s. Demucs is the biggest stage (61 to 76 s) and scales
+  weakly. The chord (39 s) and beat (13 s) stages (madmom) and the key, tempo and tuning stage (4 s) stages do not speed up with more threads (chords stayed at 38 to 42 s).
+  Together they are about 56 s of every run. So an 8 vCPU instance should not be paid for as things stand; 2 to 4
+  vCPU gives nearly the same time.
+- **Memory.** Peak use was 2.2 to 2.8 GB, so size the instance comfortably above that.
+- **Repeatable.** The 4-thread run took 129, 133 and 133 s, within 3%. While timing I also found that the pipeline was not
+  repeatable: Demucs adds a random time offset by default, so the parts and the notes changed from run to run. That is
+  fixed (`shifts=0` in `separate.py`) and `tests/test_run.py` now checks that two runs give the same result.
+
+**Does RC-08 look reachable on CPU? Not as the pipeline stands.** RC-08 wants a 3-minute song at Ready in under 2 minutes
+from upload. The analysis alone took 127 to 140 s on a fast laptop CPU, which already misses it before upload and cold
+start are added, and a cloud vCPU will probably be slower. This is one synthetic file on one machine, so it is an early
+signal, not a verdict. Options, none of them taken here (OD-06 says CPU until P1-07 and P4-06 measure it, and a GPU needs
+a cost check and Elijah's approval):
+
+1. **Run the stages that do not speed up with threads (beats, chords, key, tempo and tuning, about 56 s) at the same
+   time as Demucs**, in separate processes. The longest path would then be Demucs plus the notes, about 70 to 85 s, if
+   there are enough vCPU that they do not slow each other. This is an estimate that I have not measured.
+2. A GPU for Demucs (cost check and approval first).
+3. Relax RC-08 (Elijah's decision).
+
+P4-06 repeats this on the deployed service, which is the measurement that counts.
 
 ## What had to be pinned or built from source, and why (RISK-04)
 
