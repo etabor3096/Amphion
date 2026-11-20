@@ -36,6 +36,19 @@ checked, change its `referenceStatus` to `checked`. The input types and instrume
 is inferred from the file (a Voice Memos file is a phone-mic recording), and the parts are only the ones the pipeline found,
 which may include a bass part that is really low guitar notes.
 
+### Key, tempo, time and tuning (given by Elijah, 2026-11-20)
+
+| Song | Key | `bpm` in the reference | Other tempo levels | Time | Tuning |
+| --- | --- | --- | --- | --- | --- |
+| Know Your Name | B major | 80 | 160 (double time) | 4/4 | standard (E A D G B E), 0 cents |
+| Maple Syrup | D major | 153 | 77 (half time), 306 (double time) | 5/4 | standard, 0 cents |
+| With Rob as My Witness | C# minor | 152 | | 4/4 | standard, 0 cents |
+
+`beats` and `downbeats` follow the `bpm` level above (one beat per `bpm` tick), so a chord-per-beat score (RC-10) counts
+beats at that level. I rebuilt them by re-running madmom's beat tracker limited to that tempo and bar length, so the grid
+is still the tracker's guess and its start position is **not** checked by ear. The notes, chords, and string and fret
+choices are still the pipeline's draft, which is why `referenceStatus` is still `draft-from-pipeline`.
+
 ### The audio (private)
 
 The three songs are each longer than the app's 3-minute limit (RC-07), so the benchmark uses the first 179.9 s of each,
