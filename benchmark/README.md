@@ -17,6 +17,7 @@ Does not belong here: the benchmark audio. It may be copyrighted, so it lives in
 | `manifest.schema.json` | The JSON Schema for the manifest. It caps `duration` at 180 s (RC-07) |
 | `references/<id>.json` | The reference tab for one song, in the RC-20 format (`pipeline/rc20.schema.json`) |
 | `check_references.py` | The schema check (below) |
+| `tools/review.html` | The page for checking a reference by ear (below) |
 | `tests/` | Tests for the checker |
 
 ### The proof-of-concept set (3 songs, PoC amendment on #47)
@@ -55,6 +56,26 @@ The three songs are each longer than the app's 3-minute limit (RC-07), so the be
 cut without re-encoding (`ffmpeg -t 179.9 -c copy -map_metadata -1`). The cuts live in `benchmark/audio/trimmed/` on the
 machine that has the audio (gitignored). The manifest records each cut file's SHA-256 and the SHA-256 of the full
 original, so anyone with the audio can check they have the same files.
+
+## Review a reference by ear
+
+`tools/review.html` is a single page that plays a song and draws its reference as a scrolling tab, so a reference can be
+checked and corrected without reading the JSON. Nothing is uploaded: the page runs in your browser and reads the two files
+you pick.
+
+1. Open `benchmark/tools/review.html` in Chrome or Safari (double-click it, or drag it into the browser).
+2. Choose the **reference JSON** (`benchmark/references/<id>.json`) and its **audio** (the trimmed file from the manifest).
+   The page warns if the audio's length does not match the reference.
+3. Press **Play** (or the space bar). The orange line is the playhead; the big label is the chord at the playhead, with
+   the bar and beat. Slow it to 0.5 or 0.75 for fast parts. **Click empty space to jump**; click a note or chord to select it.
+4. To hear whether the transcription is right, turn the **Recording** slider to 0 and listen to the **Guitar notes**,
+   **Bass notes** and **Chords** synth alone, or play them over the recording and listen for notes that clash.
+5. Fix what is wrong in the right-hand panel: change a note's string and fret, delete a note, rename a chord or change its
+   start and end, or add a note or chord at the playhead.
+6. **Download corrected JSON**, save it over the file in `benchmark/references/`, and run the check below.
+
+It shows only what the reference says. It does not move the beat grid; if the bar lines sit in the wrong place, say so and
+the grid is rebuilt.
 
 ## Check the references
 
