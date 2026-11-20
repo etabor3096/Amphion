@@ -1,0 +1,64 @@
+{
+  "manifestVersion": 1,
+  "songs": [
+    {
+      "id": "know-your-name",
+      "title": "Know Your Name",
+      "input": "mic",
+      "instruments": [
+        "guitar",
+        "bass"
+      ],
+      "audioFile": "know-your-name.m4a",
+      "audioSha256": "8c581bb2261d8d05bf0fbe810de25f3aca3b3929c7fedd2fdd1f1565d219aebb",
+      "duration": 179.904,
+      "source": {
+        "file": "Know Your Name.m4a",
+        "sha256": "585736dd6fb5bcd969ffbbf02cd115a5ee2d4ebcc40fbda4caac064caef9f47e",
+        "startSeconds": 0,
+        "lengthSeconds": 179.9
+      },
+      "reference": "references/know-your-name.json",
+      "referenceStatus": "draft-from-pipeline"
+    },
+    {
+      "id": "with-rob-as-my-witness",
+      "title": "With Rob as My Witness",
+      "input": "mic",
+      "instruments": [
+        "bass"
+      ],
+      "audioFile": "with-rob-as-my-witness.m4a",
+      "audioSha256": "23a8d29f9fdd02041f7b877fc03ae7e03ad9ee13555d00c7364442f4f30b2d86",
+      "duration": 179.904,
+      "source": {
+        "file": "With Rob as My Witness.m4a",
+        "sha256": "f1f9aa84e895e62a6f7c8df6fc921217b7c8cc44f77349213097c9a05a1fcc99",
+        "startSeconds": 0,
+        "lengthSeconds": 179.9
+      },
+      "reference": "references/with-rob-as-my-witness.json",
+      "referenceStatus": "draft-from-pipeline"
+    },
+    {
+      "id": "maple-syrup",
+      "title": "Maple Syrup",
+      "input": "upload",
+      "instruments": [
+        "guitar",
+        "bass"
+      ],
+      "audioFile": "maple-syrup.mp3",
+      "audioSha256": "55936f38f3bbfc04287c83927f087873ce1826ed21aa22cfd3bfcf987d8f7eca",
+      "duration": 179.906,
+      "source": {
+        "file": "Maple Syrup.mp3",
+        "sha256": "4d3c1c61b4221f47fd7309f648cf637dd1a336ccf866701da6901c420764190b",
+        "startSeconds": 0,
+        "lengthSeconds": 179.9
+      },
+      "reference": "references/maple-syrup.json",
+      "referenceStatus": "draft-from-pipeline"
+    }
+  ]
+}

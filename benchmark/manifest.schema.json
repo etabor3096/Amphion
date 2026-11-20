@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/etabor3096/Amphion/benchmark/manifest.schema.json",
+  "title": "Amphion benchmark manifest",
+  "description": "Lists the songs in the accuracy benchmark (RC-10, RISK-01). Audio is never committed (OD-04); each entry names the private file and its SHA-256, and points to the committed reference tab.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifestVersion", "songs"],
+  "properties": {
+    "manifestVersion": { "const": 1 },
+    "songs": { "type": "array", "items": { "$ref": "#/$defs/song" } }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "song": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "input", "instruments", "audioFile", "audioSha256", "duration", "source", "reference", "referenceStatus"],
+      "properties": {
+        "id": { "description": "Short kebab-case name. Also the name of the reference file.", "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "title": { "type": "string", "minLength": 1 },
+        "input": {
+          "description": "How the audio got to the app: an imported file (upload) or a phone-mic recording (mic). Scored separately (RC-10).",
+          "enum": ["upload", "mic"]
+        },
+        "instruments": {
+          "description": "The parts the reference covers. A part not listed must be null in the reference file.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["guitar", "bass"] }
+        },
+        "audioFile": { "description": "File name in the private audio folder (benchmark/audio/, gitignored). The exact file that was analyzed (RC-19).", "type": "string", "minLength": 1 },
+        "audioSha256": { "$ref": "#/$defs/sha256" },
+        "duration": { "description": "Length of the audio file in seconds. At most 180 (RC-07).", "type": "number", "exclusiveMinimum": 0, "maximum": 180 },
+        "source": {
+          "description": "Where audioFile came from, when it is a cut of a longer file.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["file", "sha256", "startSeconds", "lengthSeconds"],
+          "properties": {
+            "file": { "type": "string", "minLength": 1 },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "startSeconds": { "type": "number", "minimum": 0 },
+            "lengthSeconds": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "reference": { "description": "Path of the reference tab, relative to benchmark/.", "type": "string", "pattern": "^references/[a-z0-9-]+\\.json$" },
+        "referenceStatus": {
+          "description": "draft-from-pipeline: written from the pipeline's own output and not yet checked, so it proves nothing about accuracy. checked: Elijah has checked every part by ear and corrected it.",
+          "enum": ["draft-from-pipeline", "checked"]
+        }
+      }
+    }
+  }
+}
