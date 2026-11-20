@@ -25,7 +25,7 @@ Does not belong here: the benchmark audio. It may be copyrighted, so it lives in
 | Song | Input | Parts in the reference |
 | --- | --- | --- |
 | Know Your Name | `mic` (Voice Memos recording) | guitar, bass |
-| With Rob as My Witness | `mic` (Voice Memos recording) | guitar, bass |
+| With Rob as My Witness | `mic` (Voice Memos recording of a bass alone) | bass only |
 | Maple Syrup | `upload` (MP3) | guitar, bass |
 
 The full 10-song set is still required before MVP sign-off, and any G1 result from 3 songs is provisional (OQ-07).
@@ -34,8 +34,11 @@ The full 10-song set is still required before MVP sign-off, and any G1 result fr
 own output (`python -m amphion_pipeline`), so it proves nothing about accuracy until Elijah has checked each part by ear and
 corrected it. Scoring the pipeline against an unchecked draft would score it against itself. When a song's reference is
 checked, change its `referenceStatus` to `checked`. The input types and instruments are also unconfirmed: the input type
-is inferred from the file (a Voice Memos file is a phone-mic recording), and the parts are only the ones the pipeline found,
-which may include a bass part that is really low guitar notes.
+is inferred from the file (a Voice Memos file is a phone-mic recording). Elijah confirmed that With Rob as My Witness is a bass
+recording alone, so its reference has no guitar part (the pipeline had found 642 guitar notes in it, which were bass notes
+picked up again as guitar). Know Your Name and Maple Syrup have guitar and bass; their parts are the pipeline's, so a bass
+part there may still be low guitar notes. A bass-only recording also has no real chords: the chord segments in that
+reference are the pipeline's guesses from the bass line and should not be trusted.
 
 ### Key, tempo, time and tuning (given by Elijah, 2026-11-20)
 
