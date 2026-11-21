@@ -1541,7 +1541,17 @@
         "edited": false
       },
       {
-        "id": "bass-28",
+        "id": "bass-added-4",
+        "startTime": 5.704,
+        "duration": 0.3,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 1,
+        "edited": false
+      },
+      {
+        "id": "bass-27",
         "startTime": 5.817,
         "duration": 0.163,
         "string": 4,
@@ -1561,7 +1571,7 @@
         "edited": false
       },
       {
-        "id": "bass-30",
+        "id": "bass-28",
         "startTime": 6.072,
         "duration": 0.151,
         "string": 4,
@@ -1571,7 +1581,7 @@
         "edited": false
       },
       {
-        "id": "bass-31",
+        "id": "bass-29",
         "startTime": 6.397,
         "duration": 0.163,
         "string": 4,
@@ -1581,7 +1591,7 @@
         "edited": false
       },
       {
-        "id": "bass-32",
+        "id": "bass-30",
         "startTime": 6.606,
         "duration": 0.174,
         "string": 4,
@@ -1591,7 +1601,7 @@
         "edited": false
       },
       {
-        "id": "bass-33",
+        "id": "bass-31",
         "startTime": 6.78,
         "duration": 0.221,
         "string": 4,
@@ -1601,7 +1611,7 @@
         "edited": false
       },
       {
-        "id": "bass-34",
+        "id": "bass-32",
         "startTime": 7.001,
         "duration": 0.209,
         "string": 4,
@@ -1611,7 +1621,7 @@
         "edited": false
       },
       {
-        "id": "bass-35",
+        "id": "bass-33",
         "startTime": 7.21,
         "duration": 0.197,
         "string": 4,
@@ -1621,7 +1631,7 @@
         "edited": false
       },
       {
-        "id": "bass-36",
+        "id": "bass-34",
         "startTime": 7.407,
         "duration": 0.221,
         "string": 4,
@@ -1631,7 +1641,7 @@
         "edited": false
       },
       {
-        "id": "bass-37",
+        "id": "bass-35",
         "startTime": 7.628,
         "duration": 0.186,
         "string": 4,
@@ -1641,7 +1651,7 @@
         "edited": false
       },
       {
-        "id": "bass-38",
+        "id": "bass-36",
         "startTime": 7.848,
         "duration": 0.128,
         "string": 4,
@@ -1651,7 +1661,7 @@
         "edited": false
       },
       {
-        "id": "bass-39",
+        "id": "bass-38",
         "startTime": 8.255,
         "duration": 0.197,
         "string": 3,
@@ -1661,7 +1671,7 @@
         "edited": false
       },
       {
-        "id": "bass-40",
+        "id": "bass-39",
         "startTime": 8.452,
         "duration": 0.163,
         "string": 3,
@@ -1671,7 +1681,7 @@
         "edited": false
       },
       {
-        "id": "bass-41",
+        "id": "bass-40",
         "startTime": 8.615,
         "duration": 0.221,
         "string": 3,
@@ -1681,7 +1691,7 @@
         "edited": false
       },
       {
-        "id": "bass-42",
+        "id": "bass-41",
         "startTime": 8.835,
         "duration": 0.186,
         "string": 3,
@@ -1691,7 +1701,7 @@
         "edited": false
       },
       {
-        "id": "bass-43",
+        "id": "bass-42",
         "startTime": 9.021,
         "duration": 0.116,
         "string": 3,
@@ -1701,7 +1711,7 @@
         "edited": false
       },
       {
-        "id": "bass-44",
+        "id": "bass-43",
         "startTime": 9.207,
         "duration": 0.197,
         "string": 3,
@@ -1711,7 +1721,7 @@
         "edited": false
       },
       {
-        "id": "bass-45",
+        "id": "bass-44",
         "startTime": 9.404,
         "duration": 0.104,
         "string": 3,
@@ -1721,7 +1731,7 @@
         "edited": false
       },
       {
-        "id": "bass-46",
+        "id": "bass-45",
         "startTime": 9.567,
         "duration": 0.197,
         "string": 4,
@@ -1731,7 +1741,7 @@
         "edited": false
       },
       {
-        "id": "bass-47",
+        "id": "bass-46",
         "startTime": 9.799,
         "duration": 0.197,
         "string": 4,
@@ -1741,7 +1751,7 @@
         "edited": false
       },
       {
-        "id": "bass-48",
+        "id": "bass-47",
         "startTime": 9.996,
         "duration": 0.209,
         "string": 4,
@@ -1751,7 +1761,7 @@
         "edited": false
       },
       {
-        "id": "bass-49",
+        "id": "bass-48",
         "startTime": 10.205,
         "duration": 0.209,
         "string": 4,
@@ -1761,7 +1771,7 @@
         "edited": false
       },
       {
-        "id": "bass-50",
+        "id": "bass-49",
         "startTime": 10.414,
         "duration": 0.174,
         "string": 4,
@@ -1771,7 +1781,7 @@
         "edited": false
       },
       {
-        "id": "bass-51",
+        "id": "bass-50",
         "startTime": 10.588,
         "duration": 0.221,
         "string": 4,
@@ -1781,7 +1791,7 @@
         "edited": false
       },
       {
-        "id": "bass-52",
+        "id": "bass-51",
         "startTime": 10.809,
         "duration": 0.186,
         "string": 4,
@@ -1791,7 +1801,7 @@
         "edited": false
       },
       {
-        "id": "bass-53",
+        "id": "bass-52",
         "startTime": 10.995,
         "duration": 0.209,
         "string": 4,
@@ -1801,7 +1811,7 @@
         "edited": false
       },
       {
-        "id": "bass-54",
+        "id": "bass-53",
         "startTime": 11.204,
         "duration": 0.163,
         "string": 4,
@@ -1811,7 +1821,7 @@
         "edited": false
       },
       {
-        "id": "bass-55",
+        "id": "bass-54",
         "startTime": 11.366,
         "duration": 0.186,
         "string": 4,
@@ -1821,7 +1831,7 @@
         "edited": false
       },
       {
-        "id": "bass-56",
+        "id": "bass-55",
         "startTime": 11.552,
         "duration": 0.209,
         "string": 4,
@@ -1831,7 +1841,17 @@
         "edited": false
       },
       {
-        "id": "bass-57",
+        "id": "bass-fill-1",
+        "startTime": 11.861,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-56",
         "startTime": 11.981,
         "duration": 0.163,
         "string": 4,
@@ -1841,7 +1861,7 @@
         "edited": false
       },
       {
-        "id": "bass-58",
+        "id": "bass-57",
         "startTime": 12.179,
         "duration": 0.093,
         "string": 4,
@@ -1851,7 +1871,7 @@
         "edited": false
       },
       {
-        "id": "bass-59",
+        "id": "bass-58",
         "startTime": 12.33,
         "duration": 0.197,
         "string": 4,
@@ -1861,7 +1881,7 @@
         "edited": false
       },
       {
-        "id": "bass-60",
+        "id": "bass-59",
         "startTime": 12.562,
         "duration": 0.104,
         "string": 4,
@@ -1871,7 +1891,7 @@
         "edited": false
       },
       {
-        "id": "bass-61",
+        "id": "bass-60",
         "startTime": 12.748,
         "duration": 0.488,
         "string": 4,
@@ -1881,32 +1901,32 @@
         "edited": true
       },
       {
-        "id": "bass-62",
+        "id": "bass-61",
         "startTime": 13.897,
         "duration": 0.197,
-        "string": 3,
+        "string": 2,
         "fret": 7,
-        "pitch": 40,
+        "pitch": 45,
         "confidence": 0.335,
         "edited": true
       },
       {
-        "id": "bass-63",
+        "id": "bass-62",
         "startTime": 14.245,
         "duration": 0.453,
-        "string": 3,
+        "string": 2,
         "fret": 9,
-        "pitch": 42,
+        "pitch": 47,
         "confidence": 0.353,
         "edited": true
       },
       {
-        "id": "bass-64",
+        "id": "bass-63",
         "startTime": 15.256,
         "duration": 0.313,
-        "string": 4,
+        "string": 3,
         "fret": 7,
-        "pitch": 35,
+        "pitch": 40,
         "confidence": 0.011,
         "edited": true
       },
@@ -1914,34 +1934,34 @@
         "id": "bass-65",
         "startTime": 15.79,
         "duration": 0.627,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.775,
         "edited": true
       },
       {
-        "id": "bass-66",
+        "id": "bass-67",
         "startTime": 18.239,
         "duration": 0.256,
-        "string": 4,
+        "string": 3,
         "fret": 10,
-        "pitch": 38,
+        "pitch": 43,
         "confidence": 0.467,
         "edited": true
       },
       {
-        "id": "bass-67",
+        "id": "bass-68",
         "startTime": 18.588,
         "duration": 0.464,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.857,
         "edited": true
       },
       {
-        "id": "bass-68",
+        "id": "bass-69",
         "startTime": 19.215,
         "duration": 0.488,
         "string": 4,
@@ -1951,7 +1971,7 @@
         "edited": true
       },
       {
-        "id": "bass-69",
+        "id": "bass-70",
         "startTime": 20.283,
         "duration": 0.139,
         "string": 3,
@@ -1961,7 +1981,7 @@
         "edited": true
       },
       {
-        "id": "bass-70",
+        "id": "bass-71",
         "startTime": 20.492,
         "duration": 0.615,
         "string": 3,
@@ -1971,7 +1991,7 @@
         "edited": true
       },
       {
-        "id": "bass-71",
+        "id": "bass-72",
         "startTime": 21.862,
         "duration": 0.151,
         "string": 4,
@@ -1981,7 +2001,7 @@
         "edited": false
       },
       {
-        "id": "bass-72",
+        "id": "bass-73",
         "startTime": 22.082,
         "duration": 0.441,
         "string": 4,
@@ -1991,7 +2011,7 @@
         "edited": true
       },
       {
-        "id": "bass-73",
+        "id": "bass-75",
         "startTime": 24.218,
         "duration": 0.383,
         "string": 4,
@@ -2001,7 +2021,7 @@
         "edited": true
       },
       {
-        "id": "bass-74",
+        "id": "bass-77",
         "startTime": 24.834,
         "duration": 0.476,
         "string": 4,
@@ -2011,7 +2031,7 @@
         "edited": true
       },
       {
-        "id": "bass-75",
+        "id": "bass-78",
         "startTime": 25.426,
         "duration": 0.766,
         "string": 4,
@@ -2021,7 +2041,7 @@
         "edited": true
       },
       {
-        "id": "bass-76",
+        "id": "bass-79",
         "startTime": 26.564,
         "duration": 0.163,
         "string": 3,
@@ -2031,7 +2051,7 @@
         "edited": true
       },
       {
-        "id": "bass-77",
+        "id": "bass-80",
         "startTime": 26.796,
         "duration": 0.511,
         "string": 3,
@@ -2041,7 +2061,7 @@
         "edited": true
       },
       {
-        "id": "bass-78",
+        "id": "bass-81",
         "startTime": 28.096,
         "duration": 0.186,
         "string": 4,
@@ -2051,7 +2071,7 @@
         "edited": false
       },
       {
-        "id": "bass-79",
+        "id": "bass-82",
         "startTime": 28.352,
         "duration": 0.604,
         "string": 4,
@@ -2061,7 +2081,7 @@
         "edited": true
       },
       {
-        "id": "bass-80",
+        "id": "bass-83",
         "startTime": 30.941,
         "duration": 0.163,
         "string": 4,
@@ -2071,7 +2091,7 @@
         "edited": true
       },
       {
-        "id": "bass-81",
+        "id": "bass-84",
         "startTime": 31.138,
         "duration": 0.418,
         "string": 4,
@@ -2081,7 +2101,7 @@
         "edited": true
       },
       {
-        "id": "bass-82",
+        "id": "bass-86",
         "startTime": 31.695,
         "duration": 0.72,
         "string": 4,
@@ -2091,7 +2111,7 @@
         "edited": true
       },
       {
-        "id": "bass-83",
+        "id": "bass-87",
         "startTime": 32.845,
         "duration": 0.139,
         "string": 3,
@@ -2101,7 +2121,7 @@
         "edited": true
       },
       {
-        "id": "bass-84",
+        "id": "bass-88",
         "startTime": 33.065,
         "duration": 0.511,
         "string": 3,
@@ -2111,7 +2131,7 @@
         "edited": true
       },
       {
-        "id": "bass-85",
+        "id": "bass-89",
         "startTime": 34.493,
         "duration": 0.174,
         "string": 4,
@@ -2121,7 +2141,7 @@
         "edited": false
       },
       {
-        "id": "bass-86",
+        "id": "bass-90",
         "startTime": 34.725,
         "duration": 0.499,
         "string": 4,
@@ -2131,47 +2151,47 @@
         "edited": true
       },
       {
-        "id": "bass-87",
+        "id": "bass-91",
         "startTime": 36.49,
         "duration": 0.337,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.681,
         "edited": true
       },
       {
-        "id": "bass-88",
+        "id": "bass-92",
         "startTime": 36.827,
         "duration": 0.174,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.633,
         "edited": true
       },
       {
-        "id": "bass-89",
+        "id": "bass-93",
         "startTime": 37.001,
         "duration": 0.418,
-        "string": 4,
+        "string": 3,
         "fret": 10,
-        "pitch": 38,
+        "pitch": 43,
         "confidence": 0.751,
         "edited": true
       },
       {
-        "id": "bass-90",
+        "id": "bass-94",
         "startTime": 37.442,
         "duration": 0.453,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.665,
         "edited": true
       },
       {
-        "id": "bass-91",
+        "id": "bass-95",
         "startTime": 37.976,
         "duration": 0.197,
         "string": 4,
@@ -2181,7 +2201,7 @@
         "edited": true
       },
       {
-        "id": "bass-92",
+        "id": "bass-96",
         "startTime": 38.174,
         "duration": 0.232,
         "string": 4,
@@ -2191,7 +2211,7 @@
         "edited": true
       },
       {
-        "id": "bass-93",
+        "id": "bass-97",
         "startTime": 38.406,
         "duration": 0.186,
         "string": 4,
@@ -2201,7 +2221,7 @@
         "edited": true
       },
       {
-        "id": "bass-94",
+        "id": "bass-98",
         "startTime": 38.592,
         "duration": 0.221,
         "string": 4,
@@ -2211,7 +2231,7 @@
         "edited": true
       },
       {
-        "id": "bass-95",
+        "id": "bass-99",
         "startTime": 38.812,
         "duration": 0.174,
         "string": 4,
@@ -2221,7 +2241,7 @@
         "edited": true
       },
       {
-        "id": "bass-96",
+        "id": "bass-100",
         "startTime": 39.021,
         "duration": 0.128,
         "string": 4,
@@ -2231,7 +2251,7 @@
         "edited": true
       },
       {
-        "id": "bass-97",
+        "id": "bass-101",
         "startTime": 39.23,
         "duration": 0.151,
         "string": 3,
@@ -2241,7 +2261,7 @@
         "edited": true
       },
       {
-        "id": "bass-98",
+        "id": "bass-102",
         "startTime": 39.486,
         "duration": 0.093,
         "string": 3,
@@ -2251,7 +2271,7 @@
         "edited": true
       },
       {
-        "id": "bass-99",
+        "id": "bass-103",
         "startTime": 39.578,
         "duration": 0.209,
         "string": 3,
@@ -2261,7 +2281,7 @@
         "edited": true
       },
       {
-        "id": "bass-100",
+        "id": "bass-104",
         "startTime": 39.787,
         "duration": 0.186,
         "string": 3,
@@ -2271,7 +2291,7 @@
         "edited": true
       },
       {
-        "id": "bass-101",
+        "id": "bass-105",
         "startTime": 39.973,
         "duration": 0.209,
         "string": 3,
@@ -2281,7 +2301,7 @@
         "edited": true
       },
       {
-        "id": "bass-102",
+        "id": "bass-106",
         "startTime": 40.182,
         "duration": 0.197,
         "string": 3,
@@ -2291,7 +2311,7 @@
         "edited": true
       },
       {
-        "id": "bass-103",
+        "id": "bass-107",
         "startTime": 40.38,
         "duration": 0.174,
         "string": 3,
@@ -2301,7 +2321,7 @@
         "edited": true
       },
       {
-        "id": "bass-104",
+        "id": "bass-108",
         "startTime": 40.554,
         "duration": 0.093,
         "string": 3,
@@ -2311,7 +2331,7 @@
         "edited": true
       },
       {
-        "id": "bass-105",
+        "id": "bass-109",
         "startTime": 40.763,
         "duration": 0.139,
         "string": 4,
@@ -2321,7 +2341,7 @@
         "edited": true
       },
       {
-        "id": "bass-106",
+        "id": "bass-110",
         "startTime": 40.972,
         "duration": 0.197,
         "string": 4,
@@ -2331,7 +2351,7 @@
         "edited": true
       },
       {
-        "id": "bass-107",
+        "id": "bass-111",
         "startTime": 41.169,
         "duration": 0.174,
         "string": 4,
@@ -2341,7 +2361,7 @@
         "edited": true
       },
       {
-        "id": "bass-108",
+        "id": "bass-112",
         "startTime": 41.378,
         "duration": 0.221,
         "string": 4,
@@ -2351,7 +2371,7 @@
         "edited": true
       },
       {
-        "id": "bass-109",
+        "id": "bass-113",
         "startTime": 41.599,
         "duration": 0.197,
         "string": 4,
@@ -2361,7 +2381,7 @@
         "edited": true
       },
       {
-        "id": "bass-110",
+        "id": "bass-114",
         "startTime": 41.796,
         "duration": 0.186,
         "string": 4,
@@ -2371,7 +2391,7 @@
         "edited": true
       },
       {
-        "id": "bass-111",
+        "id": "bass-115",
         "startTime": 41.982,
         "duration": 0.174,
         "string": 4,
@@ -2381,7 +2401,7 @@
         "edited": true
       },
       {
-        "id": "bass-112",
+        "id": "bass-116",
         "startTime": 42.156,
         "duration": 0.232,
         "string": 4,
@@ -2391,7 +2411,7 @@
         "edited": true
       },
       {
-        "id": "bass-113",
+        "id": "bass-117",
         "startTime": 42.388,
         "duration": 0.163,
         "string": 4,
@@ -2401,7 +2421,7 @@
         "edited": true
       },
       {
-        "id": "bass-114",
+        "id": "bass-118",
         "startTime": 42.585,
         "duration": 0.174,
         "string": 4,
@@ -2411,7 +2431,7 @@
         "edited": true
       },
       {
-        "id": "bass-115",
+        "id": "bass-119",
         "startTime": 42.76,
         "duration": 0.174,
         "string": 4,
@@ -2421,7 +2441,7 @@
         "edited": true
       },
       {
-        "id": "bass-116",
+        "id": "bass-120",
         "startTime": 42.934,
         "duration": 0.197,
         "string": 4,
@@ -2431,7 +2451,7 @@
         "edited": true
       },
       {
-        "id": "bass-117",
+        "id": "bass-121",
         "startTime": 43.131,
         "duration": 0.186,
         "string": 4,
@@ -2441,7 +2461,7 @@
         "edited": true
       },
       {
-        "id": "bass-118",
+        "id": "bass-122",
         "startTime": 43.317,
         "duration": 0.128,
         "string": 4,
@@ -2451,7 +2471,7 @@
         "edited": true
       },
       {
-        "id": "bass-119",
+        "id": "bass-123",
         "startTime": 43.445,
         "duration": 0.244,
         "string": 4,
@@ -2461,7 +2481,7 @@
         "edited": true
       },
       {
-        "id": "bass-120",
+        "id": "bass-124",
         "startTime": 43.688,
         "duration": 0.174,
         "string": 4,
@@ -2471,7 +2491,7 @@
         "edited": true
       },
       {
-        "id": "bass-121",
+        "id": "bass-125",
         "startTime": 43.897,
         "duration": 0.209,
         "string": 4,
@@ -2481,7 +2501,7 @@
         "edited": true
       },
       {
-        "id": "bass-122",
+        "id": "bass-126",
         "startTime": 44.339,
         "duration": 0.186,
         "string": 4,
@@ -2491,7 +2511,7 @@
         "edited": true
       },
       {
-        "id": "bass-123",
+        "id": "bass-127",
         "startTime": 44.524,
         "duration": 0.174,
         "string": 4,
@@ -2501,7 +2521,7 @@
         "edited": true
       },
       {
-        "id": "bass-124",
+        "id": "bass-128",
         "startTime": 44.698,
         "duration": 0.197,
         "string": 4,
@@ -2511,7 +2531,7 @@
         "edited": true
       },
       {
-        "id": "bass-125",
+        "id": "bass-129",
         "startTime": 44.896,
         "duration": 0.197,
         "string": 4,
@@ -2521,7 +2541,7 @@
         "edited": true
       },
       {
-        "id": "bass-126",
+        "id": "bass-130",
         "startTime": 45.093,
         "duration": 0.174,
         "string": 4,
@@ -2531,7 +2551,7 @@
         "edited": true
       },
       {
-        "id": "bass-127",
+        "id": "bass-131",
         "startTime": 45.302,
         "duration": 0.116,
         "string": 4,
@@ -2541,7 +2561,7 @@
         "edited": true
       },
       {
-        "id": "bass-128",
+        "id": "bass-132",
         "startTime": 45.523,
         "duration": 0.139,
         "string": 3,
@@ -2551,7 +2571,7 @@
         "edited": true
       },
       {
-        "id": "bass-129",
+        "id": "bass-133",
         "startTime": 45.755,
         "duration": 0.163,
         "string": 3,
@@ -2561,7 +2581,7 @@
         "edited": true
       },
       {
-        "id": "bass-130",
+        "id": "bass-134",
         "startTime": 45.917,
         "duration": 0.174,
         "string": 3,
@@ -2571,7 +2591,7 @@
         "edited": true
       },
       {
-        "id": "bass-131",
+        "id": "bass-135",
         "startTime": 46.092,
         "duration": 0.197,
         "string": 3,
@@ -2581,7 +2601,7 @@
         "edited": true
       },
       {
-        "id": "bass-132",
+        "id": "bass-136",
         "startTime": 46.324,
         "duration": 0.174,
         "string": 3,
@@ -2591,7 +2611,7 @@
         "edited": true
       },
       {
-        "id": "bass-133",
+        "id": "bass-137",
         "startTime": 46.498,
         "duration": 0.186,
         "string": 3,
@@ -2601,7 +2621,7 @@
         "edited": true
       },
       {
-        "id": "bass-134",
+        "id": "bass-138",
         "startTime": 46.719,
         "duration": 0.163,
         "string": 3,
@@ -2611,7 +2631,7 @@
         "edited": true
       },
       {
-        "id": "bass-135",
+        "id": "bass-139",
         "startTime": 47.067,
         "duration": 0.128,
         "string": 4,
@@ -2621,7 +2641,7 @@
         "edited": true
       },
       {
-        "id": "bass-136",
+        "id": "bass-140",
         "startTime": 47.276,
         "duration": 0.232,
         "string": 4,
@@ -2631,7 +2651,7 @@
         "edited": true
       },
       {
-        "id": "bass-137",
+        "id": "bass-141",
         "startTime": 47.508,
         "duration": 0.128,
         "string": 4,
@@ -2641,7 +2661,7 @@
         "edited": true
       },
       {
-        "id": "bass-138",
+        "id": "bass-142",
         "startTime": 47.636,
         "duration": 0.255,
         "string": 4,
@@ -2651,7 +2671,7 @@
         "edited": true
       },
       {
-        "id": "bass-139",
+        "id": "bass-143",
         "startTime": 47.891,
         "duration": 0.186,
         "string": 4,
@@ -2661,7 +2681,7 @@
         "edited": true
       },
       {
-        "id": "bass-140",
+        "id": "bass-144",
         "startTime": 48.077,
         "duration": 0.197,
         "string": 4,
@@ -2671,7 +2691,7 @@
         "edited": true
       },
       {
-        "id": "bass-141",
+        "id": "bass-145",
         "startTime": 48.274,
         "duration": 0.186,
         "string": 4,
@@ -2681,7 +2701,7 @@
         "edited": true
       },
       {
-        "id": "bass-142",
+        "id": "bass-146",
         "startTime": 48.46,
         "duration": 0.221,
         "string": 4,
@@ -2691,7 +2711,7 @@
         "edited": true
       },
       {
-        "id": "bass-143",
+        "id": "bass-147",
         "startTime": 48.681,
         "duration": 0.197,
         "string": 4,
@@ -2701,7 +2721,7 @@
         "edited": true
       },
       {
-        "id": "bass-144",
+        "id": "bass-148",
         "startTime": 48.878,
         "duration": 0.174,
         "string": 4,
@@ -2711,7 +2731,7 @@
         "edited": true
       },
       {
-        "id": "bass-145",
+        "id": "bass-149",
         "startTime": 49.052,
         "duration": 0.453,
         "string": 4,
@@ -2721,7 +2741,7 @@
         "edited": true
       },
       {
-        "id": "bass-146",
+        "id": "bass-150",
         "startTime": 50.445,
         "duration": 0.163,
         "string": 4,
@@ -2731,7 +2751,7 @@
         "edited": false
       },
       {
-        "id": "bass-147",
+        "id": "bass-151",
         "startTime": 50.608,
         "duration": 0.174,
         "string": 4,
@@ -2741,7 +2761,7 @@
         "edited": false
       },
       {
-        "id": "bass-148",
+        "id": "bass-152",
         "startTime": 50.782,
         "duration": 0.186,
         "string": 4,
@@ -2751,7 +2771,7 @@
         "edited": false
       },
       {
-        "id": "bass-149",
+        "id": "bass-153",
         "startTime": 51.003,
         "duration": 0.186,
         "string": 4,
@@ -2761,7 +2781,7 @@
         "edited": false
       },
       {
-        "id": "bass-150",
+        "id": "bass-154",
         "startTime": 51.188,
         "duration": 0.197,
         "string": 4,
@@ -2771,7 +2791,7 @@
         "edited": false
       },
       {
-        "id": "bass-151",
+        "id": "bass-155",
         "startTime": 51.386,
         "duration": 0.197,
         "string": 4,
@@ -2781,7 +2801,7 @@
         "edited": false
       },
       {
-        "id": "bass-152",
+        "id": "bass-156",
         "startTime": 51.583,
         "duration": 0.197,
         "string": 4,
@@ -2791,7 +2811,7 @@
         "edited": false
       },
       {
-        "id": "bass-153",
+        "id": "bass-157",
         "startTime": 51.815,
         "duration": 0.139,
         "string": 4,
@@ -2801,7 +2821,7 @@
         "edited": false
       },
       {
-        "id": "bass-154",
+        "id": "bass-158",
         "startTime": 51.955,
         "duration": 0.104,
         "string": 4,
@@ -2811,7 +2831,7 @@
         "edited": false
       },
       {
-        "id": "bass-155",
+        "id": "bass-159",
         "startTime": 52.175,
         "duration": 0.197,
         "string": 3,
@@ -2821,7 +2841,7 @@
         "edited": false
       },
       {
-        "id": "bass-156",
+        "id": "bass-160",
         "startTime": 52.373,
         "duration": 0.197,
         "string": 3,
@@ -2831,7 +2851,7 @@
         "edited": false
       },
       {
-        "id": "bass-157",
+        "id": "bass-161",
         "startTime": 52.57,
         "duration": 0.186,
         "string": 3,
@@ -2841,7 +2861,7 @@
         "edited": false
       },
       {
-        "id": "bass-158",
+        "id": "bass-162",
         "startTime": 52.756,
         "duration": 0.197,
         "string": 3,
@@ -2851,7 +2871,7 @@
         "edited": false
       },
       {
-        "id": "bass-159",
+        "id": "bass-163",
         "startTime": 52.988,
         "duration": 0.186,
         "string": 3,
@@ -2861,7 +2881,7 @@
         "edited": false
       },
       {
-        "id": "bass-160",
+        "id": "bass-164",
         "startTime": 53.174,
         "duration": 0.139,
         "string": 3,
@@ -2871,7 +2891,7 @@
         "edited": false
       },
       {
-        "id": "bass-161",
+        "id": "bass-165",
         "startTime": 53.371,
         "duration": 0.221,
         "string": 3,
@@ -2881,7 +2901,7 @@
         "edited": false
       },
       {
-        "id": "bass-162",
+        "id": "bass-166",
         "startTime": 53.592,
         "duration": 0.104,
         "string": 3,
@@ -2891,7 +2911,7 @@
         "edited": false
       },
       {
-        "id": "bass-163",
+        "id": "bass-167",
         "startTime": 53.777,
         "duration": 0.197,
         "string": 4,
@@ -2901,7 +2921,7 @@
         "edited": false
       },
       {
-        "id": "bass-164",
+        "id": "bass-168",
         "startTime": 53.975,
         "duration": 0.221,
         "string": 4,
@@ -2911,7 +2931,7 @@
         "edited": false
       },
       {
-        "id": "bass-165",
+        "id": "bass-169",
         "startTime": 54.195,
         "duration": 0.163,
         "string": 4,
@@ -2921,7 +2941,7 @@
         "edited": false
       },
       {
-        "id": "bass-166",
+        "id": "bass-170",
         "startTime": 54.404,
         "duration": 0.186,
         "string": 4,
@@ -2931,7 +2951,7 @@
         "edited": false
       },
       {
-        "id": "bass-167",
+        "id": "bass-171",
         "startTime": 54.59,
         "duration": 0.163,
         "string": 4,
@@ -2941,7 +2961,7 @@
         "edited": false
       },
       {
-        "id": "bass-168",
+        "id": "bass-172",
         "startTime": 54.753,
         "duration": 0.221,
         "string": 4,
@@ -2951,7 +2971,7 @@
         "edited": false
       },
       {
-        "id": "bass-169",
+        "id": "bass-173",
         "startTime": 54.973,
         "duration": 0.174,
         "string": 4,
@@ -2961,7 +2981,7 @@
         "edited": false
       },
       {
-        "id": "bass-170",
+        "id": "bass-174",
         "startTime": 55.147,
         "duration": 0.313,
         "string": 4,
@@ -2971,7 +2991,7 @@
         "edited": false
       },
       {
-        "id": "bass-171",
+        "id": "bass-175",
         "startTime": 55.461,
         "duration": 0.104,
         "string": 4,
@@ -2981,7 +3001,17 @@
         "edited": false
       },
       {
-        "id": "bass-172",
+        "id": "bass-fill-2",
+        "startTime": 55.863,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-176",
         "startTime": 55.983,
         "duration": 0.221,
         "string": 4,
@@ -2991,7 +3021,7 @@
         "edited": false
       },
       {
-        "id": "bass-173",
+        "id": "bass-177",
         "startTime": 56.204,
         "duration": 0.128,
         "string": 4,
@@ -3001,7 +3031,7 @@
         "edited": false
       },
       {
-        "id": "bass-174",
+        "id": "bass-178",
         "startTime": 56.401,
         "duration": 0.197,
         "string": 4,
@@ -3011,7 +3041,7 @@
         "edited": false
       },
       {
-        "id": "bass-175",
+        "id": "bass-179",
         "startTime": 56.599,
         "duration": 0.139,
         "string": 4,
@@ -3021,7 +3051,7 @@
         "edited": false
       },
       {
-        "id": "bass-176",
+        "id": "bass-180",
         "startTime": 56.854,
         "duration": 0.197,
         "string": 4,
@@ -3031,7 +3061,7 @@
         "edited": false
       },
       {
-        "id": "bass-177",
+        "id": "bass-181",
         "startTime": 57.051,
         "duration": 0.209,
         "string": 4,
@@ -3041,7 +3071,7 @@
         "edited": false
       },
       {
-        "id": "bass-178",
+        "id": "bass-182",
         "startTime": 57.26,
         "duration": 0.221,
         "string": 4,
@@ -3051,7 +3081,7 @@
         "edited": false
       },
       {
-        "id": "bass-179",
+        "id": "bass-183",
         "startTime": 57.481,
         "duration": 0.209,
         "string": 4,
@@ -3061,7 +3091,7 @@
         "edited": false
       },
       {
-        "id": "bass-180",
+        "id": "bass-184",
         "startTime": 57.725,
         "duration": 0.186,
         "string": 4,
@@ -3071,7 +3101,7 @@
         "edited": false
       },
       {
-        "id": "bass-181",
+        "id": "bass-185",
         "startTime": 57.911,
         "duration": 0.406,
         "string": 4,
@@ -3081,7 +3111,7 @@
         "edited": false
       },
       {
-        "id": "bass-182",
+        "id": "bass-186",
         "startTime": 58.398,
         "duration": 0.081,
         "string": 4,
@@ -3091,7 +3121,7 @@
         "edited": false
       },
       {
-        "id": "bass-183",
+        "id": "bass-187",
         "startTime": 58.572,
         "duration": 0.151,
         "string": 3,
@@ -3101,7 +3131,7 @@
         "edited": false
       },
       {
-        "id": "bass-184",
+        "id": "bass-188",
         "startTime": 58.723,
         "duration": 0.197,
         "string": 3,
@@ -3111,7 +3141,7 @@
         "edited": false
       },
       {
-        "id": "bass-185",
+        "id": "bass-189",
         "startTime": 58.921,
         "duration": 0.209,
         "string": 3,
@@ -3121,7 +3151,7 @@
         "edited": false
       },
       {
-        "id": "bass-186",
+        "id": "bass-190",
         "startTime": 59.13,
         "duration": 0.174,
         "string": 3,
@@ -3131,7 +3161,7 @@
         "edited": false
       },
       {
-        "id": "bass-187",
+        "id": "bass-191",
         "startTime": 59.304,
         "duration": 0.209,
         "string": 3,
@@ -3141,7 +3171,7 @@
         "edited": false
       },
       {
-        "id": "bass-188",
+        "id": "bass-192",
         "startTime": 59.513,
         "duration": 0.174,
         "string": 3,
@@ -3151,7 +3181,7 @@
         "edited": false
       },
       {
-        "id": "bass-189",
+        "id": "bass-193",
         "startTime": 59.757,
         "duration": 0.151,
         "string": 3,
@@ -3161,7 +3191,7 @@
         "edited": false
       },
       {
-        "id": "bass-190",
+        "id": "bass-194",
         "startTime": 59.907,
         "duration": 0.116,
         "string": 3,
@@ -3171,7 +3201,7 @@
         "edited": false
       },
       {
-        "id": "bass-191",
+        "id": "bass-195",
         "startTime": 60.116,
         "duration": 0.163,
         "string": 4,
@@ -3181,7 +3211,7 @@
         "edited": false
       },
       {
-        "id": "bass-192",
+        "id": "bass-196",
         "startTime": 60.314,
         "duration": 0.197,
         "string": 4,
@@ -3191,7 +3221,7 @@
         "edited": false
       },
       {
-        "id": "bass-193",
+        "id": "bass-197",
         "startTime": 60.511,
         "duration": 0.174,
         "string": 4,
@@ -3201,7 +3231,7 @@
         "edited": false
       },
       {
-        "id": "bass-194",
+        "id": "bass-198",
         "startTime": 60.685,
         "duration": 0.244,
         "string": 4,
@@ -3211,7 +3241,7 @@
         "edited": false
       },
       {
-        "id": "bass-195",
+        "id": "bass-199",
         "startTime": 60.929,
         "duration": 0.174,
         "string": 4,
@@ -3221,7 +3251,7 @@
         "edited": false
       },
       {
-        "id": "bass-196",
+        "id": "bass-200",
         "startTime": 61.138,
         "duration": 0.186,
         "string": 4,
@@ -3231,7 +3261,7 @@
         "edited": false
       },
       {
-        "id": "bass-197",
+        "id": "bass-201",
         "startTime": 61.324,
         "duration": 0.186,
         "string": 4,
@@ -3241,7 +3271,7 @@
         "edited": false
       },
       {
-        "id": "bass-198",
+        "id": "bass-202",
         "startTime": 61.51,
         "duration": 0.186,
         "string": 4,
@@ -3251,7 +3281,7 @@
         "edited": false
       },
       {
-        "id": "bass-199",
+        "id": "bass-203",
         "startTime": 61.695,
         "duration": 0.163,
         "string": 4,
@@ -3261,7 +3291,7 @@
         "edited": false
       },
       {
-        "id": "bass-200",
+        "id": "bass-204",
         "startTime": 61.858,
         "duration": 0.163,
         "string": 4,
@@ -3271,7 +3301,7 @@
         "edited": false
       },
       {
-        "id": "bass-201",
+        "id": "bass-205",
         "startTime": 62.299,
         "duration": 0.174,
         "string": 4,
@@ -3281,7 +3311,7 @@
         "edited": false
       },
       {
-        "id": "bass-202",
+        "id": "bass-206",
         "startTime": 62.473,
         "duration": 0.232,
         "string": 4,
@@ -3291,7 +3321,17 @@
         "edited": false
       },
       {
-        "id": "bass-203",
+        "id": "bass-fill-3",
+        "startTime": 62.593,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-207",
         "startTime": 62.88,
         "duration": 0.174,
         "string": 4,
@@ -3301,7 +3341,17 @@
         "edited": false
       },
       {
-        "id": "bass-204",
+        "id": "bass-fill-4",
+        "startTime": 63.03,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 4,
+        "pitch": 32,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-208",
         "startTime": 63.147,
         "duration": 0.139,
         "string": 4,
@@ -3311,7 +3361,7 @@
         "edited": false
       },
       {
-        "id": "bass-205",
+        "id": "bass-209",
         "startTime": 63.286,
         "duration": 0.186,
         "string": 4,
@@ -3321,7 +3371,7 @@
         "edited": false
       },
       {
-        "id": "bass-206",
+        "id": "bass-210",
         "startTime": 63.472,
         "duration": 0.197,
         "string": 4,
@@ -3331,7 +3381,7 @@
         "edited": false
       },
       {
-        "id": "bass-207",
+        "id": "bass-211",
         "startTime": 63.669,
         "duration": 0.197,
         "string": 4,
@@ -3341,7 +3391,7 @@
         "edited": false
       },
       {
-        "id": "bass-208",
+        "id": "bass-212",
         "startTime": 63.866,
         "duration": 0.197,
         "string": 4,
@@ -3351,7 +3401,7 @@
         "edited": false
       },
       {
-        "id": "bass-209",
+        "id": "bass-213",
         "startTime": 64.064,
         "duration": 0.163,
         "string": 4,
@@ -3361,7 +3411,7 @@
         "edited": false
       },
       {
-        "id": "bass-210",
+        "id": "bass-214",
         "startTime": 64.226,
         "duration": 0.221,
         "string": 4,
@@ -3371,7 +3421,7 @@
         "edited": false
       },
       {
-        "id": "bass-211",
+        "id": "bass-215",
         "startTime": 64.447,
         "duration": 0.163,
         "string": 4,
@@ -3381,7 +3431,7 @@
         "edited": false
       },
       {
-        "id": "bass-212",
+        "id": "bass-216",
         "startTime": 64.61,
         "duration": 0.174,
         "string": 4,
@@ -3391,7 +3441,7 @@
         "edited": false
       },
       {
-        "id": "bass-213",
+        "id": "bass-217",
         "startTime": 64.877,
         "duration": 0.174,
         "string": 3,
@@ -3401,7 +3451,7 @@
         "edited": false
       },
       {
-        "id": "bass-214",
+        "id": "bass-218",
         "startTime": 65.051,
         "duration": 0.186,
         "string": 3,
@@ -3411,7 +3461,7 @@
         "edited": false
       },
       {
-        "id": "bass-215",
+        "id": "bass-219",
         "startTime": 65.236,
         "duration": 0.244,
         "string": 3,
@@ -3421,7 +3471,7 @@
         "edited": false
       },
       {
-        "id": "bass-216",
+        "id": "bass-220",
         "startTime": 65.48,
         "duration": 0.151,
         "string": 3,
@@ -3431,7 +3481,7 @@
         "edited": false
       },
       {
-        "id": "bass-217",
+        "id": "bass-221",
         "startTime": 65.631,
         "duration": 0.197,
         "string": 3,
@@ -3441,7 +3491,7 @@
         "edited": false
       },
       {
-        "id": "bass-218",
+        "id": "bass-222",
         "startTime": 65.829,
         "duration": 0.139,
         "string": 3,
@@ -3451,7 +3501,7 @@
         "edited": false
       },
       {
-        "id": "bass-219",
+        "id": "bass-223",
         "startTime": 66.061,
         "duration": 0.163,
         "string": 3,
@@ -3461,7 +3511,7 @@
         "edited": false
       },
       {
-        "id": "bass-220",
+        "id": "bass-224",
         "startTime": 66.223,
         "duration": 0.116,
         "string": 3,
@@ -3471,7 +3521,7 @@
         "edited": false
       },
       {
-        "id": "bass-221",
+        "id": "bass-225",
         "startTime": 66.409,
         "duration": 0.174,
         "string": 4,
@@ -3481,7 +3531,7 @@
         "edited": false
       },
       {
-        "id": "bass-222",
+        "id": "bass-226",
         "startTime": 66.618,
         "duration": 0.221,
         "string": 4,
@@ -3491,7 +3541,7 @@
         "edited": false
       },
       {
-        "id": "bass-223",
+        "id": "bass-227",
         "startTime": 66.839,
         "duration": 0.151,
         "string": 4,
@@ -3501,7 +3551,7 @@
         "edited": false
       },
       {
-        "id": "bass-224",
+        "id": "bass-228",
         "startTime": 66.99,
         "duration": 0.418,
         "string": 4,
@@ -3511,7 +3561,7 @@
         "edited": false
       },
       {
-        "id": "bass-225",
+        "id": "bass-229",
         "startTime": 67.408,
         "duration": 0.209,
         "string": 4,
@@ -3521,7 +3571,7 @@
         "edited": false
       },
       {
-        "id": "bass-226",
+        "id": "bass-230",
         "startTime": 67.617,
         "duration": 0.174,
         "string": 4,
@@ -3531,7 +3581,7 @@
         "edited": false
       },
       {
-        "id": "bass-227",
+        "id": "bass-231",
         "startTime": 67.791,
         "duration": 0.174,
         "string": 4,
@@ -3541,7 +3591,7 @@
         "edited": false
       },
       {
-        "id": "bass-228",
+        "id": "bass-232",
         "startTime": 68.011,
         "duration": 0.186,
         "string": 4,
@@ -3551,7 +3601,7 @@
         "edited": false
       },
       {
-        "id": "bass-229",
+        "id": "bass-233",
         "startTime": 68.197,
         "duration": 0.197,
         "string": 4,
@@ -3561,7 +3611,7 @@
         "edited": false
       },
       {
-        "id": "bass-230",
+        "id": "bass-234",
         "startTime": 68.394,
         "duration": 0.186,
         "string": 4,
@@ -3571,7 +3621,7 @@
         "edited": false
       },
       {
-        "id": "bass-231",
+        "id": "bass-235",
         "startTime": 68.58,
         "duration": 0.209,
         "string": 4,
@@ -3581,7 +3631,7 @@
         "edited": false
       },
       {
-        "id": "bass-232",
+        "id": "bass-236",
         "startTime": 68.789,
         "duration": 0.186,
         "string": 4,
@@ -3591,7 +3641,7 @@
         "edited": false
       },
       {
-        "id": "bass-233",
+        "id": "bass-237",
         "startTime": 68.975,
         "duration": 0.197,
         "string": 4,
@@ -3601,7 +3651,7 @@
         "edited": false
       },
       {
-        "id": "bass-234",
+        "id": "bass-238",
         "startTime": 69.172,
         "duration": 0.163,
         "string": 4,
@@ -3611,7 +3661,7 @@
         "edited": false
       },
       {
-        "id": "bass-235",
+        "id": "bass-239",
         "startTime": 69.335,
         "duration": 0.139,
         "string": 4,
@@ -3621,7 +3671,7 @@
         "edited": false
       },
       {
-        "id": "bass-236",
+        "id": "bass-240",
         "startTime": 69.555,
         "duration": 0.186,
         "string": 4,
@@ -3631,7 +3681,7 @@
         "edited": false
       },
       {
-        "id": "bass-237",
+        "id": "bass-241",
         "startTime": 69.741,
         "duration": 0.209,
         "string": 4,
@@ -3641,7 +3691,7 @@
         "edited": false
       },
       {
-        "id": "bass-238",
+        "id": "bass-242",
         "startTime": 69.95,
         "duration": 0.174,
         "string": 4,
@@ -3651,7 +3701,7 @@
         "edited": false
       },
       {
-        "id": "bass-239",
+        "id": "bass-243",
         "startTime": 70.124,
         "duration": 0.221,
         "string": 4,
@@ -3661,7 +3711,7 @@
         "edited": false
       },
       {
-        "id": "bass-240",
+        "id": "bass-244",
         "startTime": 70.345,
         "duration": 0.197,
         "string": 4,
@@ -3671,7 +3721,7 @@
         "edited": false
       },
       {
-        "id": "bass-241",
+        "id": "bass-245",
         "startTime": 70.542,
         "duration": 0.174,
         "string": 4,
@@ -3681,7 +3731,7 @@
         "edited": false
       },
       {
-        "id": "bass-242",
+        "id": "bass-246",
         "startTime": 70.716,
         "duration": 0.186,
         "string": 4,
@@ -3691,7 +3741,7 @@
         "edited": false
       },
       {
-        "id": "bass-243",
+        "id": "bass-247",
         "startTime": 71.123,
         "duration": 0.186,
         "string": 3,
@@ -3701,7 +3751,7 @@
         "edited": false
       },
       {
-        "id": "bass-244",
+        "id": "bass-248",
         "startTime": 71.308,
         "duration": 0.186,
         "string": 3,
@@ -3711,7 +3761,7 @@
         "edited": false
       },
       {
-        "id": "bass-245",
+        "id": "bass-249",
         "startTime": 71.494,
         "duration": 0.209,
         "string": 3,
@@ -3721,7 +3771,7 @@
         "edited": false
       },
       {
-        "id": "bass-246",
+        "id": "bass-250",
         "startTime": 71.703,
         "duration": 0.221,
         "string": 3,
@@ -3731,7 +3781,7 @@
         "edited": false
       },
       {
-        "id": "bass-247",
+        "id": "bass-251",
         "startTime": 71.924,
         "duration": 0.197,
         "string": 3,
@@ -3741,7 +3791,7 @@
         "edited": false
       },
       {
-        "id": "bass-248",
+        "id": "bass-252",
         "startTime": 72.121,
         "duration": 0.116,
         "string": 3,
@@ -3751,7 +3801,7 @@
         "edited": false
       },
       {
-        "id": "bass-249",
+        "id": "bass-253",
         "startTime": 72.33,
         "duration": 0.209,
         "string": 3,
@@ -3761,7 +3811,7 @@
         "edited": false
       },
       {
-        "id": "bass-250",
+        "id": "bass-254",
         "startTime": 72.539,
         "duration": 0.116,
         "string": 3,
@@ -3771,7 +3821,7 @@
         "edited": false
       },
       {
-        "id": "bass-251",
+        "id": "bass-255",
         "startTime": 72.702,
         "duration": 0.197,
         "string": 4,
@@ -3781,7 +3831,7 @@
         "edited": false
       },
       {
-        "id": "bass-252",
+        "id": "bass-256",
         "startTime": 72.945,
         "duration": 0.186,
         "string": 4,
@@ -3791,7 +3841,7 @@
         "edited": false
       },
       {
-        "id": "bass-253",
+        "id": "bass-257",
         "startTime": 73.131,
         "duration": 0.221,
         "string": 4,
@@ -3801,7 +3851,7 @@
         "edited": false
       },
       {
-        "id": "bass-254",
+        "id": "bass-258",
         "startTime": 73.352,
         "duration": 0.197,
         "string": 4,
@@ -3811,7 +3861,7 @@
         "edited": false
       },
       {
-        "id": "bass-255",
+        "id": "bass-259",
         "startTime": 73.549,
         "duration": 0.174,
         "string": 4,
@@ -3821,7 +3871,7 @@
         "edited": false
       },
       {
-        "id": "bass-256",
+        "id": "bass-260",
         "startTime": 73.723,
         "duration": 0.186,
         "string": 4,
@@ -3831,7 +3881,7 @@
         "edited": false
       },
       {
-        "id": "bass-257",
+        "id": "bass-261",
         "startTime": 73.909,
         "duration": 0.197,
         "string": 4,
@@ -3841,7 +3891,7 @@
         "edited": false
       },
       {
-        "id": "bass-258",
+        "id": "bass-262",
         "startTime": 74.106,
         "duration": 0.197,
         "string": 4,
@@ -3851,7 +3901,7 @@
         "edited": false
       },
       {
-        "id": "bass-259",
+        "id": "bass-263",
         "startTime": 74.304,
         "duration": 0.151,
         "string": 4,
@@ -3861,7 +3911,7 @@
         "edited": false
       },
       {
-        "id": "bass-260",
+        "id": "bass-264",
         "startTime": 74.501,
         "duration": 0.186,
         "string": 4,
@@ -3871,7 +3921,7 @@
         "edited": false
       },
       {
-        "id": "bass-261",
+        "id": "bass-265",
         "startTime": 74.687,
         "duration": 0.209,
         "string": 4,
@@ -3881,7 +3931,17 @@
         "edited": false
       },
       {
-        "id": "bass-262",
+        "id": "bass-fill-5",
+        "startTime": 74.939,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-266",
         "startTime": 75.059,
         "duration": 0.221,
         "string": 4,
@@ -3891,7 +3951,7 @@
         "edited": false
       },
       {
-        "id": "bass-263",
+        "id": "bass-267",
         "startTime": 75.279,
         "duration": 0.139,
         "string": 4,
@@ -3901,7 +3961,7 @@
         "edited": false
       },
       {
-        "id": "bass-264",
+        "id": "bass-268",
         "startTime": 75.476,
         "duration": 0.093,
         "string": 4,
@@ -3911,7 +3971,7 @@
         "edited": false
       },
       {
-        "id": "bass-265",
+        "id": "bass-269",
         "startTime": 75.569,
         "duration": 0.128,
         "string": 4,
@@ -3921,7 +3981,7 @@
         "edited": false
       },
       {
-        "id": "bass-266",
+        "id": "bass-270",
         "startTime": 75.697,
         "duration": 0.104,
         "string": 4,
@@ -3931,7 +3991,7 @@
         "edited": false
       },
       {
-        "id": "bass-267",
+        "id": "bass-271",
         "startTime": 75.894,
         "duration": 0.372,
         "string": 4,
@@ -3941,67 +4001,67 @@
         "edited": false
       },
       {
-        "id": "bass-268",
+        "id": "bass-275",
         "startTime": 77.113,
         "duration": 0.151,
-        "string": 3,
+        "string": 2,
         "fret": 7,
-        "pitch": 40,
+        "pitch": 45,
         "confidence": 0.264,
         "edited": false
       },
       {
-        "id": "bass-269",
+        "id": "bass-276",
         "startTime": 77.311,
         "duration": 0.395,
-        "string": 3,
+        "string": 2,
         "fret": 9,
-        "pitch": 42,
+        "pitch": 47,
         "confidence": 0.664,
         "edited": false
       },
       {
-        "id": "bass-270",
+        "id": "bass-277",
         "startTime": 78.658,
         "duration": 0.128,
-        "string": 4,
+        "string": 3,
         "fret": 7,
-        "pitch": 35,
+        "pitch": 40,
         "confidence": 0.316,
         "edited": false
       },
       {
-        "id": "bass-271",
+        "id": "bass-278",
         "startTime": 78.878,
         "duration": 0.557,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.688,
         "edited": false
       },
       {
-        "id": "bass-272",
+        "id": "bass-279",
         "startTime": 81.398,
         "duration": 0.209,
-        "string": 4,
+        "string": 3,
         "fret": 10,
-        "pitch": 38,
+        "pitch": 43,
         "confidence": 0.712,
         "edited": false
       },
       {
-        "id": "bass-273",
+        "id": "bass-280",
         "startTime": 81.641,
         "duration": 0.476,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.812,
         "edited": false
       },
       {
-        "id": "bass-274",
+        "id": "bass-281",
         "startTime": 82.233,
         "duration": 0.929,
         "string": 4,
@@ -4011,7 +4071,7 @@
         "edited": false
       },
       {
-        "id": "bass-275",
+        "id": "bass-283",
         "startTime": 83.371,
         "duration": 0.139,
         "string": 3,
@@ -4021,7 +4081,7 @@
         "edited": false
       },
       {
-        "id": "bass-276",
+        "id": "bass-284",
         "startTime": 83.58,
         "duration": 0.441,
         "string": 3,
@@ -4031,7 +4091,7 @@
         "edited": false
       },
       {
-        "id": "bass-277",
+        "id": "bass-285",
         "startTime": 84.892,
         "duration": 0.163,
         "string": 4,
@@ -4041,7 +4101,7 @@
         "edited": false
       },
       {
-        "id": "bass-278",
+        "id": "bass-286",
         "startTime": 85.148,
         "duration": 0.604,
         "string": 4,
@@ -4051,7 +4111,7 @@
         "edited": false
       },
       {
-        "id": "bass-279",
+        "id": "bass-287",
         "startTime": 87.737,
         "duration": 0.174,
         "string": 4,
@@ -4061,7 +4121,7 @@
         "edited": false
       },
       {
-        "id": "bass-280",
+        "id": "bass-288",
         "startTime": 87.957,
         "duration": 0.499,
         "string": 4,
@@ -4071,7 +4131,7 @@
         "edited": false
       },
       {
-        "id": "bass-281",
+        "id": "bass-289",
         "startTime": 89.675,
         "duration": 0.197,
         "string": 3,
@@ -4081,7 +4141,7 @@
         "edited": false
       },
       {
-        "id": "bass-282",
+        "id": "bass-290",
         "startTime": 89.942,
         "duration": 0.441,
         "string": 3,
@@ -4091,7 +4151,7 @@
         "edited": false
       },
       {
-        "id": "bass-283",
+        "id": "bass-291",
         "startTime": 91.231,
         "duration": 0.151,
         "string": 4,
@@ -4101,7 +4161,7 @@
         "edited": false
       },
       {
-        "id": "bass-284",
+        "id": "bass-292",
         "startTime": 91.463,
         "duration": 0.581,
         "string": 4,
@@ -4111,7 +4171,7 @@
         "edited": false
       },
       {
-        "id": "bass-285",
+        "id": "bass-294",
         "startTime": 93.983,
         "duration": 0.174,
         "string": 4,
@@ -4121,7 +4181,7 @@
         "edited": false
       },
       {
-        "id": "bass-286",
+        "id": "bass-295",
         "startTime": 94.192,
         "duration": 0.441,
         "string": 4,
@@ -4131,7 +4191,7 @@
         "edited": false
       },
       {
-        "id": "bass-287",
+        "id": "bass-297",
         "startTime": 94.795,
         "duration": 0.418,
         "string": 4,
@@ -4141,7 +4201,7 @@
         "edited": false
       },
       {
-        "id": "bass-288",
+        "id": "bass-298",
         "startTime": 96.003,
         "duration": 0.128,
         "string": 3,
@@ -4151,7 +4211,7 @@
         "edited": false
       },
       {
-        "id": "bass-289",
+        "id": "bass-299",
         "startTime": 96.2,
         "duration": 0.406,
         "string": 3,
@@ -4161,7 +4221,7 @@
         "edited": false
       },
       {
-        "id": "bass-290",
+        "id": "bass-300",
         "startTime": 97.547,
         "duration": 0.163,
         "string": 4,
@@ -4171,7 +4231,7 @@
         "edited": false
       },
       {
-        "id": "bass-291",
+        "id": "bass-301",
         "startTime": 97.779,
         "duration": 1.753,
         "string": 4,
@@ -4181,47 +4241,47 @@
         "edited": false
       },
       {
-        "id": "bass-292",
+        "id": "bass-304",
         "startTime": 99.532,
         "duration": 0.383,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.674,
         "edited": false
       },
       {
-        "id": "bass-293",
+        "id": "bass-305",
         "startTime": 99.915,
         "duration": 0.174,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.567,
         "edited": false
       },
       {
-        "id": "bass-294",
+        "id": "bass-306",
         "startTime": 100.09,
         "duration": 0.43,
-        "string": 4,
+        "string": 3,
         "fret": 10,
-        "pitch": 38,
+        "pitch": 43,
         "confidence": 0.751,
         "edited": false
       },
       {
-        "id": "bass-295",
+        "id": "bass-307",
         "startTime": 100.519,
         "duration": 0.499,
-        "string": 4,
+        "string": 3,
         "fret": 9,
-        "pitch": 37,
+        "pitch": 42,
         "confidence": 0.794,
         "edited": false
       },
       {
-        "id": "bass-296",
+        "id": "bass-308",
         "startTime": 101.135,
         "duration": 0.197,
         "string": 4,
@@ -4231,7 +4291,7 @@
         "edited": false
       },
       {
-        "id": "bass-297",
+        "id": "bass-309",
         "startTime": 101.332,
         "duration": 0.186,
         "string": 4,
@@ -4241,7 +4301,7 @@
         "edited": false
       },
       {
-        "id": "bass-298",
+        "id": "bass-310",
         "startTime": 101.552,
         "duration": 0.186,
         "string": 4,
@@ -4251,7 +4311,7 @@
         "edited": false
       },
       {
-        "id": "bass-299",
+        "id": "bass-311",
         "startTime": 101.738,
         "duration": 0.163,
         "string": 4,
@@ -4261,7 +4321,7 @@
         "edited": false
       },
       {
-        "id": "bass-300",
+        "id": "bass-312",
         "startTime": 101.947,
         "duration": 0.163,
         "string": 4,
@@ -4271,7 +4331,7 @@
         "edited": false
       },
       {
-        "id": "bass-301",
+        "id": "bass-313",
         "startTime": 102.11,
         "duration": 0.139,
         "string": 4,
@@ -4281,7 +4341,7 @@
         "edited": false
       },
       {
-        "id": "bass-302",
+        "id": "bass-314",
         "startTime": 102.342,
         "duration": 0.186,
         "string": 3,
@@ -4291,7 +4351,7 @@
         "edited": false
       },
       {
-        "id": "bass-303",
+        "id": "bass-315",
         "startTime": 102.528,
         "duration": 0.093,
         "string": 3,
@@ -4301,7 +4361,7 @@
         "edited": false
       },
       {
-        "id": "bass-304",
+        "id": "bass-316",
         "startTime": 102.737,
         "duration": 0.174,
         "string": 3,
@@ -4311,7 +4371,7 @@
         "edited": false
       },
       {
-        "id": "bass-305",
+        "id": "bass-317",
         "startTime": 102.911,
         "duration": 0.221,
         "string": 3,
@@ -4321,7 +4381,7 @@
         "edited": false
       },
       {
-        "id": "bass-306",
+        "id": "bass-318",
         "startTime": 103.131,
         "duration": 0.186,
         "string": 3,
@@ -4331,7 +4391,7 @@
         "edited": false
       },
       {
-        "id": "bass-307",
+        "id": "bass-319",
         "startTime": 103.317,
         "duration": 0.221,
         "string": 3,
@@ -4341,7 +4401,7 @@
         "edited": false
       },
       {
-        "id": "bass-308",
+        "id": "bass-320",
         "startTime": 103.538,
         "duration": 0.186,
         "string": 3,
@@ -4351,7 +4411,7 @@
         "edited": false
       },
       {
-        "id": "bass-309",
+        "id": "bass-321",
         "startTime": 103.921,
         "duration": 0.104,
         "string": 4,
@@ -4361,7 +4421,7 @@
         "edited": false
       },
       {
-        "id": "bass-310",
+        "id": "bass-322",
         "startTime": 104.107,
         "duration": 0.209,
         "string": 4,
@@ -4371,7 +4431,7 @@
         "edited": false
       },
       {
-        "id": "bass-311",
+        "id": "bass-323",
         "startTime": 104.316,
         "duration": 0.197,
         "string": 4,
@@ -4381,7 +4441,7 @@
         "edited": false
       },
       {
-        "id": "bass-312",
+        "id": "bass-324",
         "startTime": 104.513,
         "duration": 0.209,
         "string": 4,
@@ -4391,7 +4451,7 @@
         "edited": false
       },
       {
-        "id": "bass-313",
+        "id": "bass-325",
         "startTime": 104.722,
         "duration": 0.186,
         "string": 4,
@@ -4401,7 +4461,7 @@
         "edited": false
       },
       {
-        "id": "bass-314",
+        "id": "bass-326",
         "startTime": 104.908,
         "duration": 0.197,
         "string": 4,
@@ -4411,7 +4471,7 @@
         "edited": false
       },
       {
-        "id": "bass-315",
+        "id": "bass-327",
         "startTime": 105.105,
         "duration": 0.186,
         "string": 4,
@@ -4421,7 +4481,7 @@
         "edited": false
       },
       {
-        "id": "bass-316",
+        "id": "bass-328",
         "startTime": 105.291,
         "duration": 0.186,
         "string": 4,
@@ -4431,7 +4491,7 @@
         "edited": false
       },
       {
-        "id": "bass-317",
+        "id": "bass-329",
         "startTime": 105.477,
         "duration": 0.197,
         "string": 4,
@@ -4441,7 +4501,7 @@
         "edited": false
       },
       {
-        "id": "bass-318",
+        "id": "bass-330",
         "startTime": 105.674,
         "duration": 0.197,
         "string": 4,
@@ -4451,7 +4511,7 @@
         "edited": false
       },
       {
-        "id": "bass-319",
+        "id": "bass-331",
         "startTime": 105.871,
         "duration": 0.197,
         "string": 4,
@@ -4461,7 +4521,7 @@
         "edited": false
       },
       {
-        "id": "bass-320",
+        "id": "bass-332",
         "startTime": 106.069,
         "duration": 0.186,
         "string": 4,
@@ -4471,7 +4531,7 @@
         "edited": false
       },
       {
-        "id": "bass-321",
+        "id": "bass-333",
         "startTime": 106.255,
         "duration": 0.209,
         "string": 4,
@@ -4481,7 +4541,7 @@
         "edited": false
       },
       {
-        "id": "bass-322",
+        "id": "bass-334",
         "startTime": 106.463,
         "duration": 0.163,
         "string": 4,
@@ -4491,7 +4551,7 @@
         "edited": false
       },
       {
-        "id": "bass-323",
+        "id": "bass-335",
         "startTime": 106.649,
         "duration": 0.163,
         "string": 4,
@@ -4501,7 +4561,7 @@
         "edited": false
       },
       {
-        "id": "bass-324",
+        "id": "bass-336",
         "startTime": 106.858,
         "duration": 0.197,
         "string": 4,
@@ -4511,7 +4571,7 @@
         "edited": false
       },
       {
-        "id": "bass-325",
+        "id": "bass-337",
         "startTime": 107.09,
         "duration": 0.163,
         "string": 4,
@@ -4521,7 +4581,7 @@
         "edited": false
       },
       {
-        "id": "bass-326",
+        "id": "bass-338",
         "startTime": 107.253,
         "duration": 0.151,
         "string": 4,
@@ -4531,7 +4591,7 @@
         "edited": false
       },
       {
-        "id": "bass-327",
+        "id": "bass-339",
         "startTime": 107.474,
         "duration": 0.174,
         "string": 4,
@@ -4541,7 +4601,7 @@
         "edited": false
       },
       {
-        "id": "bass-328",
+        "id": "bass-340",
         "startTime": 107.648,
         "duration": 0.197,
         "string": 4,
@@ -4551,7 +4611,7 @@
         "edited": false
       },
       {
-        "id": "bass-329",
+        "id": "bass-341",
         "startTime": 107.845,
         "duration": 0.186,
         "string": 4,
@@ -4561,7 +4621,7 @@
         "edited": false
       },
       {
-        "id": "bass-330",
+        "id": "bass-342",
         "startTime": 108.066,
         "duration": 0.186,
         "string": 4,
@@ -4571,7 +4631,7 @@
         "edited": false
       },
       {
-        "id": "bass-331",
+        "id": "bass-343",
         "startTime": 108.251,
         "duration": 0.186,
         "string": 4,
@@ -4581,7 +4641,7 @@
         "edited": false
       },
       {
-        "id": "bass-332",
+        "id": "bass-344",
         "startTime": 108.437,
         "duration": 0.151,
         "string": 4,
@@ -4591,7 +4651,7 @@
         "edited": false
       },
       {
-        "id": "bass-333",
+        "id": "bass-345",
         "startTime": 108.82,
         "duration": 0.104,
         "string": 3,
@@ -4601,7 +4661,7 @@
         "edited": false
       },
       {
-        "id": "bass-334",
+        "id": "bass-346",
         "startTime": 109.041,
         "duration": 0.163,
         "string": 3,
@@ -4611,7 +4671,7 @@
         "edited": false
       },
       {
-        "id": "bass-335",
+        "id": "bass-347",
         "startTime": 109.203,
         "duration": 0.209,
         "string": 3,
@@ -4621,7 +4681,7 @@
         "edited": false
       },
       {
-        "id": "bass-336",
+        "id": "bass-348",
         "startTime": 109.412,
         "duration": 0.221,
         "string": 3,
@@ -4631,7 +4691,7 @@
         "edited": false
       },
       {
-        "id": "bass-337",
+        "id": "bass-349",
         "startTime": 109.633,
         "duration": 0.174,
         "string": 3,
@@ -4641,7 +4701,7 @@
         "edited": false
       },
       {
-        "id": "bass-338",
+        "id": "bass-350",
         "startTime": 109.842,
         "duration": 0.163,
         "string": 3,
@@ -4651,7 +4711,7 @@
         "edited": false
       },
       {
-        "id": "bass-339",
+        "id": "bass-351",
         "startTime": 110.005,
         "duration": 0.151,
         "string": 3,
@@ -4661,7 +4721,7 @@
         "edited": false
       },
       {
-        "id": "bass-340",
+        "id": "bass-352",
         "startTime": 110.202,
         "duration": 0.163,
         "string": 4,
@@ -4671,7 +4731,7 @@
         "edited": false
       },
       {
-        "id": "bass-341",
+        "id": "bass-353",
         "startTime": 110.422,
         "duration": 0.163,
         "string": 4,
@@ -4681,7 +4741,7 @@
         "edited": false
       },
       {
-        "id": "bass-342",
+        "id": "bass-354",
         "startTime": 110.62,
         "duration": 0.186,
         "string": 4,
@@ -4691,7 +4751,7 @@
         "edited": false
       },
       {
-        "id": "bass-343",
+        "id": "bass-355",
         "startTime": 110.806,
         "duration": 0.244,
         "string": 4,
@@ -4701,7 +4761,7 @@
         "edited": false
       },
       {
-        "id": "bass-344",
+        "id": "bass-356",
         "startTime": 111.049,
         "duration": 0.174,
         "string": 4,
@@ -4711,7 +4771,7 @@
         "edited": false
       },
       {
-        "id": "bass-345",
+        "id": "bass-357",
         "startTime": 111.224,
         "duration": 0.197,
         "string": 4,
@@ -4721,7 +4781,7 @@
         "edited": false
       },
       {
-        "id": "bass-346",
+        "id": "bass-358",
         "startTime": 111.421,
         "duration": 0.163,
         "string": 4,
@@ -4731,7 +4791,7 @@
         "edited": false
       },
       {
-        "id": "bass-347",
+        "id": "bass-359",
         "startTime": 111.618,
         "duration": 0.174,
         "string": 4,
@@ -4741,7 +4801,7 @@
         "edited": false
       },
       {
-        "id": "bass-348",
+        "id": "bass-360",
         "startTime": 111.792,
         "duration": 0.163,
         "string": 4,
@@ -4751,7 +4811,7 @@
         "edited": false
       },
       {
-        "id": "bass-349",
+        "id": "bass-361",
         "startTime": 111.99,
         "duration": 0.476,
         "string": 4,
@@ -4761,7 +4821,7 @@
         "edited": false
       },
       {
-        "id": "bass-350",
+        "id": "bass-362",
         "startTime": 113.615,
         "duration": 0.232,
         "string": 4,
@@ -4771,7 +4831,7 @@
         "edited": false
       },
       {
-        "id": "bass-351",
+        "id": "bass-363",
         "startTime": 113.847,
         "duration": 0.186,
         "string": 4,
@@ -4781,7 +4841,7 @@
         "edited": false
       },
       {
-        "id": "bass-352",
+        "id": "bass-364",
         "startTime": 114.068,
         "duration": 0.221,
         "string": 4,
@@ -4791,7 +4851,7 @@
         "edited": false
       },
       {
-        "id": "bass-353",
+        "id": "bass-365",
         "startTime": 114.289,
         "duration": 0.186,
         "string": 4,
@@ -4801,7 +4861,7 @@
         "edited": false
       },
       {
-        "id": "bass-354",
+        "id": "bass-366",
         "startTime": 114.474,
         "duration": 0.232,
         "string": 4,
@@ -4811,7 +4871,7 @@
         "edited": false
       },
       {
-        "id": "bass-355",
+        "id": "bass-367",
         "startTime": 114.707,
         "duration": 0.209,
         "string": 4,
@@ -4821,7 +4881,7 @@
         "edited": false
       },
       {
-        "id": "bass-356",
+        "id": "bass-368",
         "startTime": 114.916,
         "duration": 0.186,
         "string": 4,
@@ -4831,7 +4891,7 @@
         "edited": false
       },
       {
-        "id": "bass-357",
+        "id": "bass-369",
         "startTime": 115.322,
         "duration": 0.174,
         "string": 3,
@@ -4841,7 +4901,7 @@
         "edited": false
       },
       {
-        "id": "bass-358",
+        "id": "bass-370",
         "startTime": 115.496,
         "duration": 0.186,
         "string": 3,
@@ -4851,7 +4911,7 @@
         "edited": false
       },
       {
-        "id": "bass-359",
+        "id": "bass-371",
         "startTime": 115.717,
         "duration": 0.186,
         "string": 3,
@@ -4861,7 +4921,7 @@
         "edited": false
       },
       {
-        "id": "bass-360",
+        "id": "bass-372",
         "startTime": 115.902,
         "duration": 0.197,
         "string": 3,
@@ -4871,7 +4931,7 @@
         "edited": false
       },
       {
-        "id": "bass-361",
+        "id": "bass-373",
         "startTime": 116.1,
         "duration": 0.197,
         "string": 3,
@@ -4881,7 +4941,7 @@
         "edited": false
       },
       {
-        "id": "bass-362",
+        "id": "bass-374",
         "startTime": 116.297,
         "duration": 0.116,
         "string": 3,
@@ -4891,7 +4951,7 @@
         "edited": false
       },
       {
-        "id": "bass-363",
+        "id": "bass-375",
         "startTime": 116.471,
         "duration": 0.244,
         "string": 3,
@@ -4901,7 +4961,7 @@
         "edited": false
       },
       {
-        "id": "bass-364",
+        "id": "bass-376",
         "startTime": 116.715,
         "duration": 0.093,
         "string": 3,
@@ -4911,7 +4971,7 @@
         "edited": false
       },
       {
-        "id": "bass-365",
+        "id": "bass-377",
         "startTime": 116.843,
         "duration": 0.232,
         "string": 4,
@@ -4921,7 +4981,7 @@
         "edited": false
       },
       {
-        "id": "bass-366",
+        "id": "bass-378",
         "startTime": 117.11,
         "duration": 0.186,
         "string": 4,
@@ -4931,7 +4991,7 @@
         "edited": false
       },
       {
-        "id": "bass-367",
+        "id": "bass-379",
         "startTime": 117.296,
         "duration": 0.174,
         "string": 4,
@@ -4941,7 +5001,7 @@
         "edited": false
       },
       {
-        "id": "bass-368",
+        "id": "bass-380",
         "startTime": 117.505,
         "duration": 0.209,
         "string": 4,
@@ -4951,7 +5011,7 @@
         "edited": false
       },
       {
-        "id": "bass-369",
+        "id": "bass-381",
         "startTime": 117.714,
         "duration": 0.186,
         "string": 4,
@@ -4961,7 +5021,7 @@
         "edited": false
       },
       {
-        "id": "bass-370",
+        "id": "bass-382",
         "startTime": 117.899,
         "duration": 0.209,
         "string": 4,
@@ -4971,7 +5031,7 @@
         "edited": false
       },
       {
-        "id": "bass-371",
+        "id": "bass-383",
         "startTime": 118.108,
         "duration": 0.174,
         "string": 4,
@@ -4981,7 +5041,7 @@
         "edited": false
       },
       {
-        "id": "bass-372",
+        "id": "bass-384",
         "startTime": 118.317,
         "duration": 0.197,
         "string": 4,
@@ -4991,7 +5051,7 @@
         "edited": false
       },
       {
-        "id": "bass-373",
+        "id": "bass-385",
         "startTime": 118.515,
         "duration": 0.174,
         "string": 4,
@@ -5001,7 +5061,7 @@
         "edited": false
       },
       {
-        "id": "bass-374",
+        "id": "bass-386",
         "startTime": 118.689,
         "duration": 0.209,
         "string": 4,
@@ -5011,7 +5071,7 @@
         "edited": false
       },
       {
-        "id": "bass-375",
+        "id": "bass-387",
         "startTime": 118.898,
         "duration": 0.151,
         "string": 4,
@@ -5021,7 +5081,7 @@
         "edited": false
       },
       {
-        "id": "bass-376",
+        "id": "bass-388",
         "startTime": 119.084,
         "duration": 0.104,
         "string": 4,
@@ -5031,7 +5091,17 @@
         "edited": false
       },
       {
-        "id": "bass-377",
+        "id": "bass-fill-6",
+        "startTime": 119.207,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-389",
         "startTime": 119.327,
         "duration": 0.163,
         "string": 4,
@@ -5041,7 +5111,7 @@
         "edited": false
       },
       {
-        "id": "bass-378",
+        "id": "bass-390",
         "startTime": 119.49,
         "duration": 0.139,
         "string": 4,
@@ -5051,7 +5121,7 @@
         "edited": false
       },
       {
-        "id": "bass-379",
+        "id": "bass-391",
         "startTime": 119.687,
         "duration": 0.163,
         "string": 4,
@@ -5061,7 +5131,7 @@
         "edited": false
       },
       {
-        "id": "bass-380",
+        "id": "bass-392",
         "startTime": 119.85,
         "duration": 0.116,
         "string": 4,
@@ -5071,7 +5141,7 @@
         "edited": false
       },
       {
-        "id": "bass-381",
+        "id": "bass-393",
         "startTime": 120.036,
         "duration": 0.221,
         "string": 4,
@@ -5081,7 +5151,7 @@
         "edited": false
       },
       {
-        "id": "bass-382",
+        "id": "bass-394",
         "startTime": 120.256,
         "duration": 0.186,
         "string": 4,
@@ -5091,7 +5161,7 @@
         "edited": false
       },
       {
-        "id": "bass-383",
+        "id": "bass-395",
         "startTime": 120.442,
         "duration": 0.186,
         "string": 4,
@@ -5101,7 +5171,7 @@
         "edited": false
       },
       {
-        "id": "bass-384",
+        "id": "bass-396",
         "startTime": 120.628,
         "duration": 0.221,
         "string": 4,
@@ -5111,7 +5181,7 @@
         "edited": false
       },
       {
-        "id": "bass-385",
+        "id": "bass-397",
         "startTime": 120.848,
         "duration": 0.186,
         "string": 4,
@@ -5121,7 +5191,7 @@
         "edited": false
       },
       {
-        "id": "bass-386",
+        "id": "bass-398",
         "startTime": 121.069,
         "duration": 0.174,
         "string": 4,
@@ -5131,7 +5201,7 @@
         "edited": false
       },
       {
-        "id": "bass-387",
+        "id": "bass-399",
         "startTime": 121.243,
         "duration": 0.163,
         "string": 4,
@@ -5141,7 +5211,7 @@
         "edited": false
       },
       {
-        "id": "bass-388",
+        "id": "bass-401",
         "startTime": 121.835,
         "duration": 0.209,
         "string": 3,
@@ -5151,7 +5221,7 @@
         "edited": false
       },
       {
-        "id": "bass-389",
+        "id": "bass-402",
         "startTime": 122.044,
         "duration": 0.186,
         "string": 3,
@@ -5161,7 +5231,7 @@
         "edited": false
       },
       {
-        "id": "bass-390",
+        "id": "bass-403",
         "startTime": 122.23,
         "duration": 0.209,
         "string": 3,
@@ -5171,7 +5241,7 @@
         "edited": false
       },
       {
-        "id": "bass-391",
+        "id": "bass-404",
         "startTime": 122.439,
         "duration": 0.197,
         "string": 3,
@@ -5181,7 +5251,7 @@
         "edited": false
       },
       {
-        "id": "bass-392",
+        "id": "bass-405",
         "startTime": 122.636,
         "duration": 0.104,
         "string": 3,
@@ -5191,7 +5261,7 @@
         "edited": false
       },
       {
-        "id": "bass-393",
+        "id": "bass-406",
         "startTime": 122.81,
         "duration": 0.232,
         "string": 3,
@@ -5201,7 +5271,7 @@
         "edited": false
       },
       {
-        "id": "bass-394",
+        "id": "bass-407",
         "startTime": 123.043,
         "duration": 0.151,
         "string": 3,
@@ -5211,7 +5281,7 @@
         "edited": false
       },
       {
-        "id": "bass-395",
+        "id": "bass-408",
         "startTime": 123.24,
         "duration": 0.186,
         "string": 4,
@@ -5221,7 +5291,7 @@
         "edited": false
       },
       {
-        "id": "bass-396",
+        "id": "bass-409",
         "startTime": 123.426,
         "duration": 0.209,
         "string": 4,
@@ -5231,7 +5301,7 @@
         "edited": false
       },
       {
-        "id": "bass-397",
+        "id": "bass-410",
         "startTime": 123.635,
         "duration": 0.174,
         "string": 4,
@@ -5241,7 +5311,7 @@
         "edited": false
       },
       {
-        "id": "bass-398",
+        "id": "bass-411",
         "startTime": 123.809,
         "duration": 0.232,
         "string": 4,
@@ -5251,7 +5321,7 @@
         "edited": false
       },
       {
-        "id": "bass-399",
+        "id": "bass-412",
         "startTime": 124.041,
         "duration": 0.174,
         "string": 4,
@@ -5261,7 +5331,7 @@
         "edited": false
       },
       {
-        "id": "bass-400",
+        "id": "bass-413",
         "startTime": 124.25,
         "duration": 0.174,
         "string": 4,
@@ -5271,7 +5341,7 @@
         "edited": false
       },
       {
-        "id": "bass-401",
+        "id": "bass-414",
         "startTime": 124.424,
         "duration": 0.174,
         "string": 4,
@@ -5281,7 +5351,7 @@
         "edited": false
       },
       {
-        "id": "bass-402",
+        "id": "bass-415",
         "startTime": 124.598,
         "duration": 0.209,
         "string": 4,
@@ -5291,7 +5361,7 @@
         "edited": false
       },
       {
-        "id": "bass-403",
+        "id": "bass-416",
         "startTime": 124.807,
         "duration": 0.186,
         "string": 4,
@@ -5301,7 +5371,7 @@
         "edited": false
       },
       {
-        "id": "bass-404",
+        "id": "bass-417",
         "startTime": 125.028,
         "duration": 0.186,
         "string": 4,
@@ -5311,7 +5381,7 @@
         "edited": false
       },
       {
-        "id": "bass-405",
+        "id": "bass-418",
         "startTime": 125.214,
         "duration": 0.163,
         "string": 4,
@@ -5321,7 +5391,7 @@
         "edited": false
       },
       {
-        "id": "bass-406",
+        "id": "bass-419",
         "startTime": 125.376,
         "duration": 0.209,
         "string": 4,
@@ -5331,7 +5401,17 @@
         "edited": false
       },
       {
-        "id": "bass-407",
+        "id": "bass-fill-7",
+        "startTime": 125.686,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-420",
         "startTime": 125.806,
         "duration": 0.139,
         "string": 4,
@@ -5341,7 +5421,7 @@
         "edited": false
       },
       {
-        "id": "bass-408",
+        "id": "bass-421",
         "startTime": 126.015,
         "duration": 0.186,
         "string": 4,
@@ -5351,7 +5431,17 @@
         "edited": false
       },
       {
-        "id": "bass-409",
+        "id": "bass-fill-8",
+        "startTime": 126.165,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 4,
+        "pitch": 32,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-422",
         "startTime": 126.363,
         "duration": 0.197,
         "string": 4,
@@ -5361,7 +5451,7 @@
         "edited": false
       },
       {
-        "id": "bass-410",
+        "id": "bass-423",
         "startTime": 126.56,
         "duration": 0.232,
         "string": 4,
@@ -5371,7 +5461,7 @@
         "edited": false
       },
       {
-        "id": "bass-411",
+        "id": "bass-424",
         "startTime": 126.793,
         "duration": 0.163,
         "string": 4,
@@ -5381,7 +5471,7 @@
         "edited": false
       },
       {
-        "id": "bass-412",
+        "id": "bass-425",
         "startTime": 126.955,
         "duration": 0.221,
         "string": 4,
@@ -5391,7 +5481,7 @@
         "edited": false
       },
       {
-        "id": "bass-413",
+        "id": "bass-426",
         "startTime": 127.176,
         "duration": 0.186,
         "string": 4,
@@ -5401,7 +5491,7 @@
         "edited": false
       },
       {
-        "id": "bass-414",
+        "id": "bass-427",
         "startTime": 127.361,
         "duration": 0.209,
         "string": 4,
@@ -5411,7 +5501,7 @@
         "edited": false
       },
       {
-        "id": "bass-415",
+        "id": "bass-428",
         "startTime": 127.57,
         "duration": 0.197,
         "string": 4,
@@ -5421,7 +5511,7 @@
         "edited": false
       },
       {
-        "id": "bass-416",
+        "id": "bass-429",
         "startTime": 127.768,
         "duration": 0.104,
         "string": 4,
@@ -5431,7 +5521,7 @@
         "edited": false
       },
       {
-        "id": "bass-417",
+        "id": "bass-430",
         "startTime": 127.977,
         "duration": 0.174,
         "string": 3,
@@ -5441,7 +5531,7 @@
         "edited": false
       },
       {
-        "id": "bass-418",
+        "id": "bass-431",
         "startTime": 128.151,
         "duration": 0.197,
         "string": 3,
@@ -5451,7 +5541,7 @@
         "edited": false
       },
       {
-        "id": "bass-419",
+        "id": "bass-432",
         "startTime": 128.348,
         "duration": 0.197,
         "string": 3,
@@ -5461,7 +5551,7 @@
         "edited": false
       },
       {
-        "id": "bass-420",
+        "id": "bass-433",
         "startTime": 128.546,
         "duration": 0.197,
         "string": 3,
@@ -5471,7 +5561,7 @@
         "edited": false
       },
       {
-        "id": "bass-421",
+        "id": "bass-434",
         "startTime": 128.743,
         "duration": 0.174,
         "string": 3,
@@ -5481,7 +5571,7 @@
         "edited": false
       },
       {
-        "id": "bass-422",
+        "id": "bass-435",
         "startTime": 128.917,
         "duration": 0.116,
         "string": 3,
@@ -5491,7 +5581,7 @@
         "edited": false
       },
       {
-        "id": "bass-423",
+        "id": "bass-436",
         "startTime": 129.126,
         "duration": 0.197,
         "string": 3,
@@ -5501,7 +5591,7 @@
         "edited": false
       },
       {
-        "id": "bass-424",
+        "id": "bass-437",
         "startTime": 129.324,
         "duration": 0.104,
         "string": 3,
@@ -5511,7 +5601,7 @@
         "edited": false
       },
       {
-        "id": "bass-425",
+        "id": "bass-438",
         "startTime": 129.533,
         "duration": 0.163,
         "string": 4,
@@ -5521,7 +5611,7 @@
         "edited": false
       },
       {
-        "id": "bass-426",
+        "id": "bass-439",
         "startTime": 129.741,
         "duration": 0.197,
         "string": 4,
@@ -5531,7 +5621,7 @@
         "edited": false
       },
       {
-        "id": "bass-427",
+        "id": "bass-440",
         "startTime": 129.939,
         "duration": 0.174,
         "string": 4,
@@ -5541,7 +5631,7 @@
         "edited": false
       },
       {
-        "id": "bass-428",
+        "id": "bass-441",
         "startTime": 130.113,
         "duration": 0.232,
         "string": 4,
@@ -5551,7 +5641,7 @@
         "edited": false
       },
       {
-        "id": "bass-429",
+        "id": "bass-442",
         "startTime": 130.345,
         "duration": 0.197,
         "string": 4,
@@ -5561,7 +5651,7 @@
         "edited": false
       },
       {
-        "id": "bass-430",
+        "id": "bass-443",
         "startTime": 130.543,
         "duration": 0.174,
         "string": 4,
@@ -5571,7 +5661,7 @@
         "edited": false
       },
       {
-        "id": "bass-431",
+        "id": "bass-444",
         "startTime": 130.717,
         "duration": 0.163,
         "string": 4,
@@ -5581,7 +5671,7 @@
         "edited": false
       },
       {
-        "id": "bass-432",
+        "id": "bass-445",
         "startTime": 130.879,
         "duration": 0.139,
         "string": 4,
@@ -5591,7 +5681,7 @@
         "edited": false
       },
       {
-        "id": "bass-433",
+        "id": "bass-446",
         "startTime": 131.17,
         "duration": 0.116,
         "string": 4,
@@ -5601,7 +5691,7 @@
         "edited": false
       },
       {
-        "id": "bass-434",
+        "id": "bass-447",
         "startTime": 131.286,
         "duration": 0.209,
         "string": 4,
@@ -5611,7 +5701,7 @@
         "edited": false
       },
       {
-        "id": "bass-435",
+        "id": "bass-448",
         "startTime": 131.495,
         "duration": 0.174,
         "string": 4,
@@ -5621,7 +5711,7 @@
         "edited": false
       },
       {
-        "id": "bass-436",
+        "id": "bass-449",
         "startTime": 131.669,
         "duration": 0.232,
         "string": 4,
@@ -5631,7 +5721,7 @@
         "edited": false
       },
       {
-        "id": "bass-437",
+        "id": "bass-450",
         "startTime": 131.901,
         "duration": 0.221,
         "string": 4,
@@ -5641,7 +5731,7 @@
         "edited": false
       },
       {
-        "id": "bass-438",
+        "id": "bass-451",
         "startTime": 132.122,
         "duration": 0.174,
         "string": 4,
@@ -5651,7 +5741,7 @@
         "edited": false
       },
       {
-        "id": "bass-439",
+        "id": "bass-452",
         "startTime": 132.296,
         "duration": 0.209,
         "string": 4,
@@ -5661,7 +5751,7 @@
         "edited": false
       },
       {
-        "id": "bass-440",
+        "id": "bass-453",
         "startTime": 132.505,
         "duration": 0.104,
         "string": 4,
@@ -5671,7 +5761,7 @@
         "edited": false
       },
       {
-        "id": "bass-441",
+        "id": "bass-454",
         "startTime": 132.679,
         "duration": 0.186,
         "string": 4,
@@ -5681,7 +5771,7 @@
         "edited": false
       },
       {
-        "id": "bass-442",
+        "id": "bass-455",
         "startTime": 132.899,
         "duration": 0.186,
         "string": 4,
@@ -5691,7 +5781,7 @@
         "edited": false
       },
       {
-        "id": "bass-443",
+        "id": "bass-456",
         "startTime": 133.085,
         "duration": 0.174,
         "string": 4,
@@ -5701,7 +5791,7 @@
         "edited": false
       },
       {
-        "id": "bass-444",
+        "id": "bass-457",
         "startTime": 133.294,
         "duration": 0.197,
         "string": 4,
@@ -5711,7 +5801,7 @@
         "edited": false
       },
       {
-        "id": "bass-445",
+        "id": "bass-458",
         "startTime": 133.492,
         "duration": 0.163,
         "string": 4,
@@ -5721,7 +5811,7 @@
         "edited": false
       },
       {
-        "id": "bass-446",
+        "id": "bass-459",
         "startTime": 133.689,
         "duration": 0.186,
         "string": 4,
@@ -5731,7 +5821,7 @@
         "edited": false
       },
       {
-        "id": "bass-447",
+        "id": "bass-460",
         "startTime": 133.875,
         "duration": 0.151,
         "string": 4,
@@ -5741,7 +5831,7 @@
         "edited": false
       },
       {
-        "id": "bass-448",
+        "id": "bass-461",
         "startTime": 134.072,
         "duration": 0.093,
         "string": 4,
@@ -5751,7 +5841,7 @@
         "edited": false
       },
       {
-        "id": "bass-449",
+        "id": "bass-462",
         "startTime": 134.258,
         "duration": 0.174,
         "string": 3,
@@ -5761,7 +5851,7 @@
         "edited": false
       },
       {
-        "id": "bass-450",
+        "id": "bass-463",
         "startTime": 134.432,
         "duration": 0.209,
         "string": 3,
@@ -5771,7 +5861,7 @@
         "edited": false
       },
       {
-        "id": "bass-451",
+        "id": "bass-464",
         "startTime": 134.641,
         "duration": 0.186,
         "string": 3,
@@ -5781,7 +5871,7 @@
         "edited": false
       },
       {
-        "id": "bass-452",
+        "id": "bass-465",
         "startTime": 134.827,
         "duration": 0.232,
         "string": 3,
@@ -5791,7 +5881,7 @@
         "edited": false
       },
       {
-        "id": "bass-453",
+        "id": "bass-466",
         "startTime": 135.059,
         "duration": 0.197,
         "string": 3,
@@ -5801,7 +5891,7 @@
         "edited": false
       },
       {
-        "id": "bass-454",
+        "id": "bass-467",
         "startTime": 135.256,
         "duration": 0.081,
         "string": 3,
@@ -5811,7 +5901,7 @@
         "edited": false
       },
       {
-        "id": "bass-455",
+        "id": "bass-468",
         "startTime": 135.43,
         "duration": 0.221,
         "string": 3,
@@ -5821,7 +5911,7 @@
         "edited": false
       },
       {
-        "id": "bass-456",
+        "id": "bass-469",
         "startTime": 135.651,
         "duration": 0.104,
         "string": 3,
@@ -5831,7 +5921,7 @@
         "edited": false
       },
       {
-        "id": "bass-457",
+        "id": "bass-470",
         "startTime": 135.79,
         "duration": 0.245,
         "string": 4,
@@ -5841,7 +5931,7 @@
         "edited": false
       },
       {
-        "id": "bass-458",
+        "id": "bass-471",
         "startTime": 136.034,
         "duration": 0.186,
         "string": 4,
@@ -5851,7 +5941,7 @@
         "edited": false
       },
       {
-        "id": "bass-459",
+        "id": "bass-472",
         "startTime": 136.22,
         "duration": 0.197,
         "string": 4,
@@ -5861,7 +5951,7 @@
         "edited": false
       },
       {
-        "id": "bass-460",
+        "id": "bass-473",
         "startTime": 136.417,
         "duration": 0.221,
         "string": 4,
@@ -5871,7 +5961,7 @@
         "edited": false
       },
       {
-        "id": "bass-461",
+        "id": "bass-474",
         "startTime": 136.638,
         "duration": 0.197,
         "string": 4,
@@ -5881,7 +5971,7 @@
         "edited": false
       },
       {
-        "id": "bass-462",
+        "id": "bass-475",
         "startTime": 136.835,
         "duration": 0.209,
         "string": 4,
@@ -5891,7 +5981,7 @@
         "edited": false
       },
       {
-        "id": "bass-463",
+        "id": "bass-476",
         "startTime": 137.044,
         "duration": 0.174,
         "string": 4,
@@ -5901,7 +5991,7 @@
         "edited": false
       },
       {
-        "id": "bass-464",
+        "id": "bass-477",
         "startTime": 137.218,
         "duration": 0.221,
         "string": 4,
@@ -5911,7 +6001,7 @@
         "edited": false
       },
       {
-        "id": "bass-465",
+        "id": "bass-478",
         "startTime": 137.439,
         "duration": 0.174,
         "string": 4,
@@ -5921,7 +6011,7 @@
         "edited": false
       },
       {
-        "id": "bass-466",
+        "id": "bass-479",
         "startTime": 137.648,
         "duration": 0.197,
         "string": 4,
@@ -5931,7 +6021,7 @@
         "edited": false
       },
       {
-        "id": "bass-467",
+        "id": "bass-480",
         "startTime": 137.845,
         "duration": 0.151,
         "string": 4,
@@ -5941,7 +6031,7 @@
         "edited": false
       },
       {
-        "id": "bass-468",
+        "id": "bass-481",
         "startTime": 138.031,
         "duration": 0.186,
         "string": 4,
@@ -5951,7 +6041,7 @@
         "edited": false
       },
       {
-        "id": "bass-469",
+        "id": "bass-482",
         "startTime": 138.31,
         "duration": 0.139,
         "string": 4,
@@ -5961,7 +6051,7 @@
         "edited": false
       },
       {
-        "id": "bass-470",
+        "id": "bass-483",
         "startTime": 138.449,
         "duration": 0.128,
         "string": 4,
@@ -5971,7 +6061,7 @@
         "edited": false
       },
       {
-        "id": "bass-471",
+        "id": "bass-484",
         "startTime": 138.646,
         "duration": 0.104,
         "string": 4,
@@ -5981,7 +6071,7 @@
         "edited": false
       },
       {
-        "id": "bass-472",
+        "id": "bass-485",
         "startTime": 138.855,
         "duration": 0.104,
         "string": 4,
@@ -5991,7 +6081,7 @@
         "edited": false
       },
       {
-        "id": "bass-473",
+        "id": "bass-486",
         "startTime": 139.192,
         "duration": 0.093,
         "string": 4,
@@ -6001,7 +6091,7 @@
         "edited": false
       },
       {
-        "id": "bass-474",
+        "id": "bass-487",
         "startTime": 139.285,
         "duration": 2.392,
         "string": 4,
@@ -6011,7 +6101,7 @@
         "edited": false
       },
       {
-        "id": "bass-475",
+        "id": "bass-488",
         "startTime": 141.677,
         "duration": 0.441,
         "string": 4,
@@ -6021,7 +6111,7 @@
         "edited": false
       },
       {
-        "id": "bass-476",
+        "id": "bass-489",
         "startTime": 142.211,
         "duration": 2.74,
         "string": 4,
@@ -6031,7 +6121,7 @@
         "edited": false
       },
       {
-        "id": "bass-477",
+        "id": "bass-490",
         "startTime": 145.345,
         "duration": 0.209,
         "string": 3,
@@ -6041,7 +6131,7 @@
         "edited": false
       },
       {
-        "id": "bass-478",
+        "id": "bass-491",
         "startTime": 145.554,
         "duration": 0.163,
         "string": 3,
@@ -6051,7 +6141,7 @@
         "edited": false
       },
       {
-        "id": "bass-479",
+        "id": "bass-492",
         "startTime": 145.717,
         "duration": 0.255,
         "string": 3,
@@ -6061,7 +6151,7 @@
         "edited": false
       },
       {
-        "id": "bass-480",
+        "id": "bass-493",
         "startTime": 145.972,
         "duration": 0.163,
         "string": 3,
@@ -6071,7 +6161,7 @@
         "edited": false
       },
       {
-        "id": "bass-481",
+        "id": "bass-494",
         "startTime": 146.135,
         "duration": 0.186,
         "string": 3,
@@ -6081,7 +6171,7 @@
         "edited": false
       },
       {
-        "id": "bass-482",
+        "id": "bass-495",
         "startTime": 146.321,
         "duration": 0.186,
         "string": 3,
@@ -6091,7 +6181,7 @@
         "edited": false
       },
       {
-        "id": "bass-483",
+        "id": "bass-496",
         "startTime": 146.506,
         "duration": 0.197,
         "string": 3,
@@ -6101,7 +6191,7 @@
         "edited": false
       },
       {
-        "id": "bass-484",
+        "id": "bass-497",
         "startTime": 146.704,
         "duration": 0.174,
         "string": 3,
@@ -6111,7 +6201,7 @@
         "edited": false
       },
       {
-        "id": "bass-485",
+        "id": "bass-498",
         "startTime": 146.878,
         "duration": 0.186,
         "string": 3,
@@ -6121,7 +6211,7 @@
         "edited": false
       },
       {
-        "id": "bass-486",
+        "id": "bass-499",
         "startTime": 147.064,
         "duration": 0.197,
         "string": 3,
@@ -6131,7 +6221,7 @@
         "edited": false
       },
       {
-        "id": "bass-487",
+        "id": "bass-500",
         "startTime": 147.261,
         "duration": 0.174,
         "string": 3,
@@ -6141,7 +6231,7 @@
         "edited": false
       },
       {
-        "id": "bass-488",
+        "id": "bass-501",
         "startTime": 147.435,
         "duration": 0.221,
         "string": 3,
@@ -6151,7 +6241,7 @@
         "edited": false
       },
       {
-        "id": "bass-489",
+        "id": "bass-502",
         "startTime": 147.656,
         "duration": 0.186,
         "string": 3,
@@ -6161,7 +6251,7 @@
         "edited": false
       },
       {
-        "id": "bass-490",
+        "id": "bass-503",
         "startTime": 147.841,
         "duration": 0.197,
         "string": 3,
@@ -6171,7 +6261,7 @@
         "edited": false
       },
       {
-        "id": "bass-491",
+        "id": "bass-504",
         "startTime": 148.039,
         "duration": 0.197,
         "string": 3,
@@ -6181,7 +6271,7 @@
         "edited": false
       },
       {
-        "id": "bass-492",
+        "id": "bass-505",
         "startTime": 148.236,
         "duration": 0.128,
         "string": 3,
@@ -6191,7 +6281,7 @@
         "edited": false
       },
       {
-        "id": "bass-493",
+        "id": "bass-506",
         "startTime": 148.434,
         "duration": 0.221,
         "string": 3,
@@ -6201,7 +6291,7 @@
         "edited": false
       },
       {
-        "id": "bass-494",
+        "id": "bass-507",
         "startTime": 148.654,
         "duration": 0.186,
         "string": 3,
@@ -6211,7 +6301,7 @@
         "edited": false
       },
       {
-        "id": "bass-495",
+        "id": "bass-508",
         "startTime": 148.84,
         "duration": 0.197,
         "string": 3,
@@ -6221,7 +6311,7 @@
         "edited": false
       },
       {
-        "id": "bass-496",
+        "id": "bass-509",
         "startTime": 149.037,
         "duration": 0.209,
         "string": 3,
@@ -6231,7 +6321,7 @@
         "edited": false
       },
       {
-        "id": "bass-497",
+        "id": "bass-510",
         "startTime": 149.246,
         "duration": 0.197,
         "string": 3,
@@ -6241,7 +6331,7 @@
         "edited": false
       },
       {
-        "id": "bass-498",
+        "id": "bass-511",
         "startTime": 149.444,
         "duration": 0.197,
         "string": 3,
@@ -6251,7 +6341,7 @@
         "edited": false
       },
       {
-        "id": "bass-499",
+        "id": "bass-512",
         "startTime": 149.641,
         "duration": 0.197,
         "string": 3,
@@ -6261,7 +6351,7 @@
         "edited": false
       },
       {
-        "id": "bass-500",
+        "id": "bass-513",
         "startTime": 149.838,
         "duration": 0.197,
         "string": 3,
@@ -6271,7 +6361,7 @@
         "edited": false
       },
       {
-        "id": "bass-501",
+        "id": "bass-514",
         "startTime": 150.036,
         "duration": 0.221,
         "string": 3,
@@ -6281,7 +6371,7 @@
         "edited": false
       },
       {
-        "id": "bass-502",
+        "id": "bass-515",
         "startTime": 150.256,
         "duration": 0.197,
         "string": 3,
@@ -6291,7 +6381,7 @@
         "edited": false
       },
       {
-        "id": "bass-503",
+        "id": "bass-516",
         "startTime": 150.454,
         "duration": 0.174,
         "string": 3,
@@ -6301,7 +6391,7 @@
         "edited": false
       },
       {
-        "id": "bass-504",
+        "id": "bass-517",
         "startTime": 150.628,
         "duration": 0.209,
         "string": 3,
@@ -6311,7 +6401,7 @@
         "edited": false
       },
       {
-        "id": "bass-505",
+        "id": "bass-518",
         "startTime": 150.837,
         "duration": 0.186,
         "string": 3,
@@ -6321,7 +6411,7 @@
         "edited": false
       },
       {
-        "id": "bass-506",
+        "id": "bass-519",
         "startTime": 151.023,
         "duration": 0.186,
         "string": 3,
@@ -6331,7 +6421,7 @@
         "edited": false
       },
       {
-        "id": "bass-507",
+        "id": "bass-520",
         "startTime": 151.208,
         "duration": 0.186,
         "string": 3,
@@ -6341,7 +6431,7 @@
         "edited": false
       },
       {
-        "id": "bass-508",
+        "id": "bass-521",
         "startTime": 151.394,
         "duration": 0.163,
         "string": 3,
@@ -6351,247 +6441,247 @@
         "edited": false
       },
       {
-        "id": "bass-509",
+        "id": "bass-522",
         "startTime": 151.603,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.369,
         "edited": false
       },
       {
-        "id": "bass-510",
+        "id": "bass-523",
         "startTime": 151.8,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.518,
         "edited": false
       },
       {
-        "id": "bass-511",
+        "id": "bass-524",
         "startTime": 151.998,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.818,
         "edited": false
       },
       {
-        "id": "bass-512",
+        "id": "bass-525",
         "startTime": 152.195,
         "duration": 0.209,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.698,
         "edited": false
       },
       {
-        "id": "bass-513",
+        "id": "bass-526",
         "startTime": 152.404,
         "duration": 0.186,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.778,
         "edited": false
       },
       {
-        "id": "bass-514",
+        "id": "bass-527",
         "startTime": 152.59,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.646,
         "edited": false
       },
       {
-        "id": "bass-515",
+        "id": "bass-528",
         "startTime": 152.787,
         "duration": 0.186,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.761,
         "edited": false
       },
       {
-        "id": "bass-516",
+        "id": "bass-529",
         "startTime": 152.973,
         "duration": 0.128,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.404,
         "edited": false
       },
       {
-        "id": "bass-517",
+        "id": "bass-530",
         "startTime": 153.112,
         "duration": 0.232,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.87,
         "edited": false
       },
       {
-        "id": "bass-518",
+        "id": "bass-531",
         "startTime": 153.345,
         "duration": 0.232,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.876,
         "edited": false
       },
       {
-        "id": "bass-519",
+        "id": "bass-532",
         "startTime": 153.577,
         "duration": 0.186,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.938,
         "edited": false
       },
       {
-        "id": "bass-520",
+        "id": "bass-533",
         "startTime": 153.763,
         "duration": 0.221,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.829,
         "edited": false
       },
       {
-        "id": "bass-521",
+        "id": "bass-534",
         "startTime": 153.983,
         "duration": 0.186,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.924,
         "edited": false
       },
       {
-        "id": "bass-522",
+        "id": "bass-535",
         "startTime": 154.169,
         "duration": 0.186,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.822,
         "edited": false
       },
       {
-        "id": "bass-523",
+        "id": "bass-536",
         "startTime": 154.355,
         "duration": 0.197,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.916,
         "edited": false
       },
       {
-        "id": "bass-524",
+        "id": "bass-537",
         "startTime": 154.552,
         "duration": 0.128,
-        "string": 4,
-        "fret": 5,
-        "pitch": 33,
+        "string": 2,
+        "fret": 7,
+        "pitch": 45,
         "confidence": 0.721,
         "edited": false
       },
       {
-        "id": "bass-525",
+        "id": "bass-538",
         "startTime": 154.703,
         "duration": 0.232,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.81,
         "edited": false
       },
       {
-        "id": "bass-526",
+        "id": "bass-539",
         "startTime": 154.935,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.622,
         "edited": false
       },
       {
-        "id": "bass-527",
+        "id": "bass-540",
         "startTime": 155.133,
         "duration": 0.221,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.763,
         "edited": false
       },
       {
-        "id": "bass-528",
+        "id": "bass-541",
         "startTime": 155.353,
         "duration": 0.209,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.66,
         "edited": false
       },
       {
-        "id": "bass-529",
+        "id": "bass-542",
         "startTime": 155.562,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.829,
         "edited": false
       },
       {
-        "id": "bass-530",
+        "id": "bass-543",
         "startTime": 155.759,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.551,
         "edited": false
       },
       {
-        "id": "bass-531",
+        "id": "bass-544",
         "startTime": 155.957,
         "duration": 0.197,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.759,
         "edited": false
       },
       {
-        "id": "bass-532",
+        "id": "bass-545",
         "startTime": 156.154,
         "duration": 0.104,
-        "string": 4,
-        "fret": 7,
-        "pitch": 35,
+        "string": 2,
+        "fret": 9,
+        "pitch": 47,
         "confidence": 0.292,
         "edited": false
       },
       {
-        "id": "bass-533",
+        "id": "bass-546",
         "startTime": 156.34,
         "duration": 0.186,
         "string": 3,
@@ -6601,7 +6691,7 @@
         "edited": false
       },
       {
-        "id": "bass-534",
+        "id": "bass-547",
         "startTime": 156.526,
         "duration": 0.221,
         "string": 3,
@@ -6611,7 +6701,7 @@
         "edited": false
       },
       {
-        "id": "bass-535",
+        "id": "bass-548",
         "startTime": 156.746,
         "duration": 0.186,
         "string": 3,
@@ -6621,7 +6711,7 @@
         "edited": false
       },
       {
-        "id": "bass-536",
+        "id": "bass-549",
         "startTime": 156.932,
         "duration": 0.209,
         "string": 3,
@@ -6631,7 +6721,7 @@
         "edited": false
       },
       {
-        "id": "bass-537",
+        "id": "bass-550",
         "startTime": 157.141,
         "duration": 0.197,
         "string": 3,
@@ -6641,7 +6731,7 @@
         "edited": false
       },
       {
-        "id": "bass-538",
+        "id": "bass-551",
         "startTime": 157.408,
         "duration": 0.128,
         "string": 3,
@@ -6651,7 +6741,7 @@
         "edited": false
       },
       {
-        "id": "bass-539",
+        "id": "bass-552",
         "startTime": 157.536,
         "duration": 0.151,
         "string": 3,
@@ -6661,7 +6751,7 @@
         "edited": false
       },
       {
-        "id": "bass-540",
+        "id": "bass-553",
         "startTime": 157.722,
         "duration": 0.139,
         "string": 3,
@@ -6671,7 +6761,7 @@
         "edited": false
       },
       {
-        "id": "bass-541",
+        "id": "bass-554",
         "startTime": 157.977,
         "duration": 0.163,
         "string": 4,
@@ -6681,7 +6771,7 @@
         "edited": false
       },
       {
-        "id": "bass-542",
+        "id": "bass-555",
         "startTime": 158.14,
         "duration": 0.197,
         "string": 4,
@@ -6691,7 +6781,7 @@
         "edited": false
       },
       {
-        "id": "bass-543",
+        "id": "bass-556",
         "startTime": 158.372,
         "duration": 0.174,
         "string": 4,
@@ -6701,7 +6791,7 @@
         "edited": false
       },
       {
-        "id": "bass-544",
+        "id": "bass-557",
         "startTime": 158.546,
         "duration": 0.197,
         "string": 4,
@@ -6711,7 +6801,7 @@
         "edited": false
       },
       {
-        "id": "bass-545",
+        "id": "bass-558",
         "startTime": 158.743,
         "duration": 0.221,
         "string": 4,
@@ -6721,7 +6811,7 @@
         "edited": false
       },
       {
-        "id": "bass-546",
+        "id": "bass-559",
         "startTime": 158.964,
         "duration": 0.197,
         "string": 4,
@@ -6731,7 +6821,7 @@
         "edited": false
       },
       {
-        "id": "bass-547",
+        "id": "bass-560",
         "startTime": 159.161,
         "duration": 0.197,
         "string": 4,
@@ -6741,7 +6831,7 @@
         "edited": false
       },
       {
-        "id": "bass-548",
+        "id": "bass-561",
         "startTime": 159.359,
         "duration": 0.186,
         "string": 4,
@@ -6751,7 +6841,7 @@
         "edited": false
       },
       {
-        "id": "bass-549",
+        "id": "bass-562",
         "startTime": 159.544,
         "duration": 0.163,
         "string": 4,
@@ -6761,7 +6851,7 @@
         "edited": false
       },
       {
-        "id": "bass-550",
+        "id": "bass-563",
         "startTime": 159.742,
         "duration": 0.186,
         "string": 4,
@@ -6771,7 +6861,7 @@
         "edited": false
       },
       {
-        "id": "bass-551",
+        "id": "bass-564",
         "startTime": 159.927,
         "duration": 0.209,
         "string": 4,
@@ -6781,7 +6871,7 @@
         "edited": false
       },
       {
-        "id": "bass-552",
+        "id": "bass-565",
         "startTime": 160.136,
         "duration": 0.174,
         "string": 4,
@@ -6791,7 +6881,7 @@
         "edited": false
       },
       {
-        "id": "bass-553",
+        "id": "bass-566",
         "startTime": 160.311,
         "duration": 0.186,
         "string": 4,
@@ -6801,7 +6891,7 @@
         "edited": false
       },
       {
-        "id": "bass-554",
+        "id": "bass-567",
         "startTime": 160.496,
         "duration": 0.197,
         "string": 4,
@@ -6811,7 +6901,7 @@
         "edited": false
       },
       {
-        "id": "bass-555",
+        "id": "bass-568",
         "startTime": 160.694,
         "duration": 0.267,
         "string": 4,
@@ -6821,7 +6911,7 @@
         "edited": false
       },
       {
-        "id": "bass-556",
+        "id": "bass-569",
         "startTime": 161.077,
         "duration": 0.197,
         "string": 4,
@@ -6831,7 +6921,7 @@
         "edited": false
       },
       {
-        "id": "bass-557",
+        "id": "bass-570",
         "startTime": 161.274,
         "duration": 0.221,
         "string": 4,
@@ -6841,7 +6931,7 @@
         "edited": false
       },
       {
-        "id": "bass-558",
+        "id": "bass-571",
         "startTime": 161.495,
         "duration": 0.186,
         "string": 4,
@@ -6851,7 +6941,7 @@
         "edited": false
       },
       {
-        "id": "bass-559",
+        "id": "bass-572",
         "startTime": 161.681,
         "duration": 0.209,
         "string": 4,
@@ -6861,7 +6951,7 @@
         "edited": false
       },
       {
-        "id": "bass-560",
+        "id": "bass-573",
         "startTime": 161.89,
         "duration": 0.186,
         "string": 4,
@@ -6871,7 +6961,7 @@
         "edited": false
       },
       {
-        "id": "bass-561",
+        "id": "bass-574",
         "startTime": 162.075,
         "duration": 0.186,
         "string": 4,
@@ -6881,7 +6971,7 @@
         "edited": false
       },
       {
-        "id": "bass-562",
+        "id": "bass-575",
         "startTime": 162.261,
         "duration": 0.197,
         "string": 4,
@@ -6891,7 +6981,7 @@
         "edited": false
       },
       {
-        "id": "bass-563",
+        "id": "bass-576",
         "startTime": 162.458,
         "duration": 0.209,
         "string": 4,
@@ -6901,7 +6991,7 @@
         "edited": false
       },
       {
-        "id": "bass-564",
+        "id": "bass-577",
         "startTime": 162.667,
         "duration": 0.197,
         "string": 4,
@@ -6911,7 +7001,7 @@
         "edited": false
       },
       {
-        "id": "bass-565",
+        "id": "bass-578",
         "startTime": 162.865,
         "duration": 0.174,
         "string": 4,
@@ -6921,7 +7011,7 @@
         "edited": false
       },
       {
-        "id": "bass-566",
+        "id": "bass-579",
         "startTime": 163.039,
         "duration": 0.197,
         "string": 4,
@@ -6931,7 +7021,7 @@
         "edited": false
       },
       {
-        "id": "bass-567",
+        "id": "bass-580",
         "startTime": 163.236,
         "duration": 0.197,
         "string": 4,
@@ -6941,7 +7031,7 @@
         "edited": false
       },
       {
-        "id": "bass-568",
+        "id": "bass-581",
         "startTime": 163.434,
         "duration": 0.221,
         "string": 4,
@@ -6951,7 +7041,7 @@
         "edited": false
       },
       {
-        "id": "bass-569",
+        "id": "bass-582",
         "startTime": 163.654,
         "duration": 0.186,
         "string": 4,
@@ -6961,7 +7051,7 @@
         "edited": false
       },
       {
-        "id": "bass-570",
+        "id": "bass-583",
         "startTime": 163.84,
         "duration": 0.186,
         "string": 4,
@@ -6971,7 +7061,7 @@
         "edited": false
       },
       {
-        "id": "bass-571",
+        "id": "bass-584",
         "startTime": 164.026,
         "duration": 0.116,
         "string": 4,
@@ -6981,7 +7071,7 @@
         "edited": false
       },
       {
-        "id": "bass-572",
+        "id": "bass-585",
         "startTime": 164.223,
         "duration": 1.254,
         "string": 4,
@@ -6991,7 +7081,7 @@
         "edited": false
       },
       {
-        "id": "bass-573",
+        "id": "bass-586",
         "startTime": 165.477,
         "duration": 0.116,
         "string": 4,
@@ -7001,7 +7091,7 @@
         "edited": false
       },
       {
-        "id": "bass-574",
+        "id": "bass-587",
         "startTime": 165.779,
         "duration": 1.184,
         "string": 3,
@@ -7011,7 +7101,7 @@
         "edited": false
       },
       {
-        "id": "bass-575",
+        "id": "bass-588",
         "startTime": 167.416,
         "duration": 0.174,
         "string": 4,
@@ -7021,7 +7111,7 @@
         "edited": false
       },
       {
-        "id": "bass-576",
+        "id": "bass-589",
         "startTime": 167.625,
         "duration": 0.186,
         "string": 4,
@@ -7031,7 +7121,7 @@
         "edited": false
       },
       {
-        "id": "bass-577",
+        "id": "bass-590",
         "startTime": 167.811,
         "duration": 0.174,
         "string": 4,
@@ -7041,7 +7131,7 @@
         "edited": false
       },
       {
-        "id": "bass-578",
+        "id": "bass-591",
         "startTime": 168.031,
         "duration": 0.174,
         "string": 4,
@@ -7051,7 +7141,7 @@
         "edited": false
       },
       {
-        "id": "bass-579",
+        "id": "bass-592",
         "startTime": 168.205,
         "duration": 0.186,
         "string": 4,
@@ -7061,7 +7151,7 @@
         "edited": false
       },
       {
-        "id": "bass-580",
+        "id": "bass-593",
         "startTime": 168.438,
         "duration": 0.151,
         "string": 4,
@@ -7071,7 +7161,7 @@
         "edited": false
       },
       {
-        "id": "bass-581",
+        "id": "bass-594",
         "startTime": 168.588,
         "duration": 0.209,
         "string": 4,
@@ -7081,7 +7171,7 @@
         "edited": false
       },
       {
-        "id": "bass-582",
+        "id": "bass-595",
         "startTime": 168.797,
         "duration": 0.197,
         "string": 4,
@@ -7091,7 +7181,7 @@
         "edited": false
       },
       {
-        "id": "bass-583",
+        "id": "bass-596",
         "startTime": 168.995,
         "duration": 0.163,
         "string": 4,
@@ -7101,7 +7191,7 @@
         "edited": false
       },
       {
-        "id": "bass-584",
+        "id": "bass-597",
         "startTime": 169.157,
         "duration": 0.209,
         "string": 4,
@@ -7111,7 +7201,7 @@
         "edited": false
       },
       {
-        "id": "bass-585",
+        "id": "bass-598",
         "startTime": 169.366,
         "duration": 0.174,
         "string": 4,
@@ -7121,7 +7211,7 @@
         "edited": false
       },
       {
-        "id": "bass-586",
+        "id": "bass-599",
         "startTime": 169.54,
         "duration": 0.139,
         "string": 4,
@@ -7131,7 +7221,17 @@
         "edited": false
       },
       {
-        "id": "bass-587",
+        "id": "bass-fill-9",
+        "startTime": 169.827,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-600",
         "startTime": 169.947,
         "duration": 0.163,
         "string": 4,
@@ -7141,7 +7241,17 @@
         "edited": false
       },
       {
-        "id": "bass-588",
+        "id": "bass-fill-10",
+        "startTime": 170.067,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-601",
         "startTime": 170.167,
         "duration": 0.186,
         "string": 4,
@@ -7151,7 +7261,7 @@
         "edited": false
       },
       {
-        "id": "bass-589",
+        "id": "bass-602",
         "startTime": 170.353,
         "duration": 0.151,
         "string": 4,
@@ -7161,7 +7271,7 @@
         "edited": false
       },
       {
-        "id": "bass-590",
+        "id": "bass-603",
         "startTime": 170.527,
         "duration": 0.197,
         "string": 4,
@@ -7171,7 +7281,7 @@
         "edited": false
       },
       {
-        "id": "bass-591",
+        "id": "bass-604",
         "startTime": 170.725,
         "duration": 0.209,
         "string": 4,
@@ -7181,7 +7291,7 @@
         "edited": false
       },
       {
-        "id": "bass-592",
+        "id": "bass-605",
         "startTime": 170.934,
         "duration": 0.209,
         "string": 4,
@@ -7191,7 +7301,7 @@
         "edited": false
       },
       {
-        "id": "bass-593",
+        "id": "bass-606",
         "startTime": 171.143,
         "duration": 0.209,
         "string": 4,
@@ -7201,7 +7311,7 @@
         "edited": false
       },
       {
-        "id": "bass-594",
+        "id": "bass-607",
         "startTime": 171.352,
         "duration": 0.186,
         "string": 4,
@@ -7211,7 +7321,7 @@
         "edited": false
       },
       {
-        "id": "bass-595",
+        "id": "bass-608",
         "startTime": 171.537,
         "duration": 0.197,
         "string": 4,
@@ -7221,7 +7331,7 @@
         "edited": false
       },
       {
-        "id": "bass-596",
+        "id": "bass-609",
         "startTime": 171.735,
         "duration": 0.186,
         "string": 4,
@@ -7231,7 +7341,7 @@
         "edited": false
       },
       {
-        "id": "bass-597",
+        "id": "bass-610",
         "startTime": 171.955,
         "duration": 0.116,
         "string": 4,
@@ -7241,7 +7351,7 @@
         "edited": false
       },
       {
-        "id": "bass-598",
+        "id": "bass-611",
         "startTime": 172.222,
         "duration": 0.104,
         "string": 3,
@@ -7251,7 +7361,7 @@
         "edited": false
       },
       {
-        "id": "bass-599",
+        "id": "bass-612",
         "startTime": 172.327,
         "duration": 0.197,
         "string": 3,
@@ -7261,7 +7371,7 @@
         "edited": false
       },
       {
-        "id": "bass-600",
+        "id": "bass-613",
         "startTime": 172.524,
         "duration": 0.221,
         "string": 3,
@@ -7271,7 +7381,7 @@
         "edited": false
       },
       {
-        "id": "bass-601",
+        "id": "bass-614",
         "startTime": 172.745,
         "duration": 0.174,
         "string": 3,
@@ -7281,7 +7391,7 @@
         "edited": false
       },
       {
-        "id": "bass-602",
+        "id": "bass-615",
         "startTime": 172.965,
         "duration": 0.186,
         "string": 3,
@@ -7291,7 +7401,7 @@
         "edited": false
       },
       {
-        "id": "bass-603",
+        "id": "bass-616",
         "startTime": 173.151,
         "duration": 0.093,
         "string": 3,
@@ -7301,7 +7411,7 @@
         "edited": false
       },
       {
-        "id": "bass-604",
+        "id": "bass-617",
         "startTime": 173.349,
         "duration": 0.197,
         "string": 3,
@@ -7311,7 +7421,7 @@
         "edited": false
       },
       {
-        "id": "bass-605",
+        "id": "bass-618",
         "startTime": 173.546,
         "duration": 0.139,
         "string": 3,
@@ -7321,7 +7431,7 @@
         "edited": false
       },
       {
-        "id": "bass-606",
+        "id": "bass-619",
         "startTime": 173.755,
         "duration": 0.186,
         "string": 4,
@@ -7331,7 +7441,7 @@
         "edited": false
       },
       {
-        "id": "bass-607",
+        "id": "bass-620",
         "startTime": 173.941,
         "duration": 0.221,
         "string": 4,
@@ -7341,7 +7451,7 @@
         "edited": false
       },
       {
-        "id": "bass-608",
+        "id": "bass-621",
         "startTime": 174.161,
         "duration": 0.163,
         "string": 4,
@@ -7351,7 +7461,7 @@
         "edited": false
       },
       {
-        "id": "bass-609",
+        "id": "bass-622",
         "startTime": 174.37,
         "duration": 0.174,
         "string": 4,
@@ -7361,7 +7471,7 @@
         "edited": false
       },
       {
-        "id": "bass-610",
+        "id": "bass-623",
         "startTime": 174.544,
         "duration": 0.197,
         "string": 4,
@@ -7371,7 +7481,7 @@
         "edited": false
       },
       {
-        "id": "bass-611",
+        "id": "bass-624",
         "startTime": 174.742,
         "duration": 0.174,
         "string": 4,
@@ -7381,7 +7491,7 @@
         "edited": false
       },
       {
-        "id": "bass-612",
+        "id": "bass-625",
         "startTime": 174.916,
         "duration": 0.209,
         "string": 4,
@@ -7391,7 +7501,7 @@
         "edited": false
       },
       {
-        "id": "bass-613",
+        "id": "bass-626",
         "startTime": 175.125,
         "duration": 0.197,
         "string": 4,
@@ -7401,7 +7511,7 @@
         "edited": false
       },
       {
-        "id": "bass-614",
+        "id": "bass-627",
         "startTime": 175.322,
         "duration": 0.197,
         "string": 4,
@@ -7411,7 +7521,7 @@
         "edited": false
       },
       {
-        "id": "bass-615",
+        "id": "bass-628",
         "startTime": 175.52,
         "duration": 0.197,
         "string": 4,
@@ -7421,7 +7531,7 @@
         "edited": false
       },
       {
-        "id": "bass-616",
+        "id": "bass-629",
         "startTime": 175.717,
         "duration": 0.163,
         "string": 4,
@@ -7431,7 +7541,7 @@
         "edited": false
       },
       {
-        "id": "bass-617",
+        "id": "bass-630",
         "startTime": 175.914,
         "duration": 0.174,
         "string": 4,
@@ -7441,7 +7551,7 @@
         "edited": false
       },
       {
-        "id": "bass-618",
+        "id": "bass-631",
         "startTime": 176.298,
         "duration": 0.186,
         "string": 4,
@@ -7451,7 +7561,17 @@
         "edited": false
       },
       {
-        "id": "bass-619",
+        "id": "bass-fill-11",
+        "startTime": 176.418,
+        "duration": 0.12,
+        "string": 4,
+        "fret": 2,
+        "pitch": 30,
+        "confidence": 0.0,
+        "edited": false
+      },
+      {
+        "id": "bass-632",
         "startTime": 176.704,
         "duration": 0.186,
         "string": 4,
@@ -7461,7 +7581,7 @@
         "edited": false
       },
       {
-        "id": "bass-620",
+        "id": "bass-633",
         "startTime": 176.901,
         "duration": 0.174,
         "string": 4,
@@ -7471,7 +7591,7 @@
         "edited": false
       },
       {
-        "id": "bass-621",
+        "id": "bass-634",
         "startTime": 177.075,
         "duration": 0.221,
         "string": 4,
@@ -7481,7 +7601,7 @@
         "edited": false
       },
       {
-        "id": "bass-622",
+        "id": "bass-635",
         "startTime": 177.296,
         "duration": 0.197,
         "string": 4,
@@ -7491,7 +7611,7 @@
         "edited": false
       },
       {
-        "id": "bass-623",
+        "id": "bass-636",
         "startTime": 177.493,
         "duration": 0.186,
         "string": 4,
@@ -7501,7 +7621,7 @@
         "edited": false
       },
       {
-        "id": "bass-624",
+        "id": "bass-637",
         "startTime": 177.679,
         "duration": 0.186,
         "string": 4,
@@ -7511,7 +7631,7 @@
         "edited": false
       },
       {
-        "id": "bass-625",
+        "id": "bass-638",
         "startTime": 177.9,
         "duration": 0.186,
         "string": 4,
@@ -7521,7 +7641,7 @@
         "edited": false
       },
       {
-        "id": "bass-626",
+        "id": "bass-639",
         "startTime": 178.085,
         "duration": 0.151,
         "string": 4,
@@ -7531,7 +7651,7 @@
         "edited": false
       },
       {
-        "id": "bass-627",
+        "id": "bass-640",
         "startTime": 178.48,
         "duration": 0.186,
         "string": 3,
@@ -7541,7 +7661,7 @@
         "edited": false
       },
       {
-        "id": "bass-628",
+        "id": "bass-641",
         "startTime": 178.666,
         "duration": 0.197,
         "string": 3,
@@ -7551,7 +7671,7 @@
         "edited": false
       },
       {
-        "id": "bass-629",
+        "id": "bass-642",
         "startTime": 178.863,
         "duration": 0.186,
         "string": 3,
@@ -7561,7 +7681,7 @@
         "edited": false
       },
       {
-        "id": "bass-630",
+        "id": "bass-643",
         "startTime": 179.049,
         "duration": 0.209,
         "string": 3,
@@ -7571,7 +7691,7 @@
         "edited": false
       },
       {
-        "id": "bass-631",
+        "id": "bass-644",
         "startTime": 179.258,
         "duration": 0.197,
         "string": 3,
@@ -7581,7 +7701,7 @@
         "edited": false
       },
       {
-        "id": "bass-632",
+        "id": "bass-645",
         "startTime": 179.455,
         "duration": 0.104,
         "string": 3,
@@ -7591,7 +7711,7 @@
         "edited": false
       },
       {
-        "id": "bass-633",
+        "id": "bass-646",
         "startTime": 179.641,
         "duration": 0.221,
         "string": 3,

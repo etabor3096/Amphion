@@ -59,12 +59,12 @@ pitch track cut at onsets and pitch changes (median 0.198 s apart, the eighth no
 slides into a note and doubled attacks were removed. Its strings and frets are a choice (low frets, small hand moves),
 because a recording does not say where a note was played.
 
-Elijah then corrected the opening by hand in `review.html` (0 to 49 s; 108 notes, saved with `"edited": true`) and
-described where the riffs sit on the neck. The rest of the song was set to match (2026-11-21): every other note uses the
-same position for its pitch (A1 at E5, B1 E7, C#2 E9, D2 E10, E2 A7, F#2 A9, G#2 A11, F#1 E2, G#1 E4), octave slips
-the tracker made (F#3, C#3, B2, A2) were moved down an octave as Elijah did, and in the second verse split notes were
-joined and short low-confidence notes removed as in the first. Those later notes keep `"edited": false`. The section
-from about 139 to 167 s does not repeat an earlier part and has not been heard yet.
+Elijah then corrected the opening by hand in `review.html` (0 to 49 s: the first main riff, the first verse and the first
+prechorus; 108 notes, saved with `"edited": true` and kept exactly as he made them). Each later section copies the
+matching section he fixed (2026-11-21): the same position for each pitch; in verse 2 the first pass and the ending one
+string up, as in verse 1; each main-riff ending as 3 F# then 2 G#; the tracker's F#3 and C#3 moved down an octave, split
+notes joined and tiny low-confidence notes removed, as he did. Those notes keep `"edited": false`. The section from about
+139 to 167 s does not repeat an earlier part; its notes only use the same positions and have not been heard yet.
 
 **Not changed:** the chord segments in all three references are still the pipeline's guesses, and a bass-only recording
 has no real chords. The beat grids below are also unchanged. Maple Syrup is in 5/4 (Elijah, 2026-11-21) and its
