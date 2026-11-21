@@ -47,8 +47,8 @@
         },
         "reference": { "description": "Path of the reference tab, relative to benchmark/.", "type": "string", "pattern": "^references/[a-z0-9-]+\\.json$" },
         "referenceStatus": {
-          "description": "draft-from-pipeline: written from the pipeline's own output and not yet checked, so it proves nothing about accuracy. checked: Elijah has checked every part by ear and corrected it.",
-          "enum": ["draft-from-pipeline", "checked"]
+          "description": "draft-from-pipeline: written from the pipeline's own output and not yet checked, so it proves nothing about accuracy. from-published-tab: notes transcribed from a published tab of the song and lined up to the audio by an alignment script; not checked by ear. draft-from-pitch-tracking: notes found by pitch tracking the recording (pYIN, not the pipeline); not checked by ear. checked: Elijah has checked every part by ear and corrected it.",
+          "enum": ["draft-from-pipeline", "from-published-tab", "draft-from-pitch-tracking", "checked"]
         }
       }
     }

@@ -30,15 +30,36 @@ Does not belong here: the benchmark audio. It may be copyrighted, so it lives in
 
 The full 10-song set is still required before MVP sign-off, and any G1 result from 3 songs is provisional (OQ-07).
 
-**Every entry is a draft.** `referenceStatus: "draft-from-pipeline"` means the reference was written from the pipeline's
-own output (`python -m amphion_pipeline`), so it proves nothing about accuracy until Elijah has checked each part by ear and
-corrected it. Scoring the pipeline against an unchecked draft would score it against itself. When a song's reference is
-checked, change its `referenceStatus` to `checked`. The input types and instruments are also unconfirmed: the input type
-is inferred from the file (a Voice Memos file is a phone-mic recording). Elijah confirmed that With Rob as My Witness is a bass
-recording alone, so its reference has no guitar part (the pipeline had found 642 guitar notes in it, which were bass notes
-picked up again as guitar). Know Your Name and Maple Syrup have guitar and bass; their parts are the pipeline's, so a bass
-part there may still be low guitar notes. A bass-only recording also has no real chords: the chord segments in that
-reference are the pipeline's guesses from the bass line and should not be trusted.
+**Where the notes come from.** No reference is `checked` yet. `referenceStatus` says how each one was made:
+
+| Song | `referenceStatus` | Notes |
+| --- | --- | --- |
+| Know Your Name | `from-published-tab` | Guitar and bass transcribed from the published Songsterr tabs, bars 1 to 122 (the cut ends in bar 120) |
+| Maple Syrup | `from-published-tab` | Guitar and bass transcribed from the published Songsterr tabs, bars 1 to 85 (the cut ends in bar 77) |
+| With Rob as My Witness | `draft-from-pitch-tracking` | Bass found by pitch tracking the recording (librosa pYIN), not by the pipeline |
+
+For the two published tabs, every bar's rhythm was read off the tab and checked to add up to a full bar (6 quarter beats
+in Maple Syrup, 4 in Know Your Name), then the bars were lined up to the audio. Dead (X) notes are left out because they
+have no pitch, and tied notes lengthen the note they continue instead of adding a new one. The timing was fitted to the
+audio's note onsets (constant-Q spectrum), not to the pipeline's notes, so the pipeline gets no head start:
+
+- Maple Syrup: bar 1 at 0.27 s, a steady 153 bpm. 85 to 88% of the reference notes land within 100 ms of a note the
+  pipeline found with the same pitch class, against 50% or less when the reference is shifted by half a beat or a beat.
+- Know Your Name: the phone recording starts just after the first chord, so bar 1 is at about -0.19 s and its opening
+  chord is left out. Bars 1 to 17 are placed from two anchors read off the earlier pipeline draft's notes (the first B
+  and A# notes at 0.77 s and 2.6 s, and the bass entry at bar 17, 23.9 s, which the onset fit also finds on its own at
+  23.86 s); later bars follow the tab's tempo marks (156 to 164 bpm) and the onset fit. The fit is clear in
+  the intro and verse; the strummed chorus (bars 57 to 96) repeats every beat, so there it only follows from the bars
+  around it. Bars 25 to 32 may sit about half a beat late.
+
+With Rob as My Witness is a bass recording alone, so its reference has no guitar part. Its notes are the recording's
+pitch track cut at onsets and pitch changes (median 0.198 s apart, the eighth note at 152 bpm); low-confidence blips, short
+slides into a note and doubled attacks were removed. Its strings and frets are a choice (low frets, small hand moves),
+because a recording does not say where a note was played.
+
+**Not changed:** the chord segments in all three references are still the pipeline's guesses, and a bass-only recording
+has no real chords. The beat grids below are also unchanged. One mismatch to settle: the Maple Syrup tab writes 6
+quarter beats per bar, while the reference's `beatsPerBar` is 5.
 
 ### Key, tempo, time and tuning (given by Elijah, 2026-11-20)
 
@@ -50,8 +71,7 @@ reference are the pipeline's guesses from the bass line and should not be truste
 
 `beats` and `downbeats` follow the `bpm` level above (one beat per `bpm` tick), so a chord-per-beat score (RC-10) counts
 beats at that level. I rebuilt them by re-running madmom's beat tracker limited to that tempo and bar length, so the grid
-is still the tracker's guess and its start position is **not** checked by ear. The notes, chords, and string and fret
-choices are still the pipeline's draft, which is why `referenceStatus` is still `draft-from-pipeline`.
+is still the tracker's guess and its start position is **not** checked by ear.
 
 ### The audio (private)
 
