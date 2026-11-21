@@ -19,6 +19,11 @@ class TabWeights:
     """Subtracted from the cost of an open string (fret 0), so an open string beats a low fretted position. A beginner
     finds open strings easiest to play and they ring clearly."""
 
+    thick_string_bonus: float = 0.0
+    """Subtracted per string number, so a thicker (lower-pitched) string is preferred: string 4 of a bass earns three times
+    what string 2 earns. 0 turns it off. Published bass tabs tend to stay on the low strings in the middle of the neck
+    instead of jumping to the open string above."""
+
     # --- notes that sound together (one column) ---
     max_span: int = 4
     """Widest stretch, in frets, a beginner's hand can cover for notes that sound together. Open strings do not count."""
@@ -34,6 +39,10 @@ class TabWeights:
     hand_jump: float = 1.5
     """Cost per fret the hand has to move between one column and the next (average fretted position; open strings do not
     move the hand)."""
+
+    string_change: float = 0.0
+    """Cost per string the hand has to cross between one column and the next (average string number). 0 turns it off.
+    Staying on one string is easier to read and to play."""
 
     jump_relief_seconds: float = 1.0
     """A jump matters less when there is time to make it: the cost is divided by (1 + gap / this), where gap is the time
@@ -65,6 +74,22 @@ class TabWeights:
 
 
 DEFAULT_WEIGHTS = TabWeights()
+"""Guitar. Tuned against the benchmark (P1-06): the defaults held up. Where a guitar part scored low it was because the
+reference plays a chord as a barre shape and the pipeline plays the same pitches as an open shape, which no audio can
+tell apart, so the beginner-friendly open shape stays."""
+
+BASS_WEIGHTS = TabWeights(
+    fret=0.5,
+    open_string_bonus=-3.0,  # a penalty: published bass tabs stay in position on the low strings, not on the open string above
+    thick_string_bonus=1.5,
+    string_change=1.0,
+    hand_jump=0.0,  # string_change and thick_string_bonus carry the "stay in position" preference
+)
+"""Bass. Tuned on the 2 benchmark songs with a published bass tab (Know Your Name, Maple Syrup), chosen from the middle of a
+wide plateau (see benchmark/README.md, "Tuning"), not the single best point. With Rob as My Witness is not used for tuning:
+its strings are a low-fret guess, not a tab."""
+
+WEIGHTS_BY_INSTRUMENT = {"guitar": DEFAULT_WEIGHTS, "bass": BASS_WEIGHTS}
 
 # Fret range and open-string pitches (MIDI note numbers) in standard tuning. String 1 is the highest-pitched string, as in
 # the RC-20 format and demo/src/music/tuning.ts.

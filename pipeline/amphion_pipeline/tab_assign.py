@@ -17,7 +17,7 @@ import math
 from dataclasses import dataclass
 from itertools import count
 
-from .tab_weights import DEFAULT_WEIGHTS, MAX_FRET, OPEN_STRING_PITCHES, TabWeights
+from .tab_weights import MAX_FRET, OPEN_STRING_PITCHES, WEIGHTS_BY_INSTRUMENT, TabWeights
 
 log = logging.getLogger("amphion_pipeline")
 
@@ -65,14 +65,17 @@ def _group_columns(notes: list[dict], instrument: str, shift: int, weights: TabW
     return columns
 
 
-def _shape_cost(frets: list[int | None], weights: TabWeights) -> float:
+def _shape_cost(shape: tuple, weights: TabWeights) -> float:
     """Cost of one column's shape: how high, how stretched, and how many notes had to be left out."""
     cost = 0.0
     fretted = []
-    for fret in frets:
+    for position in shape:
+        fret = None if position is None else position[1]
         if fret is None:
             cost += weights.unplayable
-        elif fret == 0:
+            continue
+        cost -= weights.thick_string_bonus * position[0]
+        if fret == 0:
             cost -= weights.open_string_bonus
         else:
             cost += weights.fret * fret
@@ -95,8 +98,7 @@ def _shapes(column: _Column, blocked: int, weights: TabWeights) -> list[tuple[fl
             return
         if k == n:
             budget[0] -= 1
-            frets = [None if c is None else c[1] for c in chosen]
-            found.append((_shape_cost(frets, weights), next(tiebreak), tuple(chosen)))
+            found.append((_shape_cost(tuple(chosen), weights), next(tiebreak), tuple(chosen)))
             return
         free = [(s, f) for s, f in column.options[k] if not (used | blocked) & (1 << s)]
         for s, f in free:
@@ -118,6 +120,7 @@ class _State:
     cost: float
     shape: tuple
     hand: float | None  # average fretted position of the latest column that had one
+    string: float | None  # average string number of the latest column
     ringing: dict[int, float]  # string -> time its note stops sounding
     parent: "_State | None"
 
@@ -126,20 +129,22 @@ def assign_strings_and_frets(
     notes: list[dict],
     instrument: str,
     tuning_offset_cents: float | None = 0.0,
-    weights: TabWeights = DEFAULT_WEIGHTS,
+    weights: TabWeights | None = None,
 ) -> list[dict]:
     """Return copies of `notes` (same order) with `string` and `fret` filled in. Nothing is added or removed.
 
     `notes` need `startTime`, `duration` and `pitch`. A note keeps null string and fret only when no legal position exists.
+    `weights` defaults to the instrument's own set in `tab_weights.WEIGHTS_BY_INSTRUMENT`.
     """
     if not notes:
         return []
+    weights = WEIGHTS_BY_INSTRUMENT[instrument] if weights is None else weights
     shift = tuning_shift_semitones(tuning_offset_cents)
     columns = _group_columns(notes, instrument, shift, weights)
     ends = [n["startTime"] + n["duration"] for n in notes]
     cache: dict[tuple[int, int], list] = {}
 
-    beam = [_State(0.0, (), None, {}, None)]
+    beam = [_State(0.0, (), None, None, {}, None)]
     previous_start = None
     for ci, column in enumerate(columns):
         next_states: dict[tuple, _State] = {}
@@ -155,6 +160,10 @@ def assign_strings_and_frets(
                 fretted = [c[1] for c in shape if c is not None and c[1] > 0]
                 hand = sum(fretted) / len(fretted) if fretted else state.hand
                 cost = state.cost + shape_cost
+                played = [c[0] for c in shape if c is not None]
+                string = sum(played) / len(played) if played else state.string
+                if played and state.string is not None:
+                    cost += weights.string_change * abs(string - state.string)
                 if fretted and state.hand is not None and previous_start is not None:
                     gap = max(0.0, column.start - previous_start)
                     cost += weights.hand_jump * abs(hand - state.hand) / (1.0 + gap / weights.jump_relief_seconds)
@@ -162,7 +171,7 @@ def assign_strings_and_frets(
                 for note_index, position in zip(column.indexes, shape):
                     if position is not None:
                         ringing[position[0]] = max(ends[note_index], ringing.get(position[0], 0.0))
-                new = _State(cost, shape, hand, ringing, state)
+                new = _State(cost, shape, hand, string, ringing, state)
                 kept = next_states.get(shape)
                 if kept is None or new.cost < kept.cost:
                     next_states[shape] = new

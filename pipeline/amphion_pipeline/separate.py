@@ -12,6 +12,7 @@ from demucs.pretrained import get_model
 
 MODEL_NAME = "htdemucs_6s"
 INSTRUMENTS = ("guitar", "bass")
+HARMONIC_PARTS = ("bass", "other", "guitar", "piano")  # everything that carries chords; drums and vocals are left out
 
 
 @lru_cache(maxsize=1)
@@ -22,9 +23,16 @@ def _model():
 
 
 def separate(stereo: np.ndarray, sample_rate: int, work_dir: Path) -> dict[str, Path]:
-    """Write only the guitar and bass parts into `work_dir` and return their paths.
+    """Write only the guitar and bass parts into `work_dir` and return their paths (see `separate_parts`)."""
+    return separate_parts(stereo, sample_rate, work_dir)[0]
 
-    The other four parts are dropped in memory and never written. The caller owns `work_dir` and must delete it
+
+def separate_parts(stereo: np.ndarray, sample_rate: int, work_dir: Path) -> tuple[dict[str, Path], np.ndarray]:
+    """Write only the guitar and bass parts into `work_dir`; return their paths and the harmonic mix.
+
+    The harmonic mix is the mono sum of the bass, guitar, piano and "other" parts: the song without its drums and vocals,
+    which is a cleaner input for chord recognition (benchmark P1-06: chord accuracy rose on all three songs). It stays in
+    memory. The other parts are dropped in memory and never written. The caller owns `work_dir` and must delete it
     (RC-03): the parts are never stored anywhere else.
     """
     model = _model()
@@ -44,4 +52,5 @@ def separate(stereo: np.ndarray, sample_rate: int, work_dir: Path) -> dict[str, 
         path = work_dir / f"{name}.wav"
         sf.write(path, parts[model.sources.index(name)].numpy().T, sample_rate)
         paths[name] = path
-    return paths
+    harmonic = sum(parts[model.sources.index(name)] for name in HARMONIC_PARTS).mean(0).numpy().astype(np.float32)
+    return paths, np.ascontiguousarray(harmonic)
