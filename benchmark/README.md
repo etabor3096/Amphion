@@ -29,14 +29,15 @@ Does not belong here: the benchmark audio. It may be copyrighted, so it lives in
 | With Rob as My Witness | `mic` (Voice Memos recording of a bass alone) | bass only |
 | Maple Syrup | `upload` (MP3) | guitar, bass |
 
-The full 10-song set is still required before MVP sign-off, and any G1 result from 3 songs is provisional (OQ-07).
+The first update uses these 3 songs only. Elijah moved the rest of the 10-song set (RC-10) to the second update
+(2026-11-21), so until then any G1 result from 3 songs is provisional (OQ-07).
 
 **Where the notes come from.** No reference is `checked` yet. `referenceStatus` says how each one was made:
 
 | Song | `referenceStatus` | Notes |
 | --- | --- | --- |
 | Know Your Name | `from-published-tab` | Guitar and bass transcribed from the published Songsterr tabs, bars 1 to 122 (the cut ends in bar 120) |
-| Maple Syrup | `from-published-tab` | Guitar and bass transcribed from the published Songsterr tabs, bars 1 to 85 (the cut ends in bar 77) |
+| Maple Syrup | `from-published-tab` | Guitar and bass transcribed from the published Songsterr tabs, tab bars 1 to 85 (the cut ends in tab bar 77) |
 | With Rob as My Witness | `draft-from-pitch-tracking` | Bass found by pitch tracking the recording (librosa pYIN), not by the pipeline |
 
 For the two published tabs, every bar's rhythm was read off the tab and checked to add up to a full bar (6 quarter beats
@@ -59,8 +60,10 @@ slides into a note and doubled attacks were removed. Its strings and frets are a
 because a recording does not say where a note was played.
 
 **Not changed:** the chord segments in all three references are still the pipeline's guesses, and a bass-only recording
-has no real chords. The beat grids below are also unchanged. One mismatch to settle: the Maple Syrup tab writes 6
-quarter beats per bar, while the reference's `beatsPerBar` is 5.
+has no real chords. The beat grids below are also unchanged. Maple Syrup is in 5/4 (Elijah, 2026-11-21) and its
+reference keeps `beatsPerBar` 5. The Songsterr tab groups the same quarter notes into bars of 6, so its bar numbers
+(in the table above and in the tab text) are the tab's, not the song's. The note times do not depend on bar lines,
+so the notes are the same either way.
 
 ### Key, tempo, time and tuning (given by Elijah, 2026-11-20)
 
