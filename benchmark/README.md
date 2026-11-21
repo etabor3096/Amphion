@@ -18,7 +18,7 @@ Does not belong here: the benchmark audio. It may be copyrighted, so it lives in
 | `references/<id>.json` | The reference tab for one song, in the RC-20 format (`pipeline/rc20.schema.json`) |
 | `check_references.py` | The schema check (below) |
 | `tools/review.html` | The page for checking a reference by ear (below) |
-| `tools/make_reference/` | Scripts that build a reference from a published tab or a pitch track, and check its timing (below) |
+| `tools/make_reference/` | Scripts that build a reference from a published tab or a pitch track, work out its chords, and check its timing (below) |
 | `tests/` | Tests for the checker |
 
 ### The proof-of-concept set (3 songs, PoC amendment on #47)
@@ -52,7 +52,8 @@ audio's note onsets (constant-Q spectrum), not to the pipeline's notes, so the p
   and A# notes at 0.77 s and 2.6 s, and the bass entry at bar 17, 23.9 s, which the onset fit also finds on its own at
   23.86 s); later bars follow the tab's tempo marks (156 to 164 bpm) and the onset fit. The fit is clear in
   the intro and verse; the strummed chorus (bars 57 to 96) repeats every beat, so there it only follows from the bars
-  around it. Bars 25 to 32 may sit about half a beat late.
+  around it. The fit suggested bars 25 to 32 might sit about half a beat late, but Elijah listened to the whole song
+  against the recording (2026-11-21) and it lines up fairly well, so it was left as it is.
 
 With Rob as My Witness is a bass recording alone, so its reference has no guitar part. Its notes are the recording's
 pitch track cut at onsets and pitch changes (median 0.198 s apart, the eighth note at 152 bpm); low-confidence blips, short
@@ -66,8 +67,13 @@ string up, as in verse 1; each main-riff ending as 3 F# then 2 G#; the tracker's
 notes joined and tiny low-confidence notes removed, as he did. Those notes keep `"edited": false`. The section from about
 139 to 167 s does not repeat an earlier part; its notes only use the same positions and have not been heard yet.
 
-**Not changed:** the chord segments in all three references are still the pipeline's guesses, and a bass-only recording
-has no real chords. The beat grids below are also unchanged. Maple Syrup is in 5/4 (Elijah, 2026-11-21) and its
+**Chords** (2026-11-21) are worked out from each reference's own notes by `tools/make_reference/chords_from_notes.py`,
+not by the pipeline. Each half of a tab bar (Know Your Name, Maple Syrup) or every 2 beats (With Rob as My Witness) gets
+the major or minor triad that best fits the notes sounding there, favouring the lowest note as the root and chords in
+the key. In the tab songs a lone passing note keeps the chord before it. With Rob as My Witness is a bass part alone,
+so its chords are mostly the bass note's triad in C# minor: a guide, not a transcription. None have been checked by ear.
+
+**Not changed:** the beat grids below. Maple Syrup is in 5/4 (Elijah, 2026-11-21) and its
 reference keeps `beatsPerBar` 5. The Songsterr tab groups the same quarter notes into bars of 6, so its bar numbers
 (in the table above and in the tab text) are the tab's, not the song's. The note times do not depend on bar lines,
 so the notes are the same either way.
@@ -157,6 +163,13 @@ python benchmark/tools/make_reference/from_pitch_track.py <id> --audio-dir bench
 
 `--allowed` lists the pitch classes the song uses. With Rob as My Witness used `"C C# D D# E F# G# A B"`. Set
 `referenceStatus` to `draft-from-pitch-tracking`.
+
+Chords, after the notes are in:
+
+```bash
+python benchmark/tools/make_reference/chords_from_notes.py <id> --timing benchmark/audio/tabs/<id>.timing.json --splits 2 --min-tones 2   # tab songs
+python benchmark/tools/make_reference/chords_from_notes.py <id> --beats-per-window 2                                                    # a bass part alone
+```
 
 To check the tools still give the committed references, build into a scratch file with `--out /tmp/<id>.json`, then
 `diff` it against `references/<id>.json`. For all three songs they are identical.

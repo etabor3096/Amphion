@@ -557,616 +557,632 @@
   "chords": [
     {
       "id": "chord-0",
-      "startTime": 0.3,
-      "endTime": 2.6,
+      "startTime": 0.27,
+      "endTime": 2.608,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-1",
-      "startTime": 2.6,
-      "endTime": 3.8,
+      "startTime": 2.608,
+      "endTime": 3.792,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-2",
-      "startTime": 3.8,
-      "endTime": 5.0,
+      "startTime": 3.792,
+      "endTime": 4.976,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-3",
-      "startTime": 5.0,
-      "endTime": 7.3,
+      "startTime": 4.976,
+      "endTime": 7.309,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-4",
-      "startTime": 7.3,
-      "endTime": 8.5,
+      "startTime": 7.309,
+      "endTime": 8.495,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-5",
-      "startTime": 8.5,
-      "endTime": 9.7,
+      "startTime": 8.495,
+      "endTime": 9.682,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-6",
-      "startTime": 9.7,
-      "endTime": 12.1,
+      "startTime": 9.682,
+      "endTime": 12.015,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-7",
-      "startTime": 12.1,
-      "endTime": 13.2,
+      "startTime": 12.015,
+      "endTime": 13.201,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-8",
-      "startTime": 13.2,
-      "endTime": 14.4,
+      "startTime": 13.201,
+      "endTime": 14.388,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-9",
-      "startTime": 14.4,
-      "endTime": 16.7,
+      "startTime": 14.388,
+      "endTime": 16.741,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-10",
-      "startTime": 16.7,
-      "endTime": 17.9,
+      "startTime": 16.741,
+      "endTime": 17.917,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-11",
-      "startTime": 17.9,
-      "endTime": 19.2,
+      "startTime": 17.917,
+      "endTime": 19.094,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-12",
-      "startTime": 19.2,
-      "endTime": 21.4,
+      "startTime": 19.094,
+      "endTime": 21.456,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-13",
-      "startTime": 21.4,
-      "endTime": 22.3,
+      "startTime": 21.456,
+      "endTime": 22.633,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-14",
-      "startTime": 22.3,
-      "endTime": 23.8,
+      "startTime": 22.633,
+      "endTime": 23.809,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-15",
-      "startTime": 23.8,
-      "endTime": 26.2,
+      "startTime": 23.809,
+      "endTime": 26.152,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-16",
-      "startTime": 26.2,
-      "endTime": 27.3,
+      "startTime": 26.152,
+      "endTime": 27.329,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-17",
-      "startTime": 27.3,
-      "endTime": 28.5,
+      "startTime": 27.329,
+      "endTime": 28.505,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-18",
-      "startTime": 28.5,
-      "endTime": 30.9,
+      "startTime": 28.505,
+      "endTime": 30.858,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-19",
-      "startTime": 30.9,
-      "endTime": 32.0,
+      "startTime": 30.858,
+      "endTime": 32.035,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-20",
-      "startTime": 32.0,
-      "endTime": 33.3,
+      "startTime": 32.035,
+      "endTime": 33.211,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-21",
-      "startTime": 33.3,
-      "endTime": 35.6,
+      "startTime": 33.211,
+      "endTime": 35.564,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-22",
-      "startTime": 35.6,
-      "endTime": 36.7,
+      "startTime": 35.564,
+      "endTime": 36.741,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-23",
-      "startTime": 36.7,
-      "endTime": 38.0,
+      "startTime": 36.741,
+      "endTime": 37.917,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-24",
-      "startTime": 38.0,
-      "endTime": 40.3,
+      "startTime": 37.917,
+      "endTime": 40.27,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-25",
-      "startTime": 40.3,
-      "endTime": 41.5,
+      "startTime": 40.27,
+      "endTime": 41.446,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-26",
-      "startTime": 41.5,
-      "endTime": 42.7,
+      "startTime": 41.446,
+      "endTime": 42.623,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-27",
-      "startTime": 42.7,
-      "endTime": 45.0,
+      "startTime": 42.623,
+      "endTime": 44.976,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-28",
-      "startTime": 45.0,
-      "endTime": 46.1,
+      "startTime": 44.976,
+      "endTime": 46.152,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-29",
-      "startTime": 46.1,
-      "endTime": 47.3,
+      "startTime": 46.152,
+      "endTime": 47.329,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-30",
-      "startTime": 47.3,
-      "endTime": 50.0,
+      "startTime": 47.329,
+      "endTime": 49.682,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-31",
-      "startTime": 50.0,
-      "endTime": 52.1,
-      "name": "F#m",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-32",
-      "startTime": 52.1,
-      "endTime": 54.6,
-      "name": "A",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-33",
-      "startTime": 54.6,
-      "endTime": 56.8,
-      "name": "F#m",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-34",
-      "startTime": 56.8,
-      "endTime": 66.1,
-      "name": "A",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-35",
-      "startTime": 66.1,
-      "endTime": 75.5,
+      "startTime": 49.682,
+      "endTime": 50.858,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
+      "id": "chord-32",
+      "startTime": 50.858,
+      "endTime": 52.035,
+      "name": "F#m",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-33",
+      "startTime": 52.035,
+      "endTime": 54.388,
+      "name": "A",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-34",
+      "startTime": 54.388,
+      "endTime": 55.564,
+      "name": "D",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-35",
+      "startTime": 55.564,
+      "endTime": 56.741,
+      "name": "F#m",
+      "confidence": null,
+      "edited": false
+    },
+    {
       "id": "chord-36",
-      "startTime": 75.5,
-      "endTime": 85.0,
+      "startTime": 56.741,
+      "endTime": 59.094,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-37",
-      "startTime": 85.0,
-      "endTime": 94.4,
-      "name": "D",
+      "startTime": 59.094,
+      "endTime": 60.265,
+      "name": "Em",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-38",
-      "startTime": 94.4,
-      "endTime": 96.7,
+      "startTime": 60.265,
+      "endTime": 63.789,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-39",
-      "startTime": 96.7,
-      "endTime": 98.1,
-      "name": "D",
+      "startTime": 63.789,
+      "endTime": 64.966,
+      "name": "Am",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-40",
-      "startTime": 98.1,
-      "endTime": 99.2,
-      "name": "F#m",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-41",
-      "startTime": 99.2,
-      "endTime": 101.5,
+      "startTime": 64.966,
+      "endTime": 66.142,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
-      "id": "chord-42",
-      "startTime": 101.5,
-      "endTime": 102.7,
+      "id": "chord-41",
+      "startTime": 66.142,
+      "endTime": 69.672,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
+      "id": "chord-42",
+      "startTime": 69.672,
+      "endTime": 70.848,
+      "name": "C#m",
+      "confidence": null,
+      "edited": false
+    },
+    {
       "id": "chord-43",
-      "startTime": 102.7,
-      "endTime": 103.3,
-      "name": "F#m",
+      "startTime": 70.848,
+      "endTime": 72.025,
+      "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-44",
-      "startTime": 103.3,
-      "endTime": 103.8,
-      "name": "G",
+      "startTime": 72.025,
+      "endTime": 75.554,
+      "name": "Bm",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-45",
-      "startTime": 103.8,
-      "endTime": 106.1,
+      "startTime": 75.554,
+      "endTime": 80.28,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-46",
-      "startTime": 106.1,
-      "endTime": 107.4,
-      "name": "D",
+      "startTime": 80.28,
+      "endTime": 81.456,
+      "name": "F",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-47",
-      "startTime": 107.4,
-      "endTime": 108.7,
-      "name": "F#m",
+      "startTime": 81.456,
+      "endTime": 84.986,
+      "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-48",
-      "startTime": 108.7,
-      "endTime": 110.8,
-      "name": "A",
+      "startTime": 84.986,
+      "endTime": 97.887,
+      "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-49",
-      "startTime": 110.8,
-      "endTime": 112.1,
-      "name": "D",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-50",
-      "startTime": 112.1,
-      "endTime": 112.7,
-      "name": "F#",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-51",
-      "startTime": 112.7,
-      "endTime": 113.0,
-      "name": "G",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-52",
-      "startTime": 113.0,
-      "endTime": 115.6,
-      "name": "A",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-53",
-      "startTime": 115.6,
-      "endTime": 116.8,
-      "name": "D",
-      "confidence": null,
-      "edited": false
-    },
-    {
-      "id": "chord-54",
-      "startTime": 116.8,
-      "endTime": 117.9,
+      "startTime": 97.887,
+      "endTime": 113.181,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
+      "id": "chord-50",
+      "startTime": 113.181,
+      "endTime": 115.544,
+      "name": "A",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-51",
+      "startTime": 115.544,
+      "endTime": 116.721,
+      "name": "D",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-52",
+      "startTime": 116.721,
+      "endTime": 117.897,
+      "name": "F#m",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-53",
+      "startTime": 117.897,
+      "endTime": 120.25,
+      "name": "A",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-54",
+      "startTime": 120.25,
+      "endTime": 122.623,
+      "name": "D",
+      "confidence": null,
+      "edited": false
+    },
+    {
       "id": "chord-55",
-      "startTime": 117.9,
-      "endTime": 120.3,
+      "startTime": 122.623,
+      "endTime": 124.976,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-56",
-      "startTime": 120.3,
-      "endTime": 121.7,
+      "startTime": 124.976,
+      "endTime": 126.152,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-57",
-      "startTime": 121.7,
-      "endTime": 122.2,
-      "name": "A#",
+      "startTime": 126.152,
+      "endTime": 127.329,
+      "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-58",
-      "startTime": 122.2,
-      "endTime": 125.0,
+      "startTime": 127.329,
+      "endTime": 129.682,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-59",
-      "startTime": 125.0,
-      "endTime": 126.1,
+      "startTime": 129.682,
+      "endTime": 130.858,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-60",
-      "startTime": 126.1,
-      "endTime": 127.3,
+      "startTime": 130.858,
+      "endTime": 132.035,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-61",
-      "startTime": 127.3,
-      "endTime": 129.8,
+      "startTime": 132.035,
+      "endTime": 134.388,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-62",
-      "startTime": 129.8,
-      "endTime": 130.9,
+      "startTime": 134.388,
+      "endTime": 135.564,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-63",
-      "startTime": 130.9,
-      "endTime": 132.0,
+      "startTime": 135.564,
+      "endTime": 136.741,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-64",
-      "startTime": 132.0,
-      "endTime": 134.4,
+      "startTime": 136.741,
+      "endTime": 139.094,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-65",
-      "startTime": 134.4,
-      "endTime": 135.5,
+      "startTime": 139.094,
+      "endTime": 140.27,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-66",
-      "startTime": 135.5,
-      "endTime": 136.8,
+      "startTime": 140.27,
+      "endTime": 141.446,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-67",
-      "startTime": 136.8,
-      "endTime": 139.2,
-      "name": "A",
+      "startTime": 141.446,
+      "endTime": 146.152,
+      "name": "Bm",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-68",
-      "startTime": 139.2,
-      "endTime": 140.2,
+      "startTime": 146.152,
+      "endTime": 152.04,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-69",
-      "startTime": 140.2,
-      "endTime": 141.4,
+      "startTime": 152.04,
+      "endTime": 153.221,
       "name": "F#m",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-70",
-      "startTime": 141.4,
-      "endTime": 146.0,
-      "name": "Bm",
+      "startTime": 153.221,
+      "endTime": 154.393,
+      "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-71",
-      "startTime": 146.0,
-      "endTime": 155.4,
+      "startTime": 154.393,
+      "endTime": 155.564,
       "name": "D",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-72",
-      "startTime": 155.4,
-      "endTime": 160.6,
+      "startTime": 155.564,
+      "endTime": 157.917,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-73",
-      "startTime": 160.6,
-      "endTime": 161.7,
-      "name": "F#m",
+      "startTime": 157.917,
+      "endTime": 160.28,
+      "name": "Em",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-74",
-      "startTime": 161.7,
-      "endTime": 165.1,
+      "startTime": 160.28,
+      "endTime": 162.633,
       "name": "A",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-75",
-      "startTime": 165.1,
-      "endTime": 174.4,
-      "name": "D",
+      "startTime": 162.633,
+      "endTime": 163.809,
+      "name": "F",
       "confidence": null,
       "edited": false
     },
     {
       "id": "chord-76",
-      "startTime": 174.4,
-      "endTime": 180.0,
+      "startTime": 163.809,
+      "endTime": 164.986,
+      "name": "Dm",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-77",
+      "startTime": 164.986,
+      "endTime": 174.358,
+      "name": "D",
+      "confidence": null,
+      "edited": false
+    },
+    {
+      "id": "chord-78",
+      "startTime": 174.358,
+      "endTime": 179.906,
       "name": "A",
       "confidence": null,
       "edited": false
