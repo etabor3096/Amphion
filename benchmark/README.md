@@ -248,6 +248,30 @@ recording (`tools/review.html` can nudge them). The G1 mic result (RISK-01) shou
 
 Not changed: the 50 ms window, the RISK-01 bars, the scorer, the RC-20 format. Nothing here makes the G1 decision (P1-06).
 
+### Second round: tools that need no training of our own (P1-06)
+
+Each idea was scored on the cached Demucs stems of the 2 songs with a published guitar tab (guitar note F-measure, baseline
+38.4%), then the one that helped was run end to end. Same in-sample caveat as above.
+
+| Idea | Guitar F | Verdict |
+| --- | ---: | --- |
+| Move each note start onto madmom's nearest onset (within 120 ms) | **41.4%** | Adopted (`onsets.py`). Better on both songs and flat across thresholds 0.1 to 0.3 and windows 120 to 150 ms. The references were fitted to audio onsets (above), so some of the gain may come from how they were built |
+| Correct the audio by the estimated tuning offset (clean resample) | Know Your Name +1.1 points, Maple Syrup 0 (its estimate is 0 cents) | Not adopted: one song, inside noise; the estimate is only good to about 10 cents |
+| Run Basic Pitch on 3 to 13 pitch-shifted and delayed copies and keep notes most copies agree on | 38.1% at best | Not adopted: no gain for 3 to 13 times the work |
+| Drop short chords | 59.2% to 58.6% chord macro, worse | Not adopted |
+| Fill "no chord" gaps with the previous chord | +1.1 points of chord macro (59.3% to 60.4%) | Not adopted: `pipeline/README.md` says no-chord stretches are left out, and the references chord almost every beat |
+| Chordino (classical chord detector) | not tested | The `chord-extractor` wrapper ships a Linux x86-64 plugin, so it does not run on this Mac, and NNLS-Chroma is GPL. Needs Elijah's call (A10, licence) before it is worth building |
+
+End to end (3 songs, bass and chords identical to the first round):
+
+| Metric | First round | With onset snapping |
+| --- | ---: | ---: |
+| Guitar note F, uploads / mic | 58.6% / 18.5% | **62.4% / 20.4%** |
+| Guitar string and fret of matched notes, uploads / mic | 32.0% / 95.2% | 33.6% / 92.7% |
+
+The string and fret share is a share of the matched notes, and more notes now match, so the mic figure can dip while the
+number of correct notes rises (210 to 232 matched).
+
 ## Check the references
 
 Run from the repo root, with the pipeline's Python 3.10 virtualenv active (setup in `pipeline/README.md`):
