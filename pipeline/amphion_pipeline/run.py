@@ -13,6 +13,7 @@ from .beats import track_beats
 from .bass_notes import detect_bass_notes_from_file
 from .harmony import detect_chords, detect_key
 from .notes import detect_notes
+from .onsets import snap_part_to_onsets
 from .separate import INSTRUMENTS, separate_parts
 from .tab_assign import assign_strings_and_frets
 from .tempo_tuning import estimate_tempo, estimate_tuning_offset_cents
@@ -61,7 +62,7 @@ def analyze(audio_path: str | Path, *, tmp_root: str | Path | None = None, timin
                 if instrument == "bass":  # pitch tracking, not Basic Pitch: see bass_notes.py
                     tabs[instrument] = detect_bass_notes_from_file(stems[instrument])
                 else:
-                    tabs[instrument] = detect_notes(stems[instrument], instrument)
+                    tabs[instrument] = snap_part_to_onsets(detect_notes(stems[instrument], instrument), stems[instrument])
 
     with _stage("beats", timings):
         beats, downbeats, beats_per_bar = track_beats(audio.mono, audio.sample_rate)

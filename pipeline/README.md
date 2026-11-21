@@ -50,6 +50,7 @@ missing file and 1 for any other failure; on failure no output file is written (
 | `audio.py` load | librosa, hashlib | 44.1 kHz stereo and mono mix; SHA-256 of the input file's exact bytes |
 | `separate.py` | Demucs `htdemucs_6s` | guitar and bass parts, written only to a temp folder |
 | `notes.py` | Basic Pitch (ONNX) | guitar notes: start, length, pitch, confidence |
+| `onsets.py` | madmom | moves each guitar note start onto the nearest detected pluck (within 120 ms) |
 | `bass_notes.py` | librosa pYIN | bass notes, from the pitch track (see below) |
 | `beats.py` | madmom | beat and downbeat times, beats per bar |
 | `harmony.py` | madmom | chord segments (from the song without drums and vocals), key |
@@ -93,6 +94,11 @@ fool it. A bass plays one note at a time, which is what a single pitch track ass
 
 **Chords** are found on the song without its drums and vocals (the sum of the Demucs bass, guitar, piano and "other"
 parts, kept in memory and never written), which is a cleaner input than the full mix.
+
+**Guitar note starts** are then lined up with the plucks in the audio by madmom's onset detector (`onsets.py`): Basic Pitch
+places a start from its own network frame, often 20 to 100 ms off the pluck, and the benchmark counts a note only within
+50 ms. A start with a detected onset within 120 ms moves onto it; one without is left alone, and the note's end does not
+move. Settings are flat across thresholds 0.1 to 0.3 and windows 120 to 150 ms.
 
 ## Choosing strings and frets (P1-05, DD-15)
 
