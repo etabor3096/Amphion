@@ -47,7 +47,7 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 
 - React demo, run from `demo/` (`cd demo` first): `npm install`, `npm run dev` (Vite, http://localhost:5173), `npm run typecheck`, `npm run build` (typecheck + build).
 - Pipeline, run from `pipeline/` with its Python 3.10 virtualenv active (setup in `pipeline/README.md`): `python -m pytest` (about a minute); run it on a song with `python -m amphion_pipeline song.wav -o result.json`.
-- Benchmark, run from the repo root with the pipeline virtualenv active: `python benchmark/check_references.py --min-songs 3` (schema check on the manifest and references; the full set needs 10 songs) and `python -m pytest benchmark/`.
+- Benchmark, run from the repo root with the pipeline virtualenv active: `python benchmark/check_references.py --min-songs 3` (schema check on the manifest and references; the full set needs 10 songs) `python benchmark/score.py --results-dir <dir>` (score pipeline results against the references, writes `benchmark/reports/<date>.md`; `--self-test` scores the references against themselves) and `python -m pytest benchmark/`.
 - These cover the React demo, the pipeline and the benchmark. Add commands for `ios/` and `firebase/` here as those folders appear.
 
 ## Definition of Done
