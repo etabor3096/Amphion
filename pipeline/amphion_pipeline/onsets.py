@@ -30,6 +30,10 @@ class SnapParams:
     window: float = 0.12
     """A note start moves to the nearest onset only if it is within this many seconds."""
 
+    min_remaining: float = 0.05
+    """A note is not snapped if that would leave it shorter than this many seconds. The note's end stays put, so an onset just
+    before the end would shrink it to a sliver, and a rounded duration of 0 is not valid RC-20."""
+
 
 DEFAULT_SNAP = SnapParams()
 
@@ -44,16 +48,17 @@ def detect_onsets(mono: np.ndarray, sample_rate: int = SAMPLE_RATE, params: Snap
 def snap_to_onsets(notes: list[dict], onsets: np.ndarray, params: SnapParams = DEFAULT_SNAP) -> list[dict]:
     """Return copies of `notes` with starts moved onto the nearest onset within `params.window`. Time order and ids are kept
     consistent: the result is sorted by start time and numbered again, nothing is added or dropped."""
-    if not notes or not len(onsets):
-        return [dict(note) for note in notes]
+    if not notes:
+        return []
     moved = []
     for note in notes:
         start, end = note["startTime"], note["startTime"] + note["duration"]
-        i = int(np.searchsorted(onsets, start))
-        near = [onsets[j] for j in (i - 1, i) if 0 <= j < len(onsets)]
-        best = min(near, key=lambda t: abs(t - start))
-        if abs(best - start) <= params.window and end - best > 0.0:
-            start = float(best)
+        if len(onsets):
+            i = int(np.searchsorted(onsets, start))
+            near = [onsets[j] for j in (i - 1, i) if 0 <= j < len(onsets)]
+            best = min(near, key=lambda t: abs(t - start))
+            if abs(best - start) <= params.window and end - best >= params.min_remaining:
+                start = float(best)
         moved.append(dict(note, startTime=round(start, 3), duration=round(end - start, 3)))
     moved.sort(key=lambda n: (n["startTime"], n["pitch"]))
     prefix = notes[0]["id"].rsplit("-", 1)[0]
@@ -66,5 +71,7 @@ def snap_part_to_onsets(notes: list[dict], stem_path: Path) -> list[dict]:
     """Detect the onsets in a separated part's WAV file and snap its notes to them."""
     import librosa
 
+    if not notes:  # a silent part: nothing to move, and no need to run the detector
+        return []
     mono, _ = librosa.load(str(stem_path), sr=SAMPLE_RATE, mono=True)
     return snap_to_onsets(notes, detect_onsets(mono))

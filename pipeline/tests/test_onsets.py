@@ -54,6 +54,25 @@ def test_no_notes_or_no_onsets_changes_nothing():
     assert snap_to_onsets([note(0.56)], np.array([]))[0]["startTime"] == 0.56
 
 
+def test_a_note_is_never_snapped_to_a_zero_or_sliver_duration():
+    # An onset in the last half millisecond of a short note used to leave duration 0.0, which is not valid RC-20.
+    assert snap_to_onsets([note(0.4, duration=0.1004)], np.array([0.5004]))[0]["duration"] > 0  # the onset is at the note's end
+    moved = snap_to_onsets([note(0.5, duration=0.1)], np.array([0.59]))  # would leave 10 ms
+    assert moved[0]["startTime"] == 0.5 and moved[0]["duration"] == 0.1
+    assert all(n["duration"] > 0 for n in snap_to_onsets([note(t, duration=0.13) for t in np.arange(0, 3, 0.01)], np.arange(0.005, 3, 0.07)))
+
+
+def test_no_onsets_still_gives_time_order_and_fresh_ids():
+    moved = snap_to_onsets([note(2.0, 60, index=0), note(1.0, 57, index=1)], np.array([]))
+    assert [n["startTime"] for n in moved] == [1.0, 2.0] and [n["id"] for n in moved] == ["guitar-0", "guitar-1"]
+
+
+def test_a_part_with_no_notes_does_not_run_the_onset_detector(tmp_path):
+    from amphion_pipeline.onsets import snap_part_to_onsets
+
+    assert snap_part_to_onsets([], tmp_path / "does-not-exist.wav") == []
+
+
 def test_the_input_notes_are_not_modified():
     notes = [note(0.56)]
     snap_to_onsets(notes, np.array([0.5]))
