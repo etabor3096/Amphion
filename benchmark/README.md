@@ -18,6 +18,7 @@ Does not belong here: the benchmark audio. It may be copyrighted, so it lives in
 | `references/<id>.json` | The reference tab for one song, in the RC-20 format (`pipeline/rc20.schema.json`) |
 | `check_references.py` | The schema check (below) |
 | `tools/review.html` | The page for checking a reference by ear (below) |
+| `tools/make_reference/` | Scripts that build a reference from a published tab or a pitch track, and check its timing (below) |
 | `tests/` | Tests for the checker |
 
 ### The proof-of-concept set (3 songs, PoC amendment on #47)
@@ -100,6 +101,48 @@ you pick.
 It shows only what the reference says. It does not move the beat grid; if the bar lines sit in the wrong place, say so and
 the grid is rebuilt.
 
+## Build a reference from a published tab or a pitch track
+
+`tools/make_reference/` holds the scripts that made the current references. Use them for a new song, or to rebuild
+one after fixing its tab text. Run them from the repo root with a Python that has `librosa` (the pipeline virtualenv)
+and, for the stitcher only, `opencv-python`. Each script's top comment gives the full details.
+
+**A published tab works only if it was written for this exact recording.** A different take, a live version or a cover
+will not line up. For a recording of your own playing, use the pitch track instead.
+
+From a published tab:
+
+1. Screen-record the tab scrolling, then turn the recording into pages:
+   `python benchmark/tools/make_reference/stitch_video.py tab.mov /tmp/pages/<id>-guitar`.
+   Where bars look missing or doubled, check the page against the recording.
+2. Write the tab out as text, one line per bar, following the format at the top of `tabtext.py`. Save it as
+   `benchmark/audio/tabs/<id>.guitar.txt` and `<id>.bass.txt`. Tab text is copied from a published tab, so it stays
+   in private storage with the audio (gitignored), like the audio.
+3. Check that every bar adds up:
+   `python benchmark/tools/make_reference/tabtext.py benchmark/audio/tabs/<id>.guitar.txt guitar 4`.
+   The last number is the beats per bar. Any bar it lists has a wrong duration.
+4. Copy a config in `tools/make_reference/configs/` and set its `bpm` and `offset_range`. Keep `offset_range`
+   narrow, around where bar 1 starts: a wide range can lock on a beat early or late. Then build:
+   `python benchmark/tools/make_reference/from_tab.py benchmark/tools/make_reference/configs/<id>.json --audio-dir benchmark/audio/trimmed --tabs-dir benchmark/audio/tabs`.
+   This overwrites the reference's guitar and bass notes and leaves everything else alone.
+5. Check the timing against the pipeline's notes for the same audio:
+   `python benchmark/tools/make_reference/agreement.py benchmark/references/<id>.json result.json --bpm <bpm> --by-section benchmark/audio/tabs/<id>.timing.json`.
+   A good fit peaks clearly at a shift of 0. A section with no clear peak, or a peak somewhere else, needs a listen in
+   `review.html`. If the start is wrong, pin bars to times you have heard with `anchors` in the config.
+6. Set `referenceStatus` to `from-published-tab`, then run the check below.
+
+From a pitch track (a bass recording alone):
+
+```bash
+python benchmark/tools/make_reference/from_pitch_track.py <id> --audio-dir benchmark/audio/trimmed --allowed "C# D# E F# G# A B"
+```
+
+`--allowed` lists the pitch classes the song uses. With Rob as My Witness used `"C C# D D# E F# G# A B"`. Set
+`referenceStatus` to `draft-from-pitch-tracking`.
+
+To check the tools still give the committed references, build into a scratch file with `--out /tmp/<id>.json`, then
+`diff` it against `references/<id>.json`. For all three songs they are identical.
+
 ## Check the references
 
 Run from the repo root, with the pipeline's Python 3.10 virtualenv active (setup in `pipeline/README.md`):
@@ -108,7 +151,7 @@ Run from the repo root, with the pipeline's Python 3.10 virtualenv active (setup
 python benchmark/check_references.py --min-songs 3     # the proof-of-concept set
 python benchmark/check_references.py                   # the full set: needs 10 songs, so it fails until there are 10
 python benchmark/check_references.py --min-songs 3 --audio-dir benchmark/audio/trimmed    # also re-hash the private audio
-python -m pytest benchmark/                            # the checker's tests
+python -m pytest benchmark/                            # the checker's and the tab parser's tests
 ```
 
 It checks that the manifest and each reference follow their schemas; that each reference's `audioSha256` and `duration`
