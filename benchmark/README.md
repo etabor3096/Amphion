@@ -199,6 +199,55 @@ A part the song has but the pipeline did not find (`null`) scores zero, it is no
 every song in the group, then divide. The 50 ms window is a constant in `score.py` and the RISK-01 bars are not in it:
 neither changes without the G1 decision record (A9). The report does not decide G1 (P1-06).
 
+## Tuning (P1-06, 2026-11-21)
+
+The first real scores (3 songs, before any tuning) and the same run after tuning, both end to end from the audio with
+`benchmark/score.py`. Tuning used the 3 proof-of-concept songs, so every "after" number is **in-sample**: treat it as
+evidence the changes help, not as a forecast. The 7 songs added in the second update should be kept out of any further tuning.
+
+| Metric | Before | After |
+| --- | ---: | ---: |
+| Guitar note F, uploads / mic | 58.6% / 18.5% | 58.6% / 18.5% (unchanged) |
+| Bass note F, uploads / mic | 37.9% / 8.0% | **72.0% / 16.1%** |
+| Guitar string and fret, uploads / mic | 32.0% / 95.2% | 32.0% / 95.2% (unchanged) |
+| Bass string and fret, uploads / mic | 8.0% / 21.0% | **96.8% / 36.6%** |
+| Chord accuracy, all / uploads / mic | 58.1% / 77.5% / 44.9% | **59.7% / 79.7% / 46.1%** |
+
+What changed, and what was tried and rejected:
+
+* **Bass notes now come from pYIN pitch tracking, not Basic Pitch** (`pipeline/amphion_pipeline/bass_notes.py`). On the phone
+  recordings the bass stem's fundamental is 5 to 10 times weaker than its 2nd and 3rd harmonics, so Basic Pitch reported the
+  harmonic: detections 12, 19 or 24 semitones above the reference (median detected pitch 45 against a reference 30 on Know
+  Your Name). Thresholds cannot fix that. Tracking on the two songs with a published tab (With Rob as My Witness is left out
+  of the choice: its reference came from pYIN, so it would reward the same method): Maple Syrup 37% to 63%, Know Your Name
+  3.7% to 13.7% before any tuning of the pYIN settings. Settings were tuned on one song and tested on the other, both ways,
+  and gained both times (Maple 62.7% to 71.1%, Know 13.8% to 15.6%); the values chosen sit in a flat range (all neighbours
+  within 0.42 to 0.44 macro F).
+* **Bass strings and frets use their own weights** (`BASS_WEIGHTS`, plus two new optional weights, `thick_string_bonus` and
+  `string_change`). Published bass tabs stay on the low strings in position, not on the open string above. Scored on the
+  reference pitches with positions removed (`tools/tune_tab_weights.py`): Maple Syrup 13% to 89%, Know Your Name 66% to 90%;
+  tuned on one song alone, the other still rose from 13% to 69%. 51 of 160 settings reach 80% on both songs, and the one
+  chosen is in the middle of them. With Rob's bass strings went **down** (25% to 7%): its strings are a low-fret guess made
+  for the reference, not a tab, so that number says nothing about the pipeline.
+* **Guitar weights did not change.** The remaining misses on Maple Syrup's guitar are the same pitches in a different shape:
+  the reference plays A major as a barre chord at the 5th fret, the pipeline as the open A chord. Both are right, no audio
+  can tell them apart, and the open shape is the beginner-friendly one (DD-15). No weight helped one song without costing the
+  other.
+* **Chords use the song without drums and vocals** (bass + guitar + piano + "other" parts, in memory only). Better on all
+  three songs (+2.0, +2.6 and +0.5 points).
+* **Rejected, no gain on guitar:** Basic Pitch thresholds (best 39.5% against 38.4%, inside noise), minimum note length,
+  the Melodia setting, a confidence floor, removing harmonic "ghost" notes (hurt: real chord tones sit at those intervals),
+  a timing shift (+10 ms gave +1 point), and Basic Pitch on the guitar+other or the full mix (no better than the guitar part).
+
+**Read this before trusting the mic numbers.** Maple Syrup (an upload) has 85% of its same-pitch detections within 50 ms of
+the reference, so its misses are real. Know Your Name (a phone recording) has only 43% within 50 ms and a spread of about
++-130 ms: a person playing with natural timing against a reference laid on the tab's rhythm grid. Even re-timing the
+reference to the performance in 10-second windows moves its guitar F only from 18.3% to 21.5%, so detection is still weak
+there, but the benchmark cannot score that song to the 50 ms window fairly until its note times are re-checked against the
+recording (`tools/review.html` can nudge them). The G1 mic result (RISK-01) should wait for that.
+
+Not changed: the 50 ms window, the RISK-01 bars, the scorer, the RC-20 format. Nothing here makes the G1 decision (P1-06).
+
 ## Check the references
 
 Run from the repo root, with the pipeline's Python 3.10 virtualenv active (setup in `pipeline/README.md`):

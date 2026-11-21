@@ -10,9 +10,10 @@ from pathlib import Path
 from . import rc20
 from .audio import load_audio, sha256_file
 from .beats import track_beats
+from .bass_notes import detect_bass_notes_from_file
 from .harmony import detect_chords, detect_key
 from .notes import detect_notes
-from .separate import INSTRUMENTS, separate
+from .separate import INSTRUMENTS, separate_parts
 from .tab_assign import assign_strings_and_frets
 from .tempo_tuning import estimate_tempo, estimate_tuning_offset_cents
 
@@ -54,15 +55,18 @@ def analyze(audio_path: str | Path, *, tmp_root: str | Path | None = None, timin
     tabs: dict[str, list[dict]] = {}
     with tempfile.TemporaryDirectory(prefix="amphion-", dir=tmp_root) as work_dir:
         with _stage("separate", timings):
-            stems = separate(audio.stereo, audio.sample_rate, Path(work_dir))
+            stems, harmonic = separate_parts(audio.stereo, audio.sample_rate, Path(work_dir))
         with _stage("notes", timings):
             for instrument in INSTRUMENTS:
-                tabs[instrument] = detect_notes(stems[instrument], instrument)
+                if instrument == "bass":  # pitch tracking, not Basic Pitch: see bass_notes.py
+                    tabs[instrument] = detect_bass_notes_from_file(stems[instrument])
+                else:
+                    tabs[instrument] = detect_notes(stems[instrument], instrument)
 
     with _stage("beats", timings):
         beats, downbeats, beats_per_bar = track_beats(audio.mono, audio.sample_rate)
     with _stage("chords", timings):
-        chords = detect_chords(audio.mono, audio.sample_rate)
+        chords = detect_chords(harmonic, audio.sample_rate)  # the song without drums and vocals
     with _stage("details", timings):
         key = _detail("key", lambda: detect_key(audio.mono, audio.sample_rate))
         bpm = _detail("tempo", lambda: estimate_tempo(audio.mono, audio.sample_rate))

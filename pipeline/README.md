@@ -1,8 +1,9 @@
 # pipeline/
 
 The Python analysis code: the processing function that turns an uploaded song into tab data (SDD 5.1, DD-02, DD-16).
-Demucs separates the guitar and bass parts, Basic Pitch finds the notes, the tab-assignment module picks strings and
-frets (DD-15), madmom finds beats, chords and key, and librosa finds tempo and tuning.
+Demucs separates the guitar and bass parts, Basic Pitch finds the guitar notes, librosa's pYIN pitch tracker finds the bass
+notes, the tab-assignment module picks strings and frets (DD-15), madmom finds beats, chords and key, and librosa finds
+tempo and tuning.
 
 Belongs here: the `amphion_pipeline` package, its tests, the RC-20 JSON Schema, pinned requirements, and later the
 Cloud Run function that wraps the package.
@@ -48,9 +49,10 @@ missing file and 1 for any other failure; on failure no output file is written (
 | --- | --- | --- |
 | `audio.py` load | librosa, hashlib | 44.1 kHz stereo and mono mix; SHA-256 of the input file's exact bytes |
 | `separate.py` | Demucs `htdemucs_6s` | guitar and bass parts, written only to a temp folder |
-| `notes.py` | Basic Pitch (ONNX) | notes per part: start, length, pitch, confidence |
+| `notes.py` | Basic Pitch (ONNX) | guitar notes: start, length, pitch, confidence |
+| `bass_notes.py` | librosa pYIN | bass notes, from the pitch track (see below) |
 | `beats.py` | madmom | beat and downbeat times, beats per bar |
-| `harmony.py` | madmom | chord segments, key |
+| `harmony.py` | madmom | chord segments (from the song without drums and vocals), key |
 | `tempo_tuning.py` | librosa | tempo (BPM), tuning offset (cents from A = 440 Hz) |
 | `tab_assign.py` | project code | a string and fret for every note (P1-05); weights in `tab_weights.py` |
 | `run.py` | | runs the stages, builds and validates the document |
@@ -80,12 +82,27 @@ types have to accept null before a result loads unchanged. Decisions worth knowi
 - **The temp folder.** Separated parts exist only in a folder created under the system temp folder (or `--tmp-dir`) and
   are deleted when the run ends: on success, on any exception, and on SIGTERM (tests cover each, RC-03, rule A3).
 
+## Finding the bass notes: pitch tracking, not Basic Pitch (P1-06)
+
+Basic Pitch finds the guitar. For the bass, `bass_notes.py` tracks the pitch with librosa's pYIN and cuts the track into
+notes, because Basic Pitch reported the wrong octave: on the benchmark's phone recordings the bass's fundamental is several
+times weaker than its 2nd and 3rd harmonics (the 2nd is 6.7 times stronger on Know Your Name), and Basic Pitch returns the
+harmonic, 12, 19 or 24 semitones too high. pYIN follows the period of the whole sound, so a weak fundamental does not
+fool it. A bass plays one note at a time, which is what a single pitch track assumes. Every setting is a named value in
+`BassParams`, chosen from the middle of a flat range on the benchmark (`benchmark/README.md`, "Tuning").
+
+**Chords** are found on the song without its drums and vocals (the sum of the Demucs bass, guitar, piano and "other"
+parts, kept in memory and never written), which is a cleaner input than the full mix.
+
 ## Choosing strings and frets (P1-05, DD-15)
 
 `tab_assign.py` gives each note a string and fret. Every option for a pitch is scored, and a beam search keeps the best
 partial tabs through the whole song (`beam_width` in `tab_weights.py`, 32 by default; the search for 460 notes takes
 10 ms). Notes that start within 50 ms of each other form one column and are placed together.
 
+- **Weights by instrument.** The guitar uses `DEFAULT_WEIGHTS` and the bass uses `BASS_WEIGHTS` (`WEIGHTS_BY_INSTRUMENT`).
+  Published bass tabs stay in position on the low strings (the open string above is penalised, a thicker string is
+  preferred, crossing strings costs a little), which the guitar's weights do not do.
 - **Preferences** (all named, adjustable weights in `tab_weights.py`, with a comment each): open strings, then lower
   frets; notes in one column within 4 frets (open strings do not count); a small cost for moving the hand between
   columns, smaller when there is time to move. Tune them against the benchmark and report the scores (rule A9).

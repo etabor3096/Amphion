@@ -5,7 +5,7 @@ import random
 import pytest
 
 from amphion_pipeline.tab_assign import assign_strings_and_frets, positions_for, tuning_shift_semitones
-from amphion_pipeline.tab_weights import MAX_FRET, OPEN_STRING_PITCHES, TabWeights
+from amphion_pipeline.tab_weights import BASS_WEIGHTS, DEFAULT_WEIGHTS, MAX_FRET, OPEN_STRING_PITCHES, TabWeights
 
 OPEN = {name: dict(enumerate(pitches, start=1)) for name, pitches in OPEN_STRING_PITCHES.items()}
 
@@ -155,9 +155,23 @@ def test_the_input_is_not_changed_and_order_is_kept():
 
 def test_bass_has_four_strings_and_string_one_is_g():
     assert pos([note(0, 28, name="b")], "bass") == [(4, 0)]  # E1: the open low E string
-    assert pos([note(0, 43, name="b")], "bass") == [(1, 0)]  # G2: the open G string
+    assert pos([note(0, 43, name="b")], "bass", weights=DEFAULT_WEIGHTS) == [(1, 0)]  # G2: the open G string (string 1 is G)
+    assert (1, 0) in positions_for(43, "bass")  # whatever the weights prefer, string 1 fret 0 is a legal place for G2
     assert pos([note(0, 24, name="b")], "bass") == [(None, None)]  # below a four-string bass
     assert all(s <= 4 for s, _ in pos([note(i * 0.3, 28 + i, duration=0.2) for i in range(30)], "bass"))
+
+
+def test_the_bass_stays_on_the_low_strings_in_position_instead_of_jumping_to_an_open_string():
+    # Tuned on the benchmark's published bass tabs (P1-06): A2, B2, D3, E3 played as one line sit on the A and E strings.
+    line = [note(i * 0.4, p, duration=0.3, name="b") for i, p in enumerate([33, 35, 38, 40, 38, 35, 33])]
+    assert pos(line, "bass") == [(4, 5), (3, 2), (3, 5), (3, 7), (3, 5), (3, 2), (4, 5)]
+    assert pos(line, "bass", weights=DEFAULT_WEIGHTS)[0] == (3, 0)  # the guitar-style weights take the open A string
+    assert BASS_WEIGHTS.open_string_bonus < 0 and DEFAULT_WEIGHTS.open_string_bonus > 0
+
+
+def test_each_instrument_uses_its_own_weights_unless_told_otherwise():
+    assert pos([note(0, 45)], "guitar") == [(5, 0)]  # the guitar still prefers the open A string
+    assert pos([note(0, 33, name="b")], "bass") != pos([note(0, 33, name="b")], "bass", weights=DEFAULT_WEIGHTS)
 
 
 # --- tuning offset ---
