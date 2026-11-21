@@ -1,0 +1,10 @@
+{
+  "id": "know-your-name",
+  "parts": {"guitar": "know-your-name.guitar.txt", "bass": "know-your-name.bass.txt"},
+  "map_from": "guitar",
+  "bpm": 160,
+  "fit_parts": ["guitar", "bass"],
+  "offset_range": [-0.45, 0.05],
+  "band": [28, 90],
+  "anchors": {"1": -0.19, "17": 23.88}
+}

@@ -1,0 +1,8 @@
+{
+  "id": "maple-syrup",
+  "parts": {"guitar": "maple-syrup.guitar.txt", "bass": "maple-syrup.bass.txt"},
+  "map_from": "guitar",
+  "bpm": 153,
+  "fit_parts": ["guitar", "bass"],
+  "offset_range": [0, 1]
+}

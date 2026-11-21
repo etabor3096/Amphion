@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Amphion benchmark reference review</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { color-scheme: light dark; --bg:#fbf6ee; --fg:#2b2118; --mute:#8a7a69; --line:#d9ccbb; --accent:#e8742a; --sel:#1f7ae0; --bad:#c0392b; --panel:#fff; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1d1813; --fg:#f1e8dc; --mute:#a3937f; --line:#3d342a; --panel:#272019; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.4 -apple-system, system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:10px 14px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; }
+  h1 { font-size:15px; margin:0 8px 0 0; }
+  label.file { display:flex; flex-direction:column; gap:2px; font-size:12px; color:var(--mute); }
+  button, select, input[type=number], input[type=text] { font:inherit; padding:4px 8px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--fg); }
+  button { cursor:pointer; } button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  button:disabled { opacity:.4; cursor:default; }
+  .row { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; padding:8px 14px; border-bottom:1px solid var(--line); }
+  .meta b { font-weight:600; } .meta span { margin-right:14px; }
+  .mix label { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--mute); }
+  .mix input[type=range] { width:90px; }
+  #now { font-size:22px; font-weight:700; min-width:260px; }
+  #now small { font-size:13px; font-weight:400; color:var(--mute); margin-left:8px; }
+  canvas { display:block; width:100%; height:420px; cursor:pointer; background:var(--panel); }
+  main { display:grid; grid-template-columns: 1fr 340px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  aside { padding:12px 14px; border-left:1px solid var(--line); font-size:13px; }
+  aside h2 { font-size:13px; margin:14px 0 6px; } aside h2:first-child { margin-top:0; }
+  aside .f { display:flex; gap:6px; align-items:center; margin:4px 0; flex-wrap:wrap; } aside .f label { width:60px; color:var(--mute); }
+  aside input[type=number] { width:70px; } aside input[type=text] { width:90px; }
+  .hint { color:var(--mute); font-size:12px; }
+  #status { padding:6px 14px; font-size:12px; color:var(--mute); }
+  #status.err { color:var(--bad); }
+  .edits { font-weight:600; color:var(--accent); }
+  kbd { font:11px ui-monospace, monospace; border:1px solid var(--line); border-radius:4px; padding:0 4px; background:var(--panel); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Reference review</h1>
+  <label class="file">Reference JSON <input id="refFile" type="file" accept=".json,application/json"></label>
+  <label class="file">Audio (the trimmed file from the manifest) <input id="audioFile" type="file" accept="audio/*,.m4a,.mp3,.wav"></label>
+  <button id="download" class="primary" disabled>Download corrected JSON</button>
+  <span id="editCount" class="edits"></span>
+</header>
+<div id="status">Choose the reference JSON and its audio file. Everything stays on this computer: nothing is uploaded.</div>
+
+<div class="row">
+  <button id="play" disabled>Play</button>
+  <button id="back" disabled>-5 s</button><button id="fwd" disabled>+5 s</button>
+  <label>Speed <select id="rate"><option>0.5</option><option>0.75</option><option selected>1</option></select></label>
+  <label>Zoom <input id="zoom" type="range" min="10" max="300" value="110" style="width:90px"></label>
+  <div id="now">--<small></small></div>
+</div>
+<div class="row mix">
+  <span class="hint">Mix. To hear only the transcription, set Recording to 0:</span>
+  <label>Recording <input id="vRec" type="range" min="0" max="1" step="0.05" value="1"></label>
+  <label>Guitar notes <input id="vGtr" type="range" min="0" max="1" step="0.05" value="0.5"></label>
+  <label>Bass notes <input id="vBas" type="range" min="0" max="1" step="0.05" value="0.5"></label>
+  <label>Chords <input id="vChd" type="range" min="0" max="1" step="0.05" value="0"></label>
+</div>
+<div class="row meta" id="meta"></div>
+
+<main>
+  <canvas id="cv"></canvas>
+  <aside>
+    <h2>How to use</h2>
+    <div class="hint">Press Play. The orange line is the playhead. Click empty space to jump there. Click a note or a chord to select it (and jump to it), then fix it below. Space plays and pauses. Corrections are kept until you download them; reloading the page loses them.</div>
+    <div class="hint" style="margin-top:6px"><b>Several notes at once:</b> drag a box around them, or <kbd>Shift</kbd>/<kbd>⌘</kbd>-click to add or remove one (<kbd>Shift</kbd>-drag adds a box). Zoom out to box a longer stretch. <kbd>↑</kbd>/<kbd>↓</kbd> move them a semitone, <kbd>Delete</kbd> deletes them, <kbd>Esc</kbd> clears the selection.</div>
+    <h2>Selected</h2>
+    <div id="selInfo" class="hint">Nothing selected.</div>
+    <div id="noteEd" hidden>
+      <div class="f"><label>String</label><input id="nStr" type="number" min="1" max="6"> <span class="hint">1 = highest</span></div>
+      <div class="f"><label>Fret</label><input id="nFret" type="number" min="0" max="24"></div>
+      <div class="hint" id="multiHint" hidden>Apply sets every selected note. Leave a box empty to keep each note's own string or fret.</div>
+      <div class="f"><button id="nApply">Apply</button><button id="nDel">Delete</button><button id="nUndelete" hidden>Undo delete</button></div>
+      <div class="f"><label>Pitch</label><button id="tDown12">−12</button><button id="tDown">−1</button><button id="tUp">+1</button><button id="tUp12">+12</button> <span class="hint">semitones</span></div>
+      <div class="f"><label>Same pitch</label>on string <input id="rStr" type="number" min="1" max="6"><button id="rApply">Move</button></div>
+      <div class="f"><label>Timing</label><button id="mEarly">−20 ms</button><button id="mLate">+20 ms</button></div>
+      <div class="f"><button id="selClear">Clear selection</button></div>
+    </div>
+    <div id="chordEd" hidden>
+      <div class="f"><label>Name</label><input id="cName" type="text" placeholder="e.g. C#m"></div>
+      <div class="f"><label>Start (s)</label><input id="cStart" type="number" step="0.01"></div>
+      <div class="f"><label>End (s)</label><input id="cEnd" type="number" step="0.01"></div>
+      <div class="f"><button id="cApply">Apply</button><button id="cDel">Delete chord</button></div>
+    </div>
+    <h2>Add at the playhead</h2>
+    <div class="f"><label>Note</label>
+      <select id="aPart"><option value="guitar">guitar</option><option value="bass">bass</option></select>
+      string <input id="aStr" type="number" min="1" max="6" value="1"> fret <input id="aFret" type="number" min="0" max="24" value="0">
+      <button id="aNote">Add note</button></div>
+    <div class="f"><label>Chord</label><input id="aChord" type="text" placeholder="E, Am, F#m"><button id="aChordBtn">Add chord</button></div>
+    <div class="hint">A new note lasts 0.3 s. A new chord lasts until the next bar line.</div>
+  </aside>
+</main>
+
+<script>
+"use strict";
+// Standard tuning, highest string first, as MIDI pitches (E4 B3 G3 D3 A2 E2; bass G2 D2 A1 E1).
+const OPEN = { guitar: [64, 59, 55, 50, 45, 40], bass: [43, 38, 33, 28] };
+const NAMES = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+const $ = (id) => document.getElementById(id);
+const cv = $("cv"), g = cv.getContext("2d");
+
+let ref = null, audio = new Audio(), ctx = null, master = {}, edits = 0;
+let sel = null;            // {kind:"chord", chord} when a chord is selected
+const selNotes = new Map(); // selected notes: note -> part
+let drag = null;           // box selection in progress: {x0, y0, x1, y1, add, moved}
+let hits = [];             // clickable boxes rebuilt every frame
+let addedId = 0, lastSched = 0, playing = false;
+audio.preservesPitch = true;
+
+function status(msg, err) { $("status").textContent = msg; $("status").className = err ? "err" : ""; }
+function pitchName(p) { return NAMES[p % 12] + (Math.floor(p / 12) - 1); }
+function fmt(t) { const m = Math.floor(t / 60), s = (t % 60).toFixed(1).padStart(4, "0"); return m + ":" + s; }
+function setEdits(n) { edits = n; $("editCount").textContent = n ? n + " correction" + (n > 1 ? "s" : "") + " not downloaded yet" : ""; }
+
+// ---------- loading ----------
+let refName = "reference.json";
+function loadRef(text, name) {
+  const d = JSON.parse(text);
+  if (d.schemaVersion !== 1 || !Array.isArray(d.beats) || !Array.isArray(d.chords)) throw new Error("this is not an RC-20 reference file");
+  ref = d; refName = name; for (const p of ["guitar", "bass"]) if (ref[p]) ref[p].notes.forEach((n) => (n._del = false));
+  sel = null; selNotes.clear(); setEdits(0); showMeta(); showSel();
+}
+$("refFile").addEventListener("change", async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try { loadRef(await f.text(), f.name); status("Loaded " + f.name + ". Now choose the audio file."); }
+  catch (err) { status("Could not read the reference: " + err.message, true); }
+});
+$("audioFile").addEventListener("change", (e) => { const f = e.target.files[0]; if (f) setAudio(f); });
+// Optional: review.html?ref=<url>&audio=<url> loads both from a local server instead of the pickers.
+(async () => {
+  const q = new URLSearchParams(location.search); if (!q.get("ref")) return;
+  try {
+    status("Loading " + q.get("ref") + " …");
+    const r = await fetch(q.get("ref")); if (!r.ok) throw new Error(r.status + " for " + q.get("ref"));
+    loadRef(await r.text(), q.get("ref").split("/").pop());
+    if (q.get("audio")) { const a = await fetch(q.get("audio")); if (!a.ok) throw new Error(a.status + " for " + q.get("audio")); setAudio(await a.blob()); }
+  } catch (err) { status("Could not load: " + err.message, true); }
+})();
+function setAudio(blob) {
+  audio.src = URL.createObjectURL(blob);
+  audio.addEventListener("loadedmetadata", () => {
+    status(ref && Math.abs(audio.duration - ref.duration) > 0.5
+      ? "Warning: this audio is " + audio.duration.toFixed(1) + " s but the reference says " + ref.duration + " s. It may be the wrong file."
+      : "Audio ready (" + audio.duration.toFixed(1) + " s).", ref && Math.abs(audio.duration - ref.duration) > 0.5);
+    for (const id of ["play", "back", "fwd"]) $(id).disabled = false;
+    draw();
+  }, { once: true });
+}
+function showMeta() {
+  const n = (p) => (ref[p] ? ref[p].notes.length + " notes" : "none");
+  $("meta").innerHTML = `<span><b>Key</b> ${ref.key ?? "Unknown"}</span><span><b>Tempo</b> ${ref.bpm ?? "Unknown"} BPM</span>` +
+    `<span><b>Time</b> ${ref.beatsPerBar ?? "?"}/4</span><span><b>Tuning</b> ${ref.tuningOffsetCents ?? "?"} cents</span>` +
+    `<span><b>Guitar</b> ${n("guitar")}</span><span><b>Bass</b> ${n("bass")}</span><span><b>Chords</b> ${ref.chords.length}</span>`;
+  $("download").disabled = false;
+}
+
+// ---------- audio of the transcription ----------
+function ensureCtx() {
+  if (ctx) return;
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  for (const k of ["guitar", "bass", "chord"]) { master[k] = ctx.createGain(); master[k].connect(ctx.destination); }
+  applyMix();
+}
+function applyMix() {
+  audio.volume = +$("vRec").value;
+  if (!ctx) return;
+  master.guitar.gain.value = +$("vGtr").value; master.bass.gain.value = +$("vBas").value; master.chord.gain.value = +$("vChd").value * 0.6;
+}
+for (const id of ["vRec", "vGtr", "vBas", "vChd"]) $(id).addEventListener("input", applyMix);
+function pluck(out, pitch, when, dur, peak) {
+  const o = ctx.createOscillator(), a = ctx.createGain();
+  o.type = pitch < 48 ? "triangle" : "sawtooth";
+  o.frequency.value = 440 * Math.pow(2, (pitch - 69) / 12);
+  const end = when + Math.max(0.12, Math.min(dur, 2.5));
+  a.gain.setValueAtTime(0.0001, when); a.gain.exponentialRampToValueAtTime(peak, when + 0.01);
+  a.gain.exponentialRampToValueAtTime(0.0001, end);
+  o.connect(a); a.connect(out); o.start(when); o.stop(end + 0.05);
+}
+function chordPitches(name) {
+  const m = /^([A-G])([#b]?)(m?)$/.exec(name); if (!m) return [];
+  const base = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[m[1]] + (m[2] === "#" ? 1 : m[2] === "b" ? -1 : 0);
+  const root = 48 + base; return [root, root + (m[3] ? 3 : 4), root + 7];
+}
+function schedule() {
+  if (!ref || !ctx || audio.paused) return;
+  const rate = audio.playbackRate, t = audio.currentTime, horizon = t + 0.25 * rate;
+  const when = (s) => ctx.currentTime + Math.max(0, (s - t) / rate);
+  for (const part of ["guitar", "bass"]) {
+    if (!ref[part]) continue;
+    for (const n of ref[part].notes) if (!n._del && n.startTime >= lastSched && n.startTime < horizon) pluck(master[part], n.pitch, when(n.startTime), n.duration / rate, 0.35);
+  }
+  for (const c of ref.chords) if (c.startTime >= lastSched && c.startTime < horizon)
+    for (const p of chordPitches(c.name)) pluck(master.chord, p, when(c.startTime), (c.endTime - c.startTime) / rate, 0.18);
+  lastSched = horizon;
+}
+setInterval(schedule, 40);
+function resync() { lastSched = audio.currentTime; }
+
+// ---------- transport ----------
+async function toggle() {
+  if (!audio.src) return;
+  ensureCtx(); ctx.resume();   // not awaited: the recording must start even if the synth's audio engine is slow to wake
+  if (audio.paused) { resync(); try { await audio.play(); } catch (err) { status("Could not play: " + err.message, true); } } else audio.pause();
+}
+audio.addEventListener("play", () => { playing = true; $("play").textContent = "Pause"; resync(); });
+audio.addEventListener("pause", () => { playing = false; $("play").textContent = "Play"; });
+audio.addEventListener("seeked", resync);
+$("play").onclick = toggle;
+$("back").onclick = () => { audio.currentTime = Math.max(0, audio.currentTime - 5); };
+$("fwd").onclick = () => { audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); };
+$("rate").onchange = () => { audio.playbackRate = +$("rate").value; resync(); };
+document.addEventListener("keydown", (e) => {
+  if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.code === "Space") { e.preventDefault(); toggle(); }
+  else if (e.key === "Escape") { selNotes.clear(); sel = null; showSel(); }
+  else if (selNotes.size && (e.key === "Delete" || e.key === "Backspace")) { e.preventDefault(); setDeleted(true); }
+  else if (selNotes.size && (e.key === "ArrowUp" || e.key === "ArrowDown")) { e.preventDefault(); transpose((e.key === "ArrowUp" ? 1 : -1) * (e.shiftKey ? 12 : 1)); }
+});
+
+// ---------- drawing ----------
+const PLAYHEAD = 0.22;                       // fraction of the width where the playhead sits
+const LANES = [                              // top to bottom
+  { id: "chords", h: 46 }, { id: "guitar", h: 190 }, { id: "bass", h: 130 }];
+function lanesLayout(H) {
+  let y = 22; const out = {};
+  for (const l of LANES) { out[l.id] = { y, h: l.h }; y += l.h + 6; }
+  return out;
+}
+function rowsFor(part) { return Math.max(OPEN[part].length, ...(ref[part] ? ref[part].notes.map((n) => n.string || 0) : [0])); }
+
+function chordAt(t) { return ref.chords.find((c) => t >= c.startTime && t < c.endTime) || null; }
+function barBeatAt(t) {
+  const d = ref.downbeats; let bi = -1; for (let i = 0; i < d.length && d[i] <= t; i++) bi = i;
+  if (bi < 0) return null;
+  const inBar = ref.beats.filter((b) => b >= d[bi] && b <= t).length;
+  return { bar: bi + 1, beat: inBar };
+}
+function draw() {
+  const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  if (cv.width !== W * dpr || cv.height !== H * dpr) { cv.width = W * dpr; cv.height = H * dpr; }
+  g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const css = getComputedStyle(document.body); const fg = css.color, mute = css.getPropertyValue("--mute").trim(), line = css.getPropertyValue("--line").trim();
+  hits = [];
+  if (!ref) { g.fillStyle = mute; g.font = "14px sans-serif"; g.fillText("Load a reference JSON to see it here.", 20, 40); return; }
+  const t = audio.currentTime || 0, pps = +$("zoom").value, px0 = W * PLAYHEAD;
+  const X = (s) => px0 + (s - t) * pps, T = (x) => t + (x - px0) / pps;
+  const L = lanesLayout(H), tMin = T(0), tMax = T(W);
+  // bar lines and beat ticks
+  g.font = "11px sans-serif";
+  ref.beats.forEach((b) => { if (b < tMin || b > tMax) return; g.strokeStyle = line; g.beginPath(); g.moveTo(X(b), 18); g.lineTo(X(b), H); g.stroke(); });
+  ref.downbeats.forEach((b, i) => { if (b < tMin || b > tMax) return; g.strokeStyle = mute; g.lineWidth = 1.5; g.beginPath(); g.moveTo(X(b), 4); g.lineTo(X(b), H); g.stroke(); g.lineWidth = 1; g.fillStyle = mute; g.fillText(String(i + 1), X(b) + 3, 14); });
+  // chords
+  g.fillStyle = mute; g.fillText("Chords", 4, L.chords.y + 10);
+  for (const c of ref.chords) {
+    if (c.endTime < tMin || c.startTime > tMax) continue;
+    const x = X(c.startTime), w = Math.max(6, (c.endTime - c.startTime) * pps), s = sel && sel.chord === c;
+    g.fillStyle = s ? "rgba(31,122,224,.35)" : "rgba(232,116,42,.18)"; g.fillRect(x, L.chords.y + 14, w - 1, L.chords.h - 16);
+    g.strokeStyle = s ? "#1f7ae0" : "#e8742a"; g.strokeRect(x + .5, L.chords.y + 14.5, w - 2, L.chords.h - 17);
+    g.fillStyle = fg; g.font = "bold 14px sans-serif"; g.fillText(c.name, x + 4, L.chords.y + 34); g.font = "11px sans-serif";
+    hits.push({ x, y: L.chords.y + 14, w, h: L.chords.h - 16, kind: "chord", chord: c });
+  }
+  // tab lanes
+  for (const part of ["guitar", "bass"]) {
+    const lane = L[part]; g.fillStyle = mute; g.font = "11px sans-serif";
+    if (!ref[part]) { g.fillText(part[0].toUpperCase() + part.slice(1) + ": none in this reference", 4, lane.y + 12); continue; }
+    const rows = rowsFor(part), nullRow = ref[part].notes.some((n) => n.string == null), total = rows + (nullRow ? 1 : 0);
+    const rh = (lane.h - 18) / total; g.fillText(part[0].toUpperCase() + part.slice(1) + " (string 1 on top)", 4, lane.y + 10);
+    for (let r = 0; r < total; r++) { const y = lane.y + 18 + rh * (r + .5); g.strokeStyle = line; g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+    for (const n of ref[part].notes) {
+      if (n.startTime + n.duration < tMin || n.startTime > tMax) continue;
+      const r = n.string == null ? rows : n.string - 1, y = lane.y + 18 + rh * (r + .5), x = X(n.startTime);
+      const w = Math.max(14, n.duration * pps), isSel = selNotes.has(n), active = t >= n.startTime && t < n.startTime + n.duration;
+      g.globalAlpha = n._del ? 0.25 : 1;
+      g.fillStyle = isSel ? "#1f7ae0" : active ? "#e8742a" : "rgba(232,116,42,.28)";
+      g.fillRect(x, y - rh * .4, Math.min(w, 60), rh * .8);
+      g.fillStyle = isSel || active ? "#fff" : fg; g.font = "bold 12px sans-serif";
+      g.fillText(n.fret == null ? pitchName(n.pitch) : String(n.fret), x + 3, y + 4);
+      if (n._del) { g.strokeStyle = "#c0392b"; g.beginPath(); g.moveTo(x, y - rh * .4); g.lineTo(x + 14, y + rh * .4); g.stroke(); }
+      g.globalAlpha = 1; g.font = "11px sans-serif";
+      hits.push({ x, y: y - rh * .45, w: Math.min(w, 60), h: rh * .9, kind: "note", part, note: n });
+    }
+  }
+  // box selection
+  if (drag && drag.moved) {
+    g.fillStyle = "rgba(31,122,224,.12)"; g.strokeStyle = "#1f7ae0";
+    const bx = Math.min(drag.x0, drag.x1), by = Math.min(drag.y0, drag.y1), bw = Math.abs(drag.x1 - drag.x0), bh = Math.abs(drag.y1 - drag.y0);
+    g.fillRect(bx, by, bw, bh); g.strokeRect(bx + .5, by + .5, bw, bh);
+  }
+  // playhead
+  g.strokeStyle = "#e8742a"; g.lineWidth = 2; g.beginPath(); g.moveTo(px0, 0); g.lineTo(px0, H); g.stroke(); g.lineWidth = 1;
+  // readout
+  const c = chordAt(t), bb = barBeatAt(t);
+  $("now").innerHTML = `${c ? c.name : "no chord"}<small>${fmt(t)}${bb ? " · bar " + bb.bar + ", beat " + bb.beat : ""}</small>`;
+}
+function loop() { draw(); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+$("zoom").addEventListener("input", draw);
+
+// ---------- click: select a note or chord, or jump ----------
+function canvasXY(e) { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+cv.addEventListener("mousedown", (e) => {
+  if (!ref) return; const [x, y] = canvasXY(e);
+  drag = { x0: x, y0: y, x1: x, y1: y, add: e.shiftKey || e.metaKey || e.ctrlKey, moved: false };
+});
+window.addEventListener("mousemove", (e) => {
+  if (!drag) return; const [x, y] = canvasXY(e);
+  drag.x1 = x; drag.y1 = y; if (Math.abs(x - drag.x0) + Math.abs(y - drag.y0) > 5) drag.moved = true;
+});
+window.addEventListener("mouseup", (e) => {
+  if (!drag) return; const d = drag; drag = null;
+  if (d.moved) {
+    const x0 = Math.min(d.x0, d.x1), x1 = Math.max(d.x0, d.x1), y0 = Math.min(d.y0, d.y1), y1 = Math.max(d.y0, d.y1);
+    if (!d.add) selNotes.clear();
+    for (const h of hits) if (h.kind === "note" && h.x < x1 && h.x + h.w > x0 && h.y < y1 && h.y + h.h > y0) selNotes.set(h.note, h.part);
+    sel = null; showSel(); return;
+  }
+  clickAt(d.x0, d.y0, d.add);
+});
+function clickAt(x, y, add) {
+  const hit = hits.slice().reverse().find((h) => x >= h.x && x <= h.x + h.w && y >= h.y && y <= h.y + h.h);
+  if (hit && hit.kind === "note" && add) {
+    if (selNotes.has(hit.note)) selNotes.delete(hit.note); else selNotes.set(hit.note, hit.part);
+    sel = null; showSel();
+  } else if (hit) {
+    selNotes.clear(); sel = null;
+    if (hit.kind === "note") selNotes.set(hit.note, hit.part); else sel = { kind: "chord", chord: hit.chord };
+    if (audio.src) audio.currentTime = Math.max(0, (hit.kind === "note" ? hit.note.startTime : hit.chord.startTime) - 0.05);
+    showSel();
+  } else if (audio.src) {
+    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + (x - cv.clientWidth * PLAYHEAD) / +$("zoom").value));
+  }
+}
+
+// ---------- editing ----------
+function showSel() {
+  const k = selNotes.size;
+  $("noteEd").hidden = k === 0; $("chordEd").hidden = !(sel && sel.kind === "chord");
+  $("multiHint").hidden = k < 2;
+  if (k === 1) {
+    const [[n, part]] = selNotes;
+    $("selInfo").textContent = `${part} note at ${fmt(n.startTime)}, sounds ${pitchName(n.pitch)}, ${n.duration.toFixed(2)} s long, detector confidence ${n.confidence}.` + (n._del ? " Marked deleted." : "");
+    $("nStr").value = n.string ?? ""; $("nFret").value = n.fret ?? ""; $("nStr").max = OPEN[part].length;
+    $("nDel").hidden = n._del; $("nUndelete").hidden = !n._del;
+  } else if (k > 1) {
+    const ns = [...selNotes.keys()], parts = [...new Set(selNotes.values())], ps = ns.map((n) => n.pitch);
+    const t0 = Math.min(...ns.map((n) => n.startTime)), t1 = Math.max(...ns.map((n) => n.startTime));
+    const dels = ns.filter((n) => n._del).length;
+    $("selInfo").textContent = `${k} ${parts.join(" and ")} notes, ${fmt(t0)} to ${fmt(t1)}, pitches ${pitchName(Math.min(...ps))} to ${pitchName(Math.max(...ps))}.` + (dels ? ` ${dels} marked deleted.` : "");
+    const same = (f) => ns.every((n) => f(n) === f(ns[0])) ? f(ns[0]) ?? "" : "";
+    $("nStr").value = same((n) => n.string); $("nFret").value = same((n) => n.fret);
+    $("nStr").placeholder = $("nFret").placeholder = "keep";
+    $("nStr").max = Math.max(...parts.map((p) => OPEN[p].length));
+    $("nDel").hidden = dels === k; $("nUndelete").hidden = dels === 0;
+  } else if (sel && sel.kind === "chord") {
+    const c = sel.chord; $("selInfo").textContent = `Chord ${c.name}, ${fmt(c.startTime)} to ${fmt(c.endTime)}.`;
+    $("cName").value = c.name; $("cStart").value = c.startTime; $("cEnd").value = c.endTime;
+  } else $("selInfo").textContent = "Nothing selected.";
+}
+function touched(n) { n.edited = true; }
+$("nApply").onclick = () => {
+  const sv = $("nStr").value.trim(), fv = $("nFret").value.trim();
+  const s = sv === "" ? null : parseInt(sv, 10), f = fv === "" ? null : parseInt(fv, 10);
+  if (s === null && f === null) return status("Enter a string, a fret or both.", true);
+  for (const [n, part] of selNotes) {
+    const max = OPEN[part].length, ns = s ?? n.string, nf = f ?? n.fret;
+    if (!(ns >= 1 && ns <= max) || !(nf >= 0 && nf <= 24)) return status("String must be 1 to " + max + " and fret 0 to 24 (" + part + "). Nothing was changed.", true);
+  }
+  for (const [n, part] of selNotes) { n.string = s ?? n.string; n.fret = f ?? n.fret; n.pitch = OPEN[part][n.string - 1] + n.fret; touched(n); }
+  setEdits(edits + selNotes.size); showSel(); status(selNotes.size > 1 ? selNotes.size + " notes changed." : "Note changed.");
+};
+function setDeleted(v) {
+  for (const n of selNotes.keys()) { n._del = v; touched(n); }
+  setEdits(edits + selNotes.size); showSel(); status(selNotes.size + (v ? " deleted (Undo delete brings them back)." : " brought back."));
+}
+$("nDel").onclick = () => setDeleted(true);
+$("nUndelete").onclick = () => setDeleted(false);
+// Move by semitones: keep the string if the fret still fits, otherwise the string with the lowest fret.
+function transpose(semi) {
+  const moves = [];
+  for (const [n, part] of selNotes) {
+    const p = n.pitch + semi, open = OPEN[part];
+    let s = n.string != null && p - open[n.string - 1] >= 0 && p - open[n.string - 1] <= 24 ? n.string : null;
+    if (s === null) { const c = open.map((o, i) => [i + 1, p - o]).filter(([, f]) => f >= 0 && f <= 24).sort((a, b) => a[1] - b[1]); if (c.length) s = c[0][0]; }
+    if (s === null) return status(pitchName(p) + " does not fit on the " + part + ". Nothing was changed.", true);
+    moves.push([n, s, p - open[s - 1], p]);
+  }
+  for (const [n, s, f, p] of moves) { n.string = s; n.fret = f; n.pitch = p; touched(n); }
+  setEdits(edits + moves.length); showSel(); status(moves.length + " moved " + (semi > 0 ? "up " : "down ") + Math.abs(semi) + " semitone" + (Math.abs(semi) > 1 ? "s." : "."));
+}
+$("tUp").onclick = () => transpose(1); $("tDown").onclick = () => transpose(-1);
+$("tUp12").onclick = () => transpose(12); $("tDown12").onclick = () => transpose(-12);
+$("rApply").onclick = () => {
+  const s = parseInt($("rStr").value, 10), moves = [];
+  for (const [n, part] of selNotes) {
+    const f = n.pitch - (OPEN[part][s - 1] ?? NaN);
+    if (!(f >= 0 && f <= 24)) return status(pitchName(n.pitch) + " cannot be played on " + part + " string " + s + ". Nothing was changed.", true);
+    moves.push([n, f]);
+  }
+  for (const [n, f] of moves) { n.string = s; n.fret = f; touched(n); }
+  setEdits(edits + moves.length); showSel(); status(moves.length + " moved to string " + s + ", same pitch.");
+};
+function nudge(sec) {
+  for (const [n] of selNotes) { n.startTime = Math.max(0, +(n.startTime + sec).toFixed(3)); touched(n); }
+  for (const p of ["guitar", "bass"]) if (ref[p]) ref[p].notes.sort((a, b) => a.startTime - b.startTime);
+  setEdits(edits + selNotes.size); showSel(); resync();
+}
+$("mEarly").onclick = () => nudge(-0.02); $("mLate").onclick = () => nudge(0.02);
+$("selClear").onclick = () => { selNotes.clear(); showSel(); };
+$("cApply").onclick = () => {
+  const c = sel.chord, name = $("cName").value.trim(), a = parseFloat($("cStart").value), b = parseFloat($("cEnd").value);
+  if (!/^[A-G][#b]?m?$/.test(name)) return status("Chord names look like E, C#m or Bb. Only major and minor are allowed.", true);
+  if (!(a >= 0 && b > a)) return status("The end must be after the start.", true);
+  Object.assign(c, { name, startTime: a, endTime: b }); ref.chords.sort((p, q) => p.startTime - q.startTime); setEdits(edits + 1); showSel(); status("Chord changed.");
+};
+$("cDel").onclick = () => { ref.chords.splice(ref.chords.indexOf(sel.chord), 1); sel = null; setEdits(edits + 1); showSel(); };
+$("aNote").onclick = () => {
+  if (!ref) return; const part = $("aPart").value, s = parseInt($("aStr").value, 10), f = parseInt($("aFret").value, 10), max = OPEN[part].length;
+  if (!(s >= 1 && s <= max) || !(f >= 0 && f <= 24)) return status("String must be 1 to " + max + " and fret 0 to 24.", true);
+  if (!ref[part]) ref[part] = { notes: [] };
+  const note = { id: part + "-added-" + ++addedId, startTime: +audio.currentTime.toFixed(3), duration: 0.3, string: s, fret: f, pitch: OPEN[part][s - 1] + f, confidence: 1, edited: false, _del: false };
+  ref[part].notes.push(note); ref[part].notes.sort((p, q) => p.startTime - q.startTime);
+  selNotes.clear(); selNotes.set(note, part); sel = null; setEdits(edits + 1); showSel(); showMeta(); status("Note added at " + fmt(note.startTime) + ".");
+};
+$("aChordBtn").onclick = () => {
+  if (!ref) return; const name = $("aChord").value.trim(), t = +audio.currentTime.toFixed(3);
+  if (!/^[A-G][#b]?m?$/.test(name)) return status("Chord names look like E, C#m or Bb. Only major and minor are allowed.", true);
+  const next = ref.downbeats.find((d) => d > t + 0.2) ?? t + 2;
+  const chord = { id: "chord-added-" + ++addedId, startTime: t, endTime: +next.toFixed(3), name, confidence: null, edited: false };
+  ref.chords.push(chord); ref.chords.sort((p, q) => p.startTime - q.startTime); selNotes.clear(); sel = { kind: "chord", chord }; setEdits(edits + 1); showSel(); showMeta();
+};
+$("download").onclick = () => {
+  const out = JSON.parse(JSON.stringify(ref, (k, v) => (k === "_del" ? undefined : v)));
+  for (const p of ["guitar", "bass"]) if (ref[p]) {
+    out[p] = { ...ref[p], notes: ref[p].notes.filter((n) => !n._del).map(({ _del, ...n }) => n).sort((a, b) => a.startTime - b.startTime) };
+    if (!out[p].notes.length) out[p] = null;
+  }
+  const blob = new Blob([JSON.stringify(out, null, 2) + "\n"], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = refName; a.click();
+  setEdits(0); status("Downloaded " + refName + " to your Downloads folder. Notes you changed are marked \"edited\": true.");
+};
+</script>
+</body>
+</html>
