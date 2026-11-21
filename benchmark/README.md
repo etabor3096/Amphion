@@ -32,13 +32,14 @@ Does not belong here: the benchmark audio. It may be copyrighted, so it lives in
 The first update uses these 3 songs only. Elijah moved the rest of the 10-song set (RC-10) to the second update
 (2026-11-21), so until then any G1 result from 3 songs is provisional (OQ-07).
 
-**Where the notes come from.** No reference is `checked` yet. `referenceStatus` says how each one was made:
+**Where the notes come from.** All three references are `checked`: Elijah checked every part, notes and chords, by ear
+against the recording (2026-11-21). How each one was made:
 
-| Song | `referenceStatus` | Notes |
+| Song | Made from | Notes |
 | --- | --- | --- |
-| Know Your Name | `from-published-tab` | Guitar and bass transcribed from the published Songsterr tabs, bars 1 to 122 (the cut ends in bar 120) |
-| Maple Syrup | `from-published-tab` | Guitar and bass transcribed from the published Songsterr tabs, tab bars 1 to 85 (the cut ends in tab bar 77) |
-| With Rob as My Witness | `draft-from-pitch-tracking` | Bass found by pitch tracking the recording (librosa pYIN), not by the pipeline |
+| Know Your Name | published tab | Guitar and bass transcribed from the published Songsterr tabs, bars 1 to 122 (the cut ends in bar 120) |
+| Maple Syrup | published tab | Guitar and bass transcribed from the published Songsterr tabs, tab bars 1 to 85 (the cut ends in tab bar 77) |
+| With Rob as My Witness | pitch tracking, then hand corrections | Bass found by pitch tracking the recording (librosa pYIN), not by the pipeline |
 
 For the two published tabs, every bar's rhythm was read off the tab and checked to add up to a full bar (6 quarter beats
 in Maple Syrup, 4 in Know Your Name), then the bars were lined up to the audio. Dead (X) notes are left out because they
@@ -65,13 +66,13 @@ prechorus; 108 notes, saved with `"edited": true` and kept exactly as he made th
 matching section he fixed (2026-11-21): the same position for each pitch; in verse 2 the first pass and the ending one
 string up, as in verse 1; each main-riff ending as 3 F# then 2 G#; the tracker's F#3 and C#3 moved down an octave, split
 notes joined and tiny low-confidence notes removed, as he did. Those notes keep `"edited": false`. The section from about
-139 to 167 s does not repeat an earlier part; its notes only use the same positions and have not been heard yet.
+139 to 167 s does not repeat an earlier part; its notes use the same positions, and Elijah has since checked it by ear with the rest.
 
 **Chords** (2026-11-21) are worked out from each reference's own notes by `tools/make_reference/chords_from_notes.py`,
 not by the pipeline. Each half of a tab bar (Know Your Name, Maple Syrup) or every 2 beats (With Rob as My Witness) gets
 the major or minor triad that best fits the notes sounding there, favouring the lowest note as the root and chords in
 the key. In the tab songs a lone passing note keeps the chord before it. With Rob as My Witness is a bass part alone,
-so its chords are mostly the bass note's triad in C# minor: a guide, not a transcription. None have been checked by ear.
+so its chords are mostly the bass note's triad in C# minor: a guide, not a transcription. Elijah checked them by ear with the notes (2026-11-21).
 
 **Not changed:** the beat grids below. Maple Syrup is in 5/4 (Elijah, 2026-11-21) and its
 reference keeps `beatsPerBar` 5. The Songsterr tab groups the same quarter notes into bars of 6, so its bar numbers

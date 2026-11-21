@@ -19,7 +19,7 @@
         "lengthSeconds": 179.9
       },
       "reference": "references/know-your-name.json",
-      "referenceStatus": "from-published-tab"
+      "referenceStatus": "checked"
     },
     {
       "id": "with-rob-as-my-witness",
@@ -38,7 +38,7 @@
         "lengthSeconds": 179.9
       },
       "reference": "references/with-rob-as-my-witness.json",
-      "referenceStatus": "draft-from-pitch-tracking"
+      "referenceStatus": "checked"
     },
     {
       "id": "maple-syrup",
@@ -58,7 +58,7 @@
         "lengthSeconds": 179.9
       },
       "reference": "references/maple-syrup.json",
-      "referenceStatus": "from-published-tab"
+      "referenceStatus": "checked"
     }
   ]
 }
