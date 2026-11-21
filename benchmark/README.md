@@ -175,6 +175,30 @@ python benchmark/tools/make_reference/chords_from_notes.py <id> --beats-per-wind
 To check the tools still give the committed references, build into a scratch file with `--out /tmp/<id>.json`, then
 `diff` it against `references/<id>.json`. For all three songs they are identical.
 
+## Score the pipeline (P1-03)
+
+`score.py` grades the pipeline's tabs against the references and writes `reports/<date>.md`. Run from the repo root with
+the pipeline virtualenv active (`mir-eval` is in `pipeline/requirements.txt`):
+
+```bash
+python -m amphion_pipeline benchmark/audio/trimmed/maple-syrup.mp3 -o /tmp/results/maple-syrup.json   # once per manifest song
+python benchmark/score.py --results-dir /tmp/results            # writes benchmark/reports/<today>.md
+python benchmark/score.py --self-test                           # each reference against itself: every metric must be 100%
+```
+
+`--results-dir` holds one `<song id>.json` per manifest song, as the pipeline wrote it. The scorer stops with an error if
+one is missing, is not valid RC-20, or was made from a different audio file than the manifest's (`audioSha256`).
+
+| Metric | How it is scored |
+| --- | --- |
+| Note precision, recall, F-measure | mir_eval matches a detected note to a reference note when the pitch is equal and the start is within 50 ms (RC-10). Note ends are not scored. Guitar and bass are scored separately, with totals for uploads and for mic recordings |
+| String and fret accuracy | Over the matched notes only, so it is separate from note detection: share on the right string, on the right fret, and on both |
+| Chord accuracy | The share of the reference's beats (its `beats` list) where the pipeline's chord is the reference's chord. A beat with no reference chord is not counted. A beat where the pipeline has no chord is wrong. A# and Bb are the same chord; C and Cm are not |
+
+A part the song has but the pipeline did not find (`null`) scores zero, it is not skipped. Totals add up the counts of
+every song in the group, then divide. The 50 ms window is a constant in `score.py` and the RISK-01 bars are not in it:
+neither changes without the G1 decision record (A9). The report does not decide G1 (P1-06).
+
 ## Check the references
 
 Run from the repo root, with the pipeline's Python 3.10 virtualenv active (setup in `pipeline/README.md`):
@@ -183,7 +207,7 @@ Run from the repo root, with the pipeline's Python 3.10 virtualenv active (setup
 python benchmark/check_references.py --min-songs 3     # the proof-of-concept set
 python benchmark/check_references.py                   # the full set: needs 10 songs, so it fails until there are 10
 python benchmark/check_references.py --min-songs 3 --audio-dir benchmark/audio/trimmed    # also re-hash the private audio
-python -m pytest benchmark/                            # the checker's and the tab parser's tests
+python -m pytest benchmark/                            # the checker's, the tab parser's and the scorer's tests
 ```
 
 It checks that the manifest and each reference follow their schemas; that each reference's `audioSha256` and `duration`
