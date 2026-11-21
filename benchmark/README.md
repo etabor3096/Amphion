@@ -99,7 +99,15 @@ you pick.
    **Bass notes** and **Chords** synth alone, or play them over the recording and listen for notes that clash.
 5. Fix what is wrong in the right-hand panel: change a note's string and fret, delete a note, rename a chord or change its
    start and end, or add a note or chord at the playhead.
+   To fix several notes at once, drag a box around them, or Shift-click or Command-click to add or remove one. Zoom out
+   to box a longer stretch. Then set their string or fret (leave a box empty to keep each note's own), move them by
+   semitones (or the up and down arrow keys), move them to another string at the same pitch, nudge them 20 ms earlier or
+   later, or delete them. Every note you change is saved with `"edited": true`, so it is clear which notes were fixed by
+   hand.
 6. **Download corrected JSON**, save it over the file in `benchmark/references/`, and run the check below.
+
+To skip the file pickers, serve a folder that holds `review.html`, `references/` and the audio, and open
+`review.html?ref=references/<id>.json&audio=audio/<file>`. The page then loads both files from that local server.
 
 It shows only what the reference says. It does not move the beat grid; if the bar lines sit in the wrong place, say so and
 the grid is rebuilt.
