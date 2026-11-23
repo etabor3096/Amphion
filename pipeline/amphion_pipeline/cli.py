@@ -22,6 +22,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("audio", type=Path, help="the audio file to analyze")
     parser.add_argument("-o", "--output", type=Path, help="where to write the JSON (default: print to the terminal)")
     parser.add_argument("--tmp-dir", type=Path, help="where the temporary folder for separated parts goes (default: system temp)")
+    parser.add_argument("--sequential", action="store_true", help="run one stage at a time instead of overlapping the stages that do not need each other (same result, slower)")
     parser.add_argument("-v", "--verbose", action="store_true", help="print the time each stage takes")
     return parser
 
@@ -38,7 +39,7 @@ def main(argv: list[str] | None = None) -> int:
         # Basic Pitch prints progress lines with print(). Send anything printed during the analysis to stderr so that
         # stdout holds only the JSON when -o is not used.
         with contextlib.redirect_stdout(sys.stderr):
-            document = analyze(args.audio, tmp_root=args.tmp_dir)
+            document = analyze(args.audio, tmp_root=args.tmp_dir, parallel=not args.sequential)
     except Exception as error:  # noqa: BLE001 - reported once, with a non-zero exit and no output file (RC-09)
         print(f"error: could not analyze {args.audio}: {error}", file=sys.stderr)
         return 1
