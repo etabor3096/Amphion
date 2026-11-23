@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import EditSongDialog, { type SongDetails } from "./EditSongDialog";
+import LoadRealSongDialog from "./LoadRealSongDialog";
 import { useAddedLabel } from "./mock/songs";
+import { setLoadedTranscription } from "./mock/store";
 import type { Instrument, LibrarySong, Transcription } from "./mock/types";
+import { AudioFileClock } from "./playback/AudioFileClock";
 import { SimulatedClock, type PlaybackClock } from "./playback/clock";
 import { SynthClock } from "./playback/SynthClock";
 import { usePlaybackState } from "./playback/usePlayback";
+import type { RealSong } from "./realSong/loadRealSong";
 import SyncedTab from "./tab/SyncedTab";
 
 interface SongScreenProps {
@@ -51,9 +55,13 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
   const { title, artist, length, folder, art, photo, audioOnThisDevice } = song;
   const added = useAddedLabel(song.addedAt);
   // One playback clock per open song. The synth clock makes sound; a song whose audio is on another device stays silent.
-  const [clock] = useState<PlaybackClock & { dispose?(): void }>(() =>
+  // Loading a real transcription swaps in a clock that reads the real audio file's position.
+  const [clock, setClock] = useState<PlaybackClock & { dispose?(): void }>(() =>
     audioOnThisDevice && window.AudioContext ? new SynthClock(transcription.duration) : new SimulatedClock(transcription.duration),
   );
+  const [realSong, setRealSong] = useState<{ tabName: string; audioName: string; unplayableNotes: number; noSyncReason: string | null } | null>(null);
+  const [loadOpen, setLoadOpen] = useState(false);
+  const audioAvailable = realSong ? realSong.noSyncReason === null : audioOnThisDevice;
   const { playing } = usePlaybackState(clock);
   const [detailInfo, setDetailInfo] = useState<"key" | "tempo" | "tuning" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -80,6 +88,17 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const applyRealSong = (song: RealSong, names: { tab: string; audio: string }) => {
+    setLoadedTranscription(song.transcription);
+    setClock(
+      song.audio
+        ? new AudioFileClock(new Audio(song.audio.url), song.transcription.duration, song.audio.release)
+        : new SimulatedClock(song.transcription.duration),
+    );
+    setRealSong({ tabName: names.tab, audioName: names.audio, unplayableNotes: song.unplayableNotes, noSyncReason: song.noSyncReason });
+    setLoadOpen(false);
+  };
 
   const choosePhoto = (file?: File) => {
     if (!file) return;
@@ -126,7 +145,7 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
           <span>{length} <i aria-hidden="true">·</i> Added {added}{folder && <><i aria-hidden="true">·</i> {folder}</>}</span>
         </div>
         <div className="song-hero-actions">
-          {audioOnThisDevice && (
+          {audioAvailable && (
             <button
               className="hero-play-button"
               type="button"
@@ -156,6 +175,16 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
         ))}
       </div>
 
+      {realSong && (
+        <div className="detail-explanation real-song-status" role="status">
+          <span>
+            Showing a real transcription: <strong>{realSong.tabName}</strong>
+            {realSong.noSyncReason === null && <> with <strong>{realSong.audioName}</strong></>}.
+            {realSong.unplayableNotes > 0 && ` ${realSong.unplayableNotes} ${realSong.unplayableNotes === 1 ? "note was" : "notes were"} found that no string can play, so ${realSong.unplayableNotes === 1 ? "it isn't" : "they aren't"} drawn.`}
+          </span>
+        </div>
+      )}
+
       {detailInfo && (
         <div className="detail-explanation" role="status">
           <span>{infoCopy[detailInfo]}</span>
@@ -167,7 +196,8 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
         songId={song.id}
         transcription={transcription}
         clock={clock}
-        audioAvailable={audioOnThisDevice}
+        audioAvailable={audioAvailable}
+        noSyncReason={realSong?.noSyncReason}
         defaultInstrument={defaultInstrument}
       />
 
@@ -202,11 +232,14 @@ export default function SongScreen({ song, transcription, defaultInstrument, onB
           <div className="action-sheet" role="dialog" aria-modal="true" aria-label={`Actions for ${title}`} onClick={(event) => event.stopPropagation()}>
             <p>{title}</p>
             <button type="button" onClick={() => { setMenuOpen(false); setEditOpen(true); }}>Edit details</button>
+            <button type="button" onClick={() => { setMenuOpen(false); setLoadOpen(true); }}>Load real transcription</button>
             <button className="destructive" type="button" onClick={() => { setMenuOpen(false); setDeleteOpen(true); }}>Delete</button>
             <button className="cancel-action" type="button" onClick={() => setMenuOpen(false)}>Cancel</button>
           </div>
         </div>
       )}
+
+      {loadOpen && <LoadRealSongDialog songId={song.id} onLoaded={applyRealSong} onCancel={() => setLoadOpen(false)} />}
 
       {editOpen && (
         <EditSongDialog

@@ -45,7 +45,7 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 
 ## Commands
 
-- React demo, run from `demo/` (`cd demo` first): `npm install`, `npm run dev` (Vite, http://localhost:5173), `npm run typecheck`, `npm run build` (typecheck + build).
+- React demo, run from `demo/` (`cd demo` first): `npm install`, `npm run dev` (Vite, http://localhost:5173), `npm run typecheck`, `npm run test` (Vitest unit tests), `npm run build` (typecheck + build).
 - Pipeline, run from `pipeline/` with its Python 3.10 virtualenv active (setup in `pipeline/README.md`): `python -m pytest` (about a minute); run it on a song with `python -m amphion_pipeline song.wav -o result.json`.
 - Benchmark, run from the repo root with the pipeline virtualenv active: `python benchmark/check_references.py --min-songs 3` (schema check on the manifest and references; the full set needs 10 songs), `python benchmark/score.py --results-dir <dir>` (score pipeline results against the references, writes `benchmark/reports/<date>.md`; `--self-test` scores the references against themselves) and `python -m pytest benchmark/`.
 - These cover the React demo, the pipeline and the benchmark. Add commands for `ios/` and `firebase/` here as those folders appear.
@@ -53,7 +53,7 @@ it is blocked. One Issue is one branch and one PR. Do not start work the user ha
 ## Definition of Done
 
 - Each acceptance criterion in the Issue is checked, with concrete evidence (test output, command result, screenshot).
-- `npm run typecheck` and `npm run build` pass (in `demo/`), and any tests that exist pass. The PR build check
+- `npm run typecheck`, `npm run test` and `npm run build` pass (in `demo/`), and any other tests that exist pass. The PR build check
   (`.github/workflows/build.yml`, job `build`: `npm ci` + `npm run build` in `demo/` on PRs into `dev`) is green.
 - UI changes include screenshots saved in `docs/screenshots/` (see Screenshots of changes) and shown in the PR. Non-UI changes do not need them.
 - Docs are updated if behavior, structure or commands changed.
