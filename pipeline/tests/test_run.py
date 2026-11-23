@@ -139,3 +139,28 @@ def test_a_terminate_signal_still_deletes_the_temp_folder(clip_path, tmp_path):
     process.send_signal(signal.SIGTERM)
     assert process.wait(timeout=60) == 143
     assert list(tmp_path.iterdir()) == []
+
+
+def test_one_stage_at_a_time_gives_the_same_result_as_overlapping_stages(clip_path, result):
+    """Overlapping the stages that do not need each other must not change a single value."""
+    assert analyze(clip_path, parallel=False) == result
+
+
+def test_timings_report_each_stage_and_the_real_total(clip_path):
+    timings: dict[str, float] = {}
+    analyze(clip_path, timings=timings)
+    stages = {"load", "separate", "notes", "beats", "chords", "details", "tab"}
+    assert stages <= set(timings) and "total" in timings
+    assert timings["total"] >= max(timings[name] for name in stages) - 0.01
+
+
+def test_a_failure_in_a_stage_that_runs_alongside_separation_still_means_no_tab_and_no_leftover_parts(clip_path, tmp_path, monkeypatch):
+    from amphion_pipeline import run
+
+    def boom(*_):
+        raise RuntimeError("beat tracking failed")
+
+    monkeypatch.setattr(run, "track_beats", boom)
+    with pytest.raises(RuntimeError, match="beat tracking failed"):
+        analyze(clip_path, tmp_root=tmp_path)
+    assert list(tmp_path.iterdir()) == []  # RC-03: the separated parts are gone, and RC-09: nothing is returned
