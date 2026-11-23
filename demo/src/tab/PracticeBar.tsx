@@ -18,6 +18,8 @@ interface PracticeBarProps {
   instrument: Instrument;
   mix: Mix;
   hasBass: boolean;
+  /** False for a clock playing the real recording: its guitar and bass cannot be turned up or down separately. */
+  canMix: boolean;
   onMixChange: (mix: Mix) => void;
   /** Back to the default mix, which follows the shown instrument. */
   onResetMix: () => void;
@@ -41,7 +43,7 @@ function describeMix(mix: Mix, hasBass: boolean) {
 }
 
 /** Pinned practice bar: play/pause, scrubber with times, speed (50-100%) and A-B loop (US-12 to US-14). */
-export default function PracticeBar({ clock, time, playing, rate, loop, pendingLoopStart, instrument, mix, hasBass, onMixChange, onResetMix, onToggleLoop, onScrub }: PracticeBarProps) {
+export default function PracticeBar({ clock, time, playing, rate, loop, pendingLoopStart, instrument, mix, hasBass, canMix, onMixChange, onResetMix, onToggleLoop, onScrub }: PracticeBarProps) {
   const [speedOpen, setSpeedOpen] = useState(false);
   const [mixOpen, setMixOpen] = useState(false);
   const { duration } = clock;
@@ -77,7 +79,7 @@ export default function PracticeBar({ clock, time, playing, rate, loop, pendingL
         </div>
         <div><time>{formatTime(time)}</time><time>{formatTime(duration)}</time></div>
       </div>
-      <div className="speed-picker mix-picker">
+      {canMix && <div className="speed-picker mix-picker">
         <button
           className={`practice-tool-button ${mutedMine ? "active" : ""}`}
           type="button"
@@ -137,7 +139,7 @@ export default function PracticeBar({ clock, time, playing, rate, loop, pendingL
             <p>Play along: mute your part and let Amphion play the rest.</p>
           </div>
         )}
-      </div>
+      </div>}
       <div className="speed-picker">
         <button className="practice-tool-button" type="button" aria-label={`Speed ${speed}%`} aria-expanded={speedOpen} onClick={() => {
             setSpeedOpen(!speedOpen);

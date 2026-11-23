@@ -6230,3 +6230,19 @@ svg {
 .chord-view-chord.current .tab-flag {
   box-shadow: 0 0 0 1.5px #fff;
 }
+
+/* Loader for a real pipeline transcription (POC-03) */
+.load-real-song-dialog input[type="file"] {
+  padding: 10px 13px;
+  height: auto;
+}
+
+.confirm-dialog .load-real-song-error {
+  margin-top: 14px;
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.real-song-status {
+  justify-content: flex-start;
+}

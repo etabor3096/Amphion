@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
@@ -14,5 +14,10 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // The viewer checks tab files against the pipeline's schema, which lives next to the app in pipeline/.
+    fs: { allow: ['..'] },
+  },
+  test: {
+    include: ['src/**/*.test.ts'],
   },
 })

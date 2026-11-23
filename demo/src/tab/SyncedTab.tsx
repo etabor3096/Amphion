@@ -24,6 +24,8 @@ interface SyncedTabProps {
   clock: PlaybackClock;
   /** False when this song's audio is on another iPhone (RC-19): the tab shows, playback does not. */
   audioAvailable: boolean;
+  /** Why synced playback is off, when it is off for a reason other than the audio being on another iPhone. */
+  noSyncReason?: string | null;
   defaultInstrument: Instrument;
 }
 
@@ -44,7 +46,7 @@ function BassIcon() {
  * The tab section of the Song screen and everything synced to playback. One animation-frame
  * loop reads the clock and drives the playhead, note highlights and auto-scroll (RC-18).
  */
-export default function SyncedTab({ songId, transcription, clock, audioAvailable, defaultInstrument }: SyncedTabProps) {
+export default function SyncedTab({ songId, transcription, clock, audioAvailable, noSyncReason, defaultInstrument }: SyncedTabProps) {
   const [instrument, setInstrument] = useState<Instrument>(defaultInstrument);
   const [view, setView] = useState<SongView>("tab");
   const [time, setTime] = useState(() => clock.currentTime());
@@ -269,6 +271,7 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
             instrument={instrument}
             mix={mix}
             hasBass={Boolean(bassNotes)}
+            canMix={Boolean(clock.setAudibleParts || clock.setAudibleNotes)}
             onMixChange={setMixOverride}
             onResetMix={() => setMixOverride(null)}
             onToggleLoop={toggleLoop}
@@ -281,7 +284,7 @@ export default function SyncedTab({ songId, transcription, clock, audioAvailable
       ) : (
         <section className="practice-controls no-audio-bar" role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5" /><path d="M11 18.5h2" /></svg>
-          <p>Synced playback is only available on the iPhone that recorded or uploaded this song.</p>
+          <p>{noSyncReason ?? "Synced playback is only available on the iPhone that recorded or uploaded this song."}</p>
         </section>
       )}
 

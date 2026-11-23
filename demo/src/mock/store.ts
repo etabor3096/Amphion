@@ -58,6 +58,8 @@ function loadTranscriptions() {
 
 let transcriptions = loadTranscriptions();
 const undoStacks = new Map<number, Transcription[]>();
+/** Songs showing a transcription loaded from a pipeline file. It is not saved, so a reload brings back the mock tab. */
+const loadedFromFile = new Set<number>();
 const listeners = new Set<() => void>();
 
 let saveTimer: number | undefined;
@@ -68,7 +70,7 @@ function saveNow() {
   window.clearTimeout(saveTimer);
   saveTimer = undefined;
   const mock = new Map(INITIAL_TRANSCRIPTIONS.map((t) => [t.songId, t]));
-  const saved = [...transcriptions.values()].filter((t) => mock.get(t.songId) !== t);
+  const saved = [...transcriptions.values()].filter((t) => mock.get(t.songId) !== t && !loadedFromFile.has(t.songId));
   const removed = [...mock.keys()].filter((id) => !transcriptions.has(id));
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: STORAGE_VERSION, saved, removed }));
@@ -124,7 +126,19 @@ export function undoLastEdit(songId: number) {
   emit();
 }
 
+/**
+ * Shows a transcription read from a pipeline RC-20 file in place of the song's mock one (POC-03).
+ * Edits made to it work as usual (and can be undone); none of it is saved to localStorage.
+ */
+export function setLoadedTranscription(transcription: Transcription) {
+  loadedFromFile.add(transcription.songId);
+  undoStacks.delete(transcription.songId);
+  transcriptions = new Map(transcriptions).set(transcription.songId, transcription);
+  emit();
+}
+
 export function removeTranscription(songId: number) {
+  loadedFromFile.delete(songId);
   if (!transcriptions.has(songId)) return;
   transcriptions = new Map(transcriptions);
   transcriptions.delete(songId);

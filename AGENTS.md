@@ -11,7 +11,7 @@ Read `ARCHITECTURE.md`, `POLICY.md` and `ROADMAP.md` (repo root) first; `CLAUDE.
 
 ## Development Server
 
-From `demo/`: run `npm install`, then `npm run dev` (Vite on http://localhost:5173). `npm run typecheck` type-checks; `npm run build` type-checks and builds.
+From `demo/`: run `npm install`, then `npm run dev` (Vite on http://localhost:5173). `npm run typecheck` type-checks; `npm run build` type-checks and builds; `npm test` runs the unit tests (Vitest).
 
 ## Repository layout
 
@@ -34,7 +34,9 @@ The root also holds `CLAUDE.md`, `AGENTS.md`, `ARCHITECTURE.md`, `POLICY.md`, `R
 - `demo/src/App.tsx` - Splash → fake sign-in → `MainApp`
 - `demo/src/MainApp.tsx` - Library, Add Song, Settings screens and their dialogs
 - `demo/src/SongScreen.tsx` - Song screen header, details, and photo/edit-details/delete (`EditSongDialog.tsx` is shared with the Library); the tab itself is `demo/src/tab/SyncedTab.tsx`
-- `demo/src/playback/` - `PlaybackClock` (the single clock for song time, RC-18/DD-14), `SynthClock` (Web Audio synth; song time from `AudioContext.currentTime`), `SimulatedClock` (silent fallback), and the one animation-frame hook
+- `demo/src/playback/` - `PlaybackClock` (the single clock for song time, RC-18/DD-14), `AudioFileClock` (song time from a real audio file's own position; used for a loaded real song), `SynthClock` (Web Audio synth; song time from `AudioContext.currentTime`), `SimulatedClock` (silent fallback), and the one animation-frame hook
+- `demo/src/realSong/` - Loads a real song (POC-03): `rc20.ts` validates the pipeline's RC-20 JSON against `pipeline/rc20.schema.json` and converts it to a `Transcription`; `loadRealSong.ts` checks the audio's length and SHA-256 against the JSON (RC-19). `demo/src/LoadRealSongDialog.tsx` is the dialog (Song screen menu, Load real transcription)
+- `demo/fixtures/click-track/` - A 12 s click-track WAV and its matching RC-20 JSON (`make_click_track.py` rebuilds both), for checking that the highlight lands on each click
 - `demo/src/tab/` - Tab rows, `ChordView` (the Chords view), interactions, practice bar, note editor, chord popover, and pure edit functions
 - `demo/src/mock/` - Data types (mirror RC-20), songs, generated tab data, in-memory store with undo
 - `demo/src/music/` - Tuning and chord-shape helpers
