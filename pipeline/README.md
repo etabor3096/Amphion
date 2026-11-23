@@ -164,13 +164,42 @@ start are added, and a cloud vCPU will probably be slower. This is one synthetic
 signal, not a verdict. Options, none of them taken here (OD-06 says CPU until P1-07 and P4-06 measure it, and a GPU needs
 a cost check and Elijah's approval):
 
-1. **Run the stages that do not speed up with threads (beats, chords, key, tempo and tuning, about 56 s) at the same
-   time as Demucs**, in separate processes. The longest path would then be Demucs plus the notes, about 70 to 85 s, if
-   there are enough vCPU that they do not slow each other. This is an estimate that I have not measured.
+1. **Run the stages that do not need each other at the same time.** Done and measured, see *Overlapping the stages*
+   below: only about 9% faster on this Mac, not the 70 to 85 s estimated here.
 2. A GPU for Demucs (cost check and approval first).
 3. Relax RC-08 (Elijah's decision).
 
 P4-06 repeats this on the deployed service, which is the measurement that counts.
+
+### Overlapping the stages (measured 2026-11-22)
+
+`analyze()` now runs the stages that do not need each other at the same time, in threads: beats and key, tempo and tuning
+(they only need the mixed audio) run while Demucs separates, then notes and chords (both need the separated parts) run
+side by side. `--sequential` on the command line, or `analyze(..., parallel=False)`, runs one stage at a time. `-v` now also
+prints `total`, the real time; with overlap the stage times add up to more than it.
+
+Measured on the Apple M5 (4 performance, 6 efficiency cores, 16 GB) with Maple Syrup, a real 3-minute song, runs
+alternating sequential and parallel so machine drift affects both:
+
+| | Run 1 | Run 2 | Mean |
+|---|---:|---:|---:|
+| One stage at a time (`--sequential`) | 115.8 s | 116.9 s | **116.3 s** |
+| Overlapped (default) | 110.0 s | 101.8 s | **105.9 s** |
+
+On a 60 s excerpt, three alternating pairs gave 39.1 s against 37.3 s (5% faster). Peak memory on that excerpt went from
+2.44 GB to 2.85 GB, so size an instance about 0.4 GB higher than the sequential figures above.
+
+- **The result is identical.** The output file was byte-for-byte the same as the sequential run, and the same as the
+  PR #112 baseline output, on all three benchmark songs, so no benchmark score can change (A9). `tests/test_run.py` checks
+  that overlapped and one-at-a-time runs give equal documents, that a failure in a stage that runs beside Demucs still
+  leaves no tab and no separated parts on disk (RC-03, RC-09), and that `total` is reported.
+- **The gain is small because the cores are already busy.** Demucs uses its threads and the other libraries start their own
+  pools, so overlapped stages slow each other down: on this Mac separation took 39 to 71 s from run to run depending on what
+  ran beside it. The picture above (about 106 s, RC-08 wants under 120 s including upload and cold start) is better but not
+  enough on its own. A first, non-alternating run looked 25% slower (131 s against 106 s); that was machine noise, which is why
+  the table alternates.
+- **What would move it further** is more or faster cores for Demucs, which is the GPU option (item 2) and a cost decision
+  for Elijah, or a cloud CPU with more performance cores than this laptop has. P4-06 is where that gets measured.
 
 ## What had to be pinned or built from source, and why (RISK-04)
 
