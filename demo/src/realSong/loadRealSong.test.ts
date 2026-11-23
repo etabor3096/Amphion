@@ -52,7 +52,7 @@ describe("parseRc20", () => {
 
   it("explains text that is not JSON", () => {
     const result = parseRc20("not json {");
-    expect(result).toEqual({ ok: false, error: expect.stringContaining("isn't valid JSON") });
+    expect(result).toEqual({ ok: false, error: expect.stringContaining("can't be read as an Amphion tab file") });
   });
 
   it("explains a missing field", () => {
@@ -72,7 +72,7 @@ describe("parseRc20", () => {
   it("rejects a different format version in plain words", () => {
     const result = parseRc20(JSON.stringify(rc20({ schemaVersion: 2 })));
     expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.error).toContain("version 2");
+    if (!result.ok) expect(result.error).toContain("(version 2)");
   });
 
   it("rejects the old demo shape (not the pipeline format)", () => {
@@ -164,7 +164,7 @@ describe("loadRealSong", () => {
   it("returns a readable error for invalid JSON and never touches the audio", async () => {
     const readAudioDuration = vi.fn(async () => 20);
     const result = await loadRealSong(jsonBlob("{nope"), audioBlob(), 1, fakeDeps({ readAudioDuration }));
-    expect(result).toEqual({ ok: false, error: expect.stringContaining("isn't valid JSON") });
+    expect(result).toEqual({ ok: false, error: expect.stringContaining("can't be read as an Amphion tab file") });
     expect(readAudioDuration).not.toHaveBeenCalled();
   });
 
@@ -173,7 +173,7 @@ describe("loadRealSong", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.song.audio).toBeNull();
-    expect(result.song.noSyncReason).toContain("fingerprint");
+    expect(result.song.noSyncReason).toContain("same file");
     expect(result.song.transcription.guitar?.notes).toHaveLength(1);
   });
 

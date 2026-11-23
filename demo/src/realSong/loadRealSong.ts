@@ -22,12 +22,12 @@ export function checkHash(expectedSha256: string, actualSha256: string): AudioCh
   if (expectedSha256 === actualSha256) return { match: true };
   return {
     match: false,
-    reason: "This audio isn't the file the tab was made from (its fingerprint is different), so the tab would not line up with the sound.",
+    reason: "This audio isn't the file the tab was made from (it isn't the same file), so the tab would not line up with the sound.",
   };
 }
 
 export async function sha256Hex(data: ArrayBuffer): Promise<string> {
-  if (!globalThis.crypto?.subtle) throw new Error("This browser can't compute a SHA-256 fingerprint here (it needs https or localhost).");
+  if (!globalThis.crypto?.subtle) throw new Error("This browser can't check the audio file here (it needs https or localhost).");
   const digest = await globalThis.crypto.subtle.digest("SHA-256", data);
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
@@ -114,7 +114,7 @@ export async function loadRealSong(jsonFile: Blob, audioFile: Blob, songId: numb
   try {
     fingerprint = await deps.sha256(audioFile);
   } catch (error) {
-    return withoutAudio(`${error instanceof Error ? error.message : "The audio's fingerprint couldn't be computed."} Without it the audio can't be checked against the tab.`);
+    return withoutAudio(`${error instanceof Error ? error.message : "The audio file couldn't be checked."} The audio can't be matched to the tab, so it isn't played.`);
   }
   const same = checkHash(rc20.audioSha256, fingerprint);
   if (!same.match) return withoutAudio(same.reason);

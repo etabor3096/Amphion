@@ -43,7 +43,7 @@ const ajv = new Ajv2020({ allErrors: false, strict: false });
 const validate = ajv.compile<Rc20>(schema);
 
 const FIELD_NAMES: Record<string, string> = {
-  audioSha256: "audio fingerprint",
+  audioSha256: "audio file ID",
   tuningOffsetCents: "tuning offset",
   beatsPerBar: "beats per bar",
   startTime: "start time",
@@ -80,15 +80,15 @@ export function parseRc20(text: string): ParseResult {
   try {
     value = JSON.parse(text);
   } catch {
-    return { ok: false, error: "This file isn't valid JSON, so it can't be a tab file from the Amphion pipeline." };
+    return { ok: false, error: "This file can't be read as an Amphion tab file." };
   }
 
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return { ok: false, error: "This isn't a tab file from the Amphion pipeline: expected a JSON object." };
+    return { ok: false, error: "This isn't an Amphion tab file." };
   }
   const version = (value as { schemaVersion?: unknown }).schemaVersion;
   if (version !== undefined && version !== 1) {
-    return { ok: false, error: `This tab file uses format version ${String(version)}. This viewer reads version 1.` };
+    return { ok: false, error: `This tab file is from a different version of Amphion (version ${String(version)}), so it can't be opened here.` };
   }
 
   if (!validate(value)) {
@@ -96,10 +96,10 @@ export function parseRc20(text: string): ParseResult {
     // The deepest one points at the actual bad value, so say that one.
     const errors = (validate.errors ?? []).filter((e) => e.keyword !== "oneOf");
     const first = errors.reduce<ErrorObject | undefined>((best, e) => (!best || e.instancePath.length > best.instancePath.length ? e : best), undefined);
-    return { ok: false, error: `This tab file doesn't match the Amphion format: ${first ? describeError(first) : "unknown problem"}.` };
+    return { ok: false, error: `This tab file isn't in the form Amphion expects: ${first ? describeError(first) : "unknown problem"}.` };
   }
   if (value.downbeats.length === 0) {
-    return { ok: false, error: "This tab file has no bars (the analysis found no beat grid), so there is no tab to draw." };
+    return { ok: false, error: "This tab file has no bars (no beat was found in the song), so there is no tab to draw." };
   }
   return { ok: true, data: value };
 }

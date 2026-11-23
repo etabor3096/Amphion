@@ -46,7 +46,7 @@ export default function LoadRealSongDialog({ songId, onLoaded, onCancel }: LoadR
         }}
       >
         <h2 id="load-real-song-title">Load a real transcription</h2>
-        <p>Choose the tab file made by the Amphion pipeline and the audio file it was made from.</p>
+        <p>Choose the Amphion tab file and the audio file it was made from.</p>
         <label>
           <span>Tab file <small>.json</small></span>
           <input
